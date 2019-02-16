@@ -17,19 +17,37 @@ The recommended method of import is:
 The dt object constructor will accept several argument schemes
 
 #### no arguments
-
     myobj = dt()
 
 Create a dt object containing the current date and time. Effectively the same as
-
     myobj = datetime().now()
 
-#### a datetime object
-    myobj = dt(datetime(2011, 10, 9))
-
-#### a list of ints
+#### a list of ints (year, month, day, hour, minute, second)
     myobj = dt(2011, 10, 9)
 
+At least year, month, and day are required. Hour, minute, and second are
+all optional, although somewhat interdependent. For example, because they
+are positional, you can't provide second without providing minute.
+
+#### a string
+    myobj = dt("2011-10-09 20:07:06")
+
+The code tries to intuit the format of the provided date/time string. Most
+popular formats should work.
+
+#### a datetime object
+If you have a datetime object and want a dt object, the dt can be
+initialized directly from the datetime.
+
+    myobj = dt(datetime(2011, 10, 9))
+
+The microsecond member will be zeroed out.
+
+#### another dt object
+Similarly, if you have a dt and want another, just pass in the one you've
+got:
+
+    newobj = dt(myobj)
 
 ## My setup
 
