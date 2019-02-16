@@ -18,8 +18,8 @@ The dt object constructor will accept several argument schemes
 
 #### no arguments
 
-        myobj = dt()
+    myobj = dt()
         
 Create a dt object containing the current date and time. Effectively the same as
 
-        myobj = datetime().now()
+    myobj = datetime().now()
