@@ -11,7 +11,7 @@ with the inheritance strategy.
 
 The recommended method of import is:
 
-        from dtm import dt
+    from dtm import dt
 
 ### constructor
 The dt object constructor will accept several argument schemes
