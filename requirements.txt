@@ -1,0 +1,4 @@
+coverage
+pytest
+pytest-cov
+git+git://github.com/tbarron/tbx.git#egg=tbx
