@@ -56,6 +56,31 @@ got:
 
     newobj = dt(myobj)
 
+### Comparison
+dt objects can be compared for ==, <, or <= to other dt objects and to
+datetime objects.
+
+### Iteration by day
+    for day in dt(2011, 10, 1).dt_range(dt(2011, 10, 31)):
+        # do whatever
+
+Unlike other Python range functions, the dt_range() function is inclusive.
+That is, the above loop will process 2011-10-31 as well as the rest of the
+month. Most Python range functions terminate before processing the end
+value.
+
+dt also provides next_day() and previous_day() functions so you can do your
+own iteration in special circumstances.
+
+### Other methods
+
+    strftime()
+    weekday()
+    weekday_floor()
+    ymd()
+    ymdw()
+
+
 ## My setup
 
     dtm                         # project directory
