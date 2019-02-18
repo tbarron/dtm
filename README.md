@@ -1,5 +1,12 @@
-# dtm
-Smart datetime objects
+# dtm - smart datetime objects
+Functionality added to datetime:
+
+  * Initialize from date/time strings, intuiting format (no need to call
+    strptime())
+  * Initialize current date/time from no arguments (no need to call .now())
+  * Easy way to jump forward and backward a day at a time
+  * Easy way to get date of next Monday, next Friday, etc.
+  * Iterate over a range of dates
 
 ## dt objects
 The main thing dtm exports is the 'dt' object. It wraps a standard Python
