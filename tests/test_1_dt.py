@@ -55,6 +55,8 @@ def test_equal():
     pytest.dbgfunc()
     assert dt() == datetime.now().replace(microsecond=0)
     assert dt() != datetime.now().replace(microsecond=300)
+    assert dt(2018, 1, 17) == dt("2018.0117")
+    assert dt(2018, 1, 17, 6, 30) != dt("2018.0117")
 
 
 # -----------------------------------------------------------------------------
