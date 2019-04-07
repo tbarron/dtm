@@ -84,6 +84,29 @@ def test_ge(inp, bench, exp):
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("inp, bench, exp", [
+    pytest.param("2012.0101", dt("2012.0102"), False, id="gt-n-s-i-f"),
+    pytest.param("2011.1231", dt("2012.0101"), False, id="gt-n-s-y-f"),
+    pytest.param("2012.0102", dt("2012.0101"), True, id="gt-n-s-i-t"),
+    pytest.param("2012.0102", dt("2011.1231"), True, id="gt-n-s-y-t"),
+    pytest.param("2012.0102", dt("2012.0102"), False, id="gt-n-e-i-f"),
+
+    pytest.param("2012.0101", datetime(2012, 1, 2), False, id="gt-d-s-i-f"),
+    pytest.param("2011.1231", datetime(2012, 1, 1), False, id="gt-d-s-y-f"),
+    pytest.param("2012.0102", datetime(2012, 1, 1), True, id="gt-d-s-i-t"),
+    pytest.param("2012.0102", datetime(2011, 12, 31), True, id="gt-d-s-y-t"),
+    pytest.param("2012.0102", datetime(2012, 1, 2), False, id="gt-d-e-i-f"),
+    ])
+def test_gt(inp, bench, exp):
+    """
+    dt(*foo) is le datetime(*bar) if dt(*foo)._dtobj <= datetime(*bar)
+    dt(*foo) is le dt(*bar) if dt(*foo)._dtobj <= dt(*bar)._dtobj
+    """
+    pytest.dbgfunc()
+    assert (dt(inp) > bench) is exp
+
+
+# -----------------------------------------------------------------------------
+@pytest.mark.parametrize("inp, bench, exp", [
     pytest.param("2012.0101", dt("2012.0102"), True, id="le-n-s-i-t"),
     pytest.param("2011.1231", dt("2012.0101"), True, id="le-n-s-y-t"),
     pytest.param("2012.0102", dt("2012.0101"), False, id="le-n-s-i-f"),
