@@ -72,8 +72,28 @@ def test_equal():
     ("2012.0102", datetime(2012, 1, 1), False),
     ("2012.0102", datetime(2011, 12, 31), False),
     ("2012.0102", datetime(2012, 1, 2), True),
+    pytest.param("2012.0101", dt("2012.0102"), False, id="ge-n-s-i-f"),
+    pytest.param("2011.1231", dt("2012.0101"), False, id="ge-n-s-y-f"),
+    pytest.param("2012.0102", dt("2012.0101"), True, id="ge-n-s-i-t"),
+    pytest.param("2012.0102", dt("2011.1231"), True, id="ge-n-s-y-t"),
+    pytest.param("2012.0102", dt("2012.0102"), True, id="ge-n-e-i-t"),
+
+    pytest.param("2012.0101", datetime(2012, 1, 2), False, id="ge-d-s-i-f"),
+    pytest.param("2011.1231", datetime(2012, 1, 1), False, id="ge-d-s-y-f"),
+    pytest.param("2012.0102", datetime(2012, 1, 1), True, id="ge-d-s-i-t"),
+    pytest.param("2012.0102", datetime(2011, 12, 31), True, id="ge-d-s-y-t"),
+    pytest.param("2012.0102", datetime(2012, 1, 2), True, id="ge-d-e-i-t"),
     ])
 def test_lesseq(inp, bench, exp):
+def test_ge(inp, bench, exp):
+    """
+    dt(*foo) is le datetime(*bar) if dt(*foo)._dtobj >= datetime(*bar)
+    dt(*foo) is le dt(*bar) if dt(*foo)._dtobj >= dt(*bar)._dtobj
+    """
+    pytest.dbgfunc()
+    assert (dt(inp) >= bench) is exp
+
+
     """
     dt(*foo) is le datetime(*bar) if dt(*foo)._dtobj <= datetime(*bar)
     dt(*foo) is le dt(*bar) if dt(*foo)._dtobj <= dt(*bar)._dtobj
