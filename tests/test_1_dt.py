@@ -107,17 +107,17 @@ def test_le(inp, bench, exp):
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("inp, bench, exp", [
-    ("2012.0101", dt("2012.0102"), True),
-    ("2011.1231", dt("2012.0101"), True),
-    ("2012.0102", dt("2012.0101"), False),
-    ("2012.0102", dt("2011.1231"), False),
-    ("2012.0102", dt("2012.0102"), False),
+    pytest.param("2012.0101", dt("2012.0102"), True, id="lt-n-s-i-t"),
+    pytest.param("2011.1231", dt("2012.0101"), True, id="lt-n-s-y-t"),
+    pytest.param("2012.0102", dt("2012.0101"), False, id="lt-n-s-i-f"),
+    pytest.param("2012.0102", dt("2011.1231"), False, id="lt-n-s-y-f"),
+    pytest.param("2012.0102", dt("2012.0102"), False, id="lt-n-e-i-f"),
 
-    ("2012.0101", datetime(2012, 1, 2), True),
-    ("2011.1231", datetime(2012, 1, 1), True),
-    ("2012.0102", datetime(2012, 1, 1), False),
-    ("2012.0102", datetime(2011, 12, 31), False),
-    ("2012.0102", datetime(2012, 1, 2), False),
+    pytest.param("2012.0101", datetime(2012, 1, 2), True, id="lt-d-s-i-t"),
+    pytest.param("2011.1231", datetime(2012, 1, 1), True, id="lt-d-s-y-t"),
+    pytest.param("2012.0102", datetime(2012, 1, 1), False, id="lt-d-s-i-f"),
+    pytest.param("2012.0102", datetime(2011, 12, 31), False, id="lt-d-s-y-f"),
+    pytest.param("2012.0102", datetime(2012, 1, 2), False, id="lt-d-e-i-f"),
     ])
 def test_lessthan(inp, bench, exp):
     """
