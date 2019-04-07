@@ -119,7 +119,7 @@ def test_le(inp, bench, exp):
     pytest.param("2012.0102", datetime(2011, 12, 31), False, id="lt-d-s-y-f"),
     pytest.param("2012.0102", datetime(2012, 1, 2), False, id="lt-d-e-i-f"),
     ])
-def test_lessthan(inp, bench, exp):
+def test_lt(inp, bench, exp):
     """
     dt(*foo) is less than datetime(*bar) if dt(*foo)._dtobj < datetime(*bar)
     dt(*foo) is less than dt(*bar) if dt(*foo)._dtobj < dt(*bar)._dtobj
