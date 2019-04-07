@@ -4,6 +4,21 @@ import pytest
 
 
 # -----------------------------------------------------------------------------
+def test_attributes():
+    """
+    A dt object should have members year, month, day, hour, minute, second
+    """
+    exp = datetime.now()
+    act = dt(exp)
+    assert act.year == exp.year
+    assert act.month == exp.month
+    assert act.day == exp.day
+    assert act.hour == exp.hour
+    assert act.minute == exp.minute
+    assert act.second == exp.second
+
+
+# -----------------------------------------------------------------------------
 @pytest.mark.parametrize("inp, exp", [
     pytest.param((), None, id="no arg"),
     pytest.param(datetime(2001, 9, 11), dt("2001.0911"), id="datetime ymd"),
