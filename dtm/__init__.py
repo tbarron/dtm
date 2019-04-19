@@ -28,6 +28,12 @@ class dt(object):
             self._dtobj = self._from_ints(*args)
         else:
             raise dt_error("dt.__init__ expects dt, datetime, str, or ints")
+        self.year = self._dtobj.year
+        self.month = self._dtobj.month
+        self.day = self._dtobj.day
+        self.hour = self._dtobj.hour
+        self.minute = self._dtobj.minute
+        self.second = self._dtobj.second
 
     # -------------------------------------------------------------------------
     def _from_nothing(self):
