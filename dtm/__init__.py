@@ -73,6 +73,30 @@ class dt(object):
             return False
 
     # -------------------------------------------------------------------------
+    def __ge__(self, other):
+        """
+        This object can be compared to another dt or a datetime obj.
+        """
+        if isinstance(other, datetime) and self._dtobj >= other:
+            return True
+        elif isinstance(other, dt) and self._dtobj >= other._dtobj:
+            return True
+        else:
+            return False
+
+    # -------------------------------------------------------------------------
+    def __gt__(self, other):
+        """
+        This object can be compared to another dt or a datetime obj.
+        """
+        if isinstance(other, datetime) and self._dtobj > other:
+            return True
+        elif isinstance(other, dt) and self._dtobj > other._dtobj:
+            return True
+        else:
+            return False
+
+    # -------------------------------------------------------------------------
     def __le__(self, other):
         """
         This object can be compared to another dt or a datetime obj.
