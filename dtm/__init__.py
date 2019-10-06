@@ -219,6 +219,15 @@ class dt(object):
         return self._dtobj.strftime(*args)
 
     # -------------------------------------------------------------------------
+    @staticmethod
+    def strptime(*args):
+        """
+        Pass strptime() calls down to datetime
+        """
+        twig = datetime.now()
+        return dt(twig.strptime(*args))
+
+    # -------------------------------------------------------------------------
     def weekday(self):
         """
         Return the lowercase abbreviated weekday name for the current object

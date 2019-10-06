@@ -267,6 +267,20 @@ def test_strftime(when, fmt, exp):
 
 
 # -----------------------------------------------------------------------------
+@pytest.mark.parametrize("when, fmt, exp", [
+    pytest.param('2016-09-28T16:46:42Z', "%Y-%m-%dT%H:%M:%SZ",
+                 dt(2016, 9, 28, 16, 46, 42)),
+    pytest.param('2020.0229', "%Y.%m%d", dt("2020.0229"))
+    ])
+def test_strptime(when, fmt, exp):
+    """
+    Test strptime
+    """
+    pytest.dbgfunc()
+    assert dt.strptime(when, fmt) == exp
+
+
+# -----------------------------------------------------------------------------
 def test_weekday_floor():
     """
     Test dt().weekday_floor(). If today is Monday, dt().weekday_floor('mon') is
