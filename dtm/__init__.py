@@ -61,7 +61,10 @@ class dt(object):
         """
         fmt_candidates = ["%Y.%m%d",
                           "%Y.%m%d %H:%M:%S",
-                          "%Y/%m/%d %H:%M"]
+                          "%Y/%m/%d %H:%M",
+                          "%Y-%m-%dT%H:%M:%SZ",
+                          "%Y-%m-%dT%H:%M:%S",
+                          ]
         rval = None
         for fmt in fmt_candidates:
             try:
