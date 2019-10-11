@@ -63,6 +63,15 @@ def test_init(inp, exp):
 
 
 # -----------------------------------------------------------------------------
+def test_init_epoch():
+    """
+    test dt(epoch=<number>)
+    """
+    pytest.dbgfunc()
+    assert dt(epoch=1570000000) == dt("2019.1002 03:06:40")
+
+
+# -----------------------------------------------------------------------------
 def test_equal():
     """
     dt(*foo) is equal to datetime(*bar) if dt(*foo)._dtobj == datetime(*bar)
