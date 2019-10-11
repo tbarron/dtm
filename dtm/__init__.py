@@ -1,8 +1,11 @@
+import version
 from datetime import datetime
 
 
 # -----------------------------------------------------------------------------
 class dt(object):
+    _version = version._v
+
     """
     This object wraps a datetime object and adds various goodies, like
     'next_day', 'next_weekday', 'weekday_floor', etc.
@@ -226,6 +229,14 @@ class dt(object):
         """
         twig = datetime.now()
         return dt(twig.strptime(*args))
+
+    # -------------------------------------------------------------------------
+    @staticmethod
+    def version(**args):
+        """
+        Return the lowercase abbreviated weekday name for the current object
+        """
+        return version._v
 
     # -------------------------------------------------------------------------
     def weekday(self):

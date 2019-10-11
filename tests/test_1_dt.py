@@ -1,6 +1,7 @@
 from datetime import datetime
 from dtm import dt, dt_error
 import pytest
+import version
 
 
 # -----------------------------------------------------------------------------
@@ -273,6 +274,19 @@ def test_strftime(when, fmt, exp):
     """
     pytest.dbgfunc()
     assert when.strftime(fmt) == exp
+
+
+# -----------------------------------------------------------------------------
+def test_version():
+    """
+    Verify that dt.version() returns what is expected. It can be called as a
+    static method on the class (dt.version()) or as a method on a dt object:
+
+        q = dt()
+        q.version()
+    """
+    assert dt.version() == version._v
+    assert dt().version() == version._v
 
 
 # -----------------------------------------------------------------------------
