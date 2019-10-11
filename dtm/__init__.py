@@ -16,7 +16,9 @@ class dt(object):
         Initialize this object. It contains a datetime object, which carries
         its value.
         """
-        if len(args) == 0:
+        if "epoch" in kw:
+            self._dtobj = self._from_epoch(kw["epoch"])
+        elif len(args) == 0:
             self._dtobj = self._from_nothing()
         elif len(args) == 1:
             if isinstance(args[0], dt):
@@ -37,6 +39,13 @@ class dt(object):
         self.hour = self._dtobj.hour
         self.minute = self._dtobj.minute
         self.second = self._dtobj.second
+
+    # -------------------------------------------------------------------------
+    def _from_epoch(self, val):
+        """
+        Initialize the object from epoch value *val*
+        """
+        return datetime.fromtimestamp(val)
 
     # -------------------------------------------------------------------------
     def _from_nothing(self):
