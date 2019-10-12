@@ -1,7 +1,6 @@
 from datetime import datetime
-from dtm import dt, dt_error
+from dtm import dt, dt_error, version
 import pytest
-import version
 
 
 # -----------------------------------------------------------------------------

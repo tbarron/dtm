@@ -1,4 +1,4 @@
-import version
+from dtm import version
 from datetime import datetime
 
 
