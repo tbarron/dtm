@@ -5,6 +5,7 @@
    setup.py, ./dtm/__init__.py, and ./tests/test_1_dt.py to use it from
    there.
  * Remove ./version.py from the project
+ * Minor updates to README.md: future plans, tweaks for accuracy
 
 ## 0.0.4 ... 2019.1012 05:42:52
 
@@ -27,5 +28,3 @@
  * Add id names to parametrized tests
  * Add detailed descriptions of the major dt object methods
  * Describe what dtm adds to datetime
- 
- 
