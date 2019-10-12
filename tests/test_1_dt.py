@@ -61,7 +61,7 @@ def test_init(inp, exp):
                 dt(*inp)
             else:
                 dt(inp)
-        assert str(exp) in str(err)
+        assert str(exp) in str(err.value)
     else:
         assert dt(inp) == exp
 
@@ -221,10 +221,10 @@ def test_next_weekday():
     assert when.next_weekday('tue') == dt(2011, 4, 19)
     with pytest.raises(dt_error) as err:
         when.next_weekday(3)
-    assert "next_weekday requires a string or list" in str(err)
+    assert "next_weekday requires a string or list" in str(err.value)
     with pytest.raises(dt_error) as err:
         when.next_weekday('january')
-    assert "one of the targets is not a valid weekday" in str(err)
+    assert "one of the targets is not a valid weekday" in str(err.value)
 
 
 # -----------------------------------------------------------------------------
