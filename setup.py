@@ -13,6 +13,7 @@ setup(
     version=version._v,
     # 'install_requires': ['git://github.com/tbarron/tbx.git#egg=tbx'],
     packages=['dtm'],
+    py_modules=['version'],
     scripts=[],
     name='dtm'
 )
