@@ -1,4 +1,4 @@
-## 1.0.0 ...
+## 1.0.0 ... 2019-10-12 13:15:12
 
  * Added CHANGELOG.md to dtm project.
  * Move version info from ./version.py to ./dtm/version.py and update
