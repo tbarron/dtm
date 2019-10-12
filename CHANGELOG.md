@@ -1,7 +1,7 @@
 ## 1.0.0 ...
 
  * Added CHANGELOG.md to dtm project.
- * Move version info from ./version.py to ./dtm/verinfo.py and update
+ * Move version info from ./version.py to ./dtm/version.py and update
    setup.py, ./dtm/__init__.py, and ./tests/test_1_dt.py to use it from
    there.
  * Remove ./version.py from the project
