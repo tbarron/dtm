@@ -6,6 +6,7 @@
    there.
  * Remove ./version.py from the project
  * Minor updates to README.md: future plans, tweaks for accuracy
+ * Add test_deployable() from tbx project
 
 ## 0.0.4 ... 2019.1012 05:42:52
 
