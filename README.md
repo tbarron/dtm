@@ -2,7 +2,7 @@
 Functionality added to datetime:
 
   * Initialize from date/time strings, intuiting format (no need to call
-    strptime())
+    strptime() for supported formats)
   * Initialize current date/time from no arguments (no need to call .now())
   * Easy way to jump forward and backward a day at a time
   * Easy way to get date of next Monday, next Friday, etc.
@@ -26,7 +26,7 @@ The dt object constructor will accept several argument schemes
 #### no arguments
     myobj = dt()
 
-Create a dt object containing the current date and time. Effectively the same as
+Create a dt object containing the current date and time. This is analogous to
     myobj = datetime().now()
 
 #### a list of ints (year, month, day, hour, minute, second)
@@ -41,6 +41,14 @@ are positional, you can't provide second without providing minute.
 
 The code tries to intuit the format of the provided date/time string. Most
 popular formats should work.
+
+#### an epoch value
+    myobj = dt(epoch=1426905900)
+    dt("%Y.%m%d %H:%M:%S")
+    >>> '2015.0320 22:45:00'
+
+The value provided must be numeric. It can be an integer or a float, so a
+value returned by time.time() or time.mktime() can be used.
 
 #### a datetime object
 If you have a datetime object and want a dt object, the dt can be
@@ -58,7 +66,9 @@ got:
 
 ### Comparison
 dt objects can be compared for ==, <, or <= to other dt objects and to
-datetime objects.
+datetime objects. The > and >= operators work for dt to dt comparisons. The
+comparisons datetime > dt or datetime >= dt won't work because datetime
+objects don't know about dt objects.
 
 ### Iteration by day
     for day in dt(2011, 10, 1).dt_range(dt(2011, 10, 31)):
@@ -75,6 +85,7 @@ own iteration in special circumstances.
 ### Other methods
 
     strftime()
+    strptime()
     weekday()
     weekday_floor()
     ymd()
@@ -105,3 +116,46 @@ own iteration in special circumstances.
     |   +- test_1_dt.py         # functionality tests
     |
     +- venv                     # virtual environment
+
+
+## Future Plans
+
+### Timezone support
+
+I would like to add timezone support as follows.
+
+At construction, an optional timezone argument can be provided to the
+constructor method to indicate which timezone the new object should
+represent. The zone argument can be 'UTC', 'local', or any valid timezone
+name. If no zone is specified, the default will be 'local'.
+
+If an input date/time string is provided, it will be interpreted as being in
+the specified timezone. For example,
+
+    q = dt('2015.0320 14:45:00', z='CST6CDT')
+
+Will compute the time as 2:45 pm on March 20, 2015, in the CDT zone. This
+will actually store the UTC time 2015.0320 20:45:00 (the local time plus
+six hours).
+
+When this object is used to display date/time values, they will be
+converted from UTC to CDT (i.e., the object will remember which zone it was
+constructed in and display outputs in terms of that zone).
+
+    q.strftime('%Y.%m%d %H:%M:%S')
+    >>> 2015.0320 14:45:00
+
+This makes zone to zone conversions as easy as easy:
+
+    q = dt('2004.1007 18:19:17', z='Paris')
+    q.strftime('%Y.%m%d %H:%M:%S', z='EST')
+    >>> 2004.1007 10:19:17
+
+Output methods will also accept an optional zone argument, allowing for
+on-the-fly conversions. For example,
+
+    q = dt('2015.0428 00:14:00')       # local time is EST
+    q.strftime('%Y.%m%d %H:%M:%S', z='MST')
+    >>> 2015.0427 21:14:00
+    q.strftime('%Y.%m%d %H:%M:%S', z='Paris')
+    >>> 2015.0428 06:14:00
