@@ -170,7 +170,7 @@ name. If no zone is specified, the default will be 'local'.
 If an input date/time string is provided, it will be interpreted as being in
 the specified timezone. For example,
 
-    q = dt('2015.0320 14:45:00', z='CST6CDT')
+    >>> q = dt('2015.0320 14:45:00', z='CST6CDT')
 
 Will compute the time as 2:45 pm on March 20, 2015, in the CDT zone. This
 will actually store the UTC time 2015.0320 20:45:00 (the local time plus
@@ -180,14 +180,14 @@ When this object is used to display date/time values, they will be
 converted from UTC to CDT (i.e., the object will remember which zone it was
 constructed in and display outputs in terms of that zone).
 
-    q.strftime('%Y.%m%d %H:%M:%S')
-    >>> 2015.0320 14:45:00
+    >>> q.strftime('%Y.%m%d %H:%M:%S')
+    '2015.0320 14:45:00'
 
 This makes zone to zone conversions as easy as easy:
 
-    q = dt('2004.1007 18:19:17', z='Paris')
-    q.strftime('%Y.%m%d %H:%M:%S', z='EST')
-    >>> 2004.1007 10:19:17
+    >>> q = dt('2004.1007 18:19:17', z='Paris')
+    >>> q.strftime('%Y.%m%d %H:%M:%S', z='EST')
+    '2004.1007 10:19:17'
 
 Output methods will also accept an optional zone argument, allowing for
 on-the-fly conversions. For example,
