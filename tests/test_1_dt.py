@@ -66,10 +66,15 @@ def test_init(inp, exp):
 # -----------------------------------------------------------------------------
 def test_init_epoch():
     """
-    test dt(epoch=<number>)
+    Initializing from an epoch value will always produce the same UTC time
+    reference. For the expected value on the right, we have to use tz='utc'
+    since the target time reference would vary with timezone if we defaulted to
+    the local timezone for the expected value.
     """
     pytest.dbgfunc()
-    assert dt(epoch=1570000000) == dt("2019.1002 03:06:40")
+    assert dt(epoch=1570000000) == dt("2019.1002 07:06:40", tz='utc')
+
+
 # -----------------------------------------------------------------------------
 def test_init_tz_explicit():
     """
