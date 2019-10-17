@@ -54,8 +54,15 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __init__(self, *args, **kw):
         """
-        Initialize this object. It contains a datetime object, which carries
-        its value.
+        Initialize this object. The time is stored internally as a UTC epoch
+        value. If you specify an epoch value at construction, it will be stored
+        without any timezone conversion as UTC. In this case, you better know
+        what you're doing.
+
+        Otherwise, the incoming dtspec will be converted from the incoming
+        timezone (argument 'tz') to UTC and stored as an epoch.
+
+        Note that epoch values are always considered to be UTC values.
         """
         if "epoch" in kw:
             self._dtobj = self._from_epoch(kw["epoch"])
@@ -127,7 +134,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __eq__(self, other):
         """
-        This object is equal to a datetime object if its _dtobj is
+        This object is equal to a datetime object if _utc is equal to the
+        integer value of other.timestamp()
         """
         if self._dtobj == other:
             return True
@@ -185,22 +193,21 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __str__(self):
         """
-        Standard format for stringifying a dt object
+        Convert stored utc to local time and display in standard format
         """
         return self._dtobj.strftime("%Y.%m%d %H:%M:%S")
 
     # -------------------------------------------------------------------------
     def __repr__(self):
         """
-        Debugging representation for a dt object
+        Report the raw utc time in the object and associated timezone
         """
         return self._dtobj.strftime("dt(%Y, %m, %d, %H, %M, %S)")
 
     # -------------------------------------------------------------------------
     def _prevday_overcome_dst(self):
         """
-        Return a dt representing the previous day. Adjust the hour multiplier
-        to ensure hitting the previous day.
+        Return the dt that is *count* days after current object
         """
         mult = 24
         candy = datetime.fromtimestamp(self._dtobj.timestamp() - mult * 3600)
@@ -214,7 +221,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def next_day(self, count=1):
         """
-        Return the dt that is *count* days after current object
+        Figure out the number of seconds to add to the timestamp to fix the dst
+        offset
         """
         scan = self._dtobj
         for day in range(count):
