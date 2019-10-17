@@ -150,8 +150,10 @@ class dt(object):
         This object is equal to a datetime object if _utc is equal to the
         integer value of other.timestamp()
         """
-        if self._dtobj == other:
-            return True
+        if isinstance(other, datetime):
+            return self._utc == int(other.timestamp())
+        elif isinstance(other, dt):
+            return self._utc == other._utc
         else:
             return False
 
@@ -160,9 +162,9 @@ class dt(object):
         """
         This object can be compared to another dt or a datetime obj.
         """
-        if isinstance(other, datetime) and self._dtobj >= other:
+        if isinstance(other, datetime) and self._utc >= int(other.timestamp()):
             return True
-        elif isinstance(other, dt) and self._dtobj >= other._dtobj:
+        elif isinstance(other, dt) and self._utc >= other._utc:
             return True
         else:
             return False
@@ -172,9 +174,9 @@ class dt(object):
         """
         This object can be compared to another dt or a datetime obj.
         """
-        if isinstance(other, datetime) and self._dtobj > other:
+        if isinstance(other, datetime) and self._utc > other.timestamp():
             return True
-        elif isinstance(other, dt) and self._dtobj > other._dtobj:
+        elif isinstance(other, dt) and self._utc > other._utc:
             return True
         else:
             return False
@@ -184,9 +186,9 @@ class dt(object):
         """
         This object can be compared to another dt or a datetime obj.
         """
-        if isinstance(other, dt) and self._dtobj <= other._dtobj:
+        if isinstance(other, dt) and self._utc <= other._utc:
             return True
-        elif isinstance(other, datetime) and self._dtobj <= other:
+        elif isinstance(other, datetime) and self._utc <= other.timestamp():
             return True
         else:
             return False
@@ -196,9 +198,9 @@ class dt(object):
         """
         This object can be compared to another dt or a datetime obj.
         """
-        if isinstance(other, dt) and self._dtobj < other._dtobj:
+        if isinstance(other, dt) and self._utc < other._utc:
             return True
-        elif isinstance(other, datetime) and self._dtobj < other:
+        elif isinstance(other, datetime) and self._utc < other.timestamp():
             return True
         else:
             return False
