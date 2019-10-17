@@ -271,23 +271,34 @@ def test_next_weekday():
 
 
 # -----------------------------------------------------------------------------
-def test_previous_day():
+@pytest.mark.parametrize("nub, pvargs, exp", [
+    pp(dt(2013, 3, 13), (5,), dt(2013, 3, 8), id="rising dst range"),
+    pp(dt(2013, 11, 6), (5,), dt(2013, 11, 1), id="falling dst range"),
+    pp(dt(2016, 3, 14), (), dt(2016, 3, 13), id="one-day rising dst"),
+    pp(dt(2016, 11, 7), (), dt(2016, 11, 6), id="one-day falling dst"),
+    pp(dt(2009, 1, 1), (), dt(2008, 12, 31), id="year"),
+    pp(dt(2008, 3, 1), (), dt(2008, 2, 29), id="leap year"),
+    pp(dt(1900, 3, 1), (), dt(1900, 2, 28), id="century year"),
+    pp(dt(2000, 3, 1), (), dt(2000, 2, 29), id="quad century year"),
+    ])
+def test_previous_day_pp(nub, pvargs, exp):
     """
-    Try to find a date that activates lines 97-98, where a given dt's timestamp
-    minus that of the preceding day is greater than 24 hours
+    Tests for previous_day()
     """
     pytest.dbgfunc()
-    pytest.skip('construction')
+    assert nub.previous_day(*pvargs) == exp
 
 
 # -----------------------------------------------------------------------------
 def test_repr():
     """
-    str(dt()) should produce a predictable string
+    repr(dt()) should produce a predictable string
     """
     pytest.dbgfunc()
-    when = dt(2012, 12, 31, 1, 2, 3)
-    assert repr(when) == "dt(2012, 12, 31, 01, 02, 03)"
+    when = dt(2012, 12, 31, 1, 2, 3, tz="EST5EDT")
+    assert repr(when) == "dt(2012, 12, 31, 06, 02, 03, tz='EST5EDT')"
+    when = dt(2012, 12, 31, 1, 2, 3, tz="UTC")
+    assert repr(when) == "dt(2012, 12, 31, 01, 02, 03, tz='UTC')"
 
 
 # -----------------------------------------------------------------------------
