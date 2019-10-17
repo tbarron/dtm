@@ -250,10 +250,30 @@ class dt(object):
         return dt(epoch=ts)
 
     # -------------------------------------------------------------------------
+    def delta(self, ahour, bhour):
         """
         Figure out the number of seconds to add to the timestamp to fix the dst
         offset
         """
+        ax = (ahour + 10) % 24
+        bx = (bhour + 10) % 24
+        return (ax - bx) * 3600
+
+    # -------------------------------------------------------------------------
+    def askew(self, ahour, bhour):
+        """
+        If there is a dst mismatch, return True, else False
+        """
+        return ahour != bhour
+
+    # -------------------------------------------------------------------------
+    def norm_loc_dt(self, tz, ts):
+        """
+        Given timestamp *ts*, localize and normalize to timezone *tz* and
+        return the result
+        """
+        tmp = datetime.fromtimestamp(ts)
+        return tz.normalize(tz.localize(tmp))
 
     # -------------------------------------------------------------------------
     def next_weekday(self, trgs=None):
