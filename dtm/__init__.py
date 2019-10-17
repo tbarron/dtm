@@ -224,19 +224,10 @@ class dt(object):
         return udt.strftime(fmt)
 
     # -------------------------------------------------------------------------
-    def _prevday_overcome_dst(self):
     def next_day(self, count=1):
         """
         Return the dt that is *count* days after current object
         """
-        mult = 24
-        candy = datetime.fromtimestamp(self._dtobj.timestamp() - mult * 3600)
-        # as best I can tell the following lines are not needed
-        # while candy.day == self._dtobj.day:
-        #     mult += 1
-        #     candy = datetime.fromtimestamp(self._dtobj.timestamp()
-        #                                    - mult * 3600)
-        return dt(candy)
         prev_ts = self._utc
         prev_ldt = datetime.fromtimestamp(self._utc)
         for day in range(count):
