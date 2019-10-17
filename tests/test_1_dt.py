@@ -49,7 +49,7 @@ def test_init(inp, exp):
     """
     pytest.dbgfunc()
     if exp is None:
-        exp = dt(datetime.now())
+        exp = dt(datetime.utcnow())
     if isinstance(inp, tuple):
         assert dt(*inp) == exp
     elif isinstance(exp, dt_error):
