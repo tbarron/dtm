@@ -112,15 +112,20 @@ def test_init_tz_utc():
 
 
 # -----------------------------------------------------------------------------
-def test_equal():
+@pytest.mark.parametrize("left, right, exp", [
+    pp(dt(), datetime.utcnow(), True, id="dt eq datetime"),
+    pp(dt(epoch=1571315783), datetime.fromtimestamp(1571315784), False,
+       id="dt ne datetime"),
+    pp(dt(2018, 1, 17), dt("2018.0117"), True, id="dt(ints) eq dt(str)"),
+    pp(dt(2018, 1, 17, 6, 30), dt("2018.0117"), False,
+       id="dt(ints) ne dt(str)"),
+    pp(dt(2018, 1, 17), 17, False, id="dt ne number"),
+    ])
+def test_equal(left, right, exp):
     """
-    dt(*foo) is equal to datetime(*bar) if dt(*foo)._dtobj == datetime(*bar)
+    Test the equality operator for dt()
     """
-    pytest.dbgfunc()
-    assert dt() == datetime.now().replace(microsecond=0)
-    assert dt() != datetime.now().replace(microsecond=300)
-    assert dt(2018, 1, 17) == dt("2018.0117")
-    assert dt(2018, 1, 17, 6, 30) != dt("2018.0117")
+    assert (left == right) is exp
 
 
 # -----------------------------------------------------------------------------
