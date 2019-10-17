@@ -316,7 +316,7 @@ class dt(object):
         """
         Pass strftime() calls down to datetime
         """
-        return self._dtobj.strftime(*args)
+        return datetime.fromtimestamp(self._utc).strftime(*args)
 
     # -------------------------------------------------------------------------
     @staticmethod
@@ -340,7 +340,7 @@ class dt(object):
         """
         Return the lowercase abbreviated weekday name for the current object
         """
-        return self._dtobj.strftime("%a").lower()
+        return self.strftime("%a").lower()
 
     # -------------------------------------------------------------------------
     def weekday_floor(self, wkday):
@@ -363,11 +363,11 @@ class dt(object):
 
     # -------------------------------------------------------------------------
     def ymd(self):
-        return self._dtobj.strftime("%Y.%m%d")
+        return self.strftime("%Y.%m%d")
 
     # -------------------------------------------------------------------------
     def ymdw(self):
-        return self._dtobj.strftime("%Y.%m%d.%a").lower()
+        return self.strftime("%Y.%m%d.%a").lower()
 
 
 # -----------------------------------------------------------------------------
