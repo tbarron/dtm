@@ -86,6 +86,18 @@ got:
 
     newobj = dt(myobj)
 
+#### timezone
+The tz argument is independent of the others. Any tz argument passed to the
+constructor specifies the locality of the input date/time specification.
+
+Internally, the date/time value is converted to UTC and stored as a UTC
+epoch value.
+
+All of dt's output methods accept a tz argument and will convert the
+internal UTC value to the specified output timezone. If no tz argument is
+specified on output, the internal UTC value is converted to the default
+local timezone for the machine where the software is running.
+
 ### Comparison
 dt objects can be compared for ==, <, or <= to other dt objects and to
 datetime objects. The > and >= operators work for dt to dt comparisons. The
