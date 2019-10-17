@@ -4,6 +4,9 @@ import pytest
 import tbx
 
 
+pp = pytest.param
+
+
 # -----------------------------------------------------------------------------
 def test_attributes():
     """
@@ -21,31 +24,29 @@ def test_attributes():
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("inp, exp", [
-    pytest.param((), None, id="no arg"),
-    pytest.param(datetime(2001, 9, 11), dt("2001.0911"), id="datetime ymd"),
-    pytest.param(datetime(2009, 7, 23, 9, 45, 17), dt("2009.0723 09:45:17"),
-                 id="datetime ymdhms"),
-    pytest.param(datetime.now(), dt(), id="datetime now"),
-    pytest.param((2008, 7, 5), dt("2008.0705"), id="tup ymd"),
-    pytest.param((2008, 7, 5, 7), dt("2008.0705 07:00:00"), id="tup ymdh"),
-    pytest.param((2008, 7, 5, 7, 38), dt("2008.0705 07:38:00"),
-                 id="tup ymdhm"),
-    pytest.param((2008, 7, 5, 7, 38, 19), dt("2008.0705 07:38:19"),
-                 id="tup ymdhms"),
-    pytest.param("2018.0107", dt(2018, 1, 7), id="str ymd"),
-    pytest.param("2001/3/24 19:35", dt(2001, 3, 24, 19, 35),
-                 id="str ymdhm"),
-    pytest.param("1978-12-13T11:45:27Z", dt("1978.1213 11:45:27"),
-                 id="isoformat with Z"),
-    pytest.param("1978-12-13T11:45:27", dt("1978.1213 11:45:27"),
-                 id="isoformat"),
-    pytest.param([1], dt_error("single arg must be str, dt, or datetime"),
-                 id="dterr single"),
-    pytest.param(["abc", "def"],
-                 dt_error("dt.__init__ expects dt, datetime, str, or ints"),
-                 id="dterr multi"),
-    pytest.param("2018.0731 17", dt_error("None of the formats matched"),
-                 id="dterr format"),
+    pp((), None, id="no arg"),
+    pp(datetime(2001, 9, 11), dt(epoch=1000180800), id="datetime epoch"),
+    pp("2001.0911", dt(epoch=1000180800), id="str ymd"),
+    pp(datetime(2001, 9, 11, 0, 0, 0), dt("2001.0911"), id="datetime ymd"),
+    pp(datetime(2009, 7, 23, 9, 45, 17), dt("2009.0723 09:45:17"),
+       id="datetime ymdhms"),
+    pp(datetime.utcnow(), dt(), id="datetime now"),
+    pp((2008, 7, 5), dt("2008.0705"), id="tup ymd"),
+    pp((2008, 7, 5, 7), dt("2008.0705 07:00:00"), id="tup ymdh"),
+    pp((2008, 7, 5, 7, 38), dt("2008.0705 07:38:00"), id="tup ymdhm"),
+    pp((2008, 7, 5, 7, 38, 19), dt("2008.0705 07:38:19"), id="tup ymdhms"),
+    pp("2018.0107", dt(2018, 1, 7), id="str ymd"),
+    pp("2001/3/24 19:35", dt(2001, 3, 24, 19, 35), id="str ymdhm"),
+    pp("1978-12-13T11:45:27Z", dt("1978.1213 11:45:27"),
+       id="isoformat with Z"),
+    pp("1978-12-13T11:45:27", dt("1978.1213 11:45:27"), id="isoformat"),
+    pp([1], dt_error("single arg must be str, dt, datetime, or epoch=<int>"),
+       id="dterr single"),
+    pp(["abc", "def"],
+       dt_error("dt.__init__ expects dt, datetime, str, ints, or epoch=<int>"),
+       id="dterr multi"),
+    pp("2018.0731 17", dt_error("None of the formats matched"),
+       id="dterr format"),
     ])
 def test_init(inp, exp):
     """
@@ -90,17 +91,17 @@ def test_equal():
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("inp, bench, exp", [
-    pytest.param("2012.0101", dt("2012.0102"), False, id="ge-n-s-i-f"),
-    pytest.param("2011.1231", dt("2012.0101"), False, id="ge-n-s-y-f"),
-    pytest.param("2012.0102", dt("2012.0101"), True, id="ge-n-s-i-t"),
-    pytest.param("2012.0102", dt("2011.1231"), True, id="ge-n-s-y-t"),
-    pytest.param("2012.0102", dt("2012.0102"), True, id="ge-n-e-i-t"),
+    pp("2012.0101", dt("2012.0102"), False, id="ge-n-s-i-f"),
+    pp("2011.1231", dt("2012.0101"), False, id="ge-n-s-y-f"),
+    pp("2012.0102", dt("2012.0101"), True, id="ge-n-s-i-t"),
+    pp("2012.0102", dt("2011.1231"), True, id="ge-n-s-y-t"),
+    pp("2012.0102", dt("2012.0102"), True, id="ge-n-e-i-t"),
 
-    pytest.param("2012.0101", datetime(2012, 1, 2), False, id="ge-d-s-i-f"),
-    pytest.param("2011.1231", datetime(2012, 1, 1), False, id="ge-d-s-y-f"),
-    pytest.param("2012.0102", datetime(2012, 1, 1), True, id="ge-d-s-i-t"),
-    pytest.param("2012.0102", datetime(2011, 12, 31), True, id="ge-d-s-y-t"),
-    pytest.param("2012.0102", datetime(2012, 1, 2), True, id="ge-d-e-i-t"),
+    pp("2012.0101", datetime(2012, 1, 2), False, id="ge-d-s-i-f"),
+    pp("2011.1231", datetime(2012, 1, 1), False, id="ge-d-s-y-f"),
+    pp("2012.0102", datetime(2012, 1, 1), True, id="ge-d-s-i-t"),
+    pp("2012.0102", datetime(2011, 12, 31), True, id="ge-d-s-y-t"),
+    pp("2012.0102", datetime(2012, 1, 2), True, id="ge-d-e-i-t"),
     ])
 def test_ge(inp, bench, exp):
     """
@@ -113,17 +114,17 @@ def test_ge(inp, bench, exp):
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("inp, bench, exp", [
-    pytest.param("2012.0101", dt("2012.0102"), False, id="gt-n-s-i-f"),
-    pytest.param("2011.1231", dt("2012.0101"), False, id="gt-n-s-y-f"),
-    pytest.param("2012.0102", dt("2012.0101"), True, id="gt-n-s-i-t"),
-    pytest.param("2012.0102", dt("2011.1231"), True, id="gt-n-s-y-t"),
-    pytest.param("2012.0102", dt("2012.0102"), False, id="gt-n-e-i-f"),
+    pp("2012.0101", dt("2012.0102"), False, id="gt-n-s-i-f"),
+    pp("2011.1231", dt("2012.0101"), False, id="gt-n-s-y-f"),
+    pp("2012.0102", dt("2012.0101"), True, id="gt-n-s-i-t"),
+    pp("2012.0102", dt("2011.1231"), True, id="gt-n-s-y-t"),
+    pp("2012.0102", dt("2012.0102"), False, id="gt-n-e-i-f"),
 
-    pytest.param("2012.0101", datetime(2012, 1, 2), False, id="gt-d-s-i-f"),
-    pytest.param("2011.1231", datetime(2012, 1, 1), False, id="gt-d-s-y-f"),
-    pytest.param("2012.0102", datetime(2012, 1, 1), True, id="gt-d-s-i-t"),
-    pytest.param("2012.0102", datetime(2011, 12, 31), True, id="gt-d-s-y-t"),
-    pytest.param("2012.0102", datetime(2012, 1, 2), False, id="gt-d-e-i-f"),
+    pp("2012.0101", datetime(2012, 1, 2), False, id="gt-d-s-i-f"),
+    pp("2011.1231", datetime(2012, 1, 1), False, id="gt-d-s-y-f"),
+    pp("2012.0102", datetime(2012, 1, 1), True, id="gt-d-s-i-t"),
+    pp("2012.0102", datetime(2011, 12, 31), True, id="gt-d-s-y-t"),
+    pp("2012.0102", datetime(2012, 1, 2), False, id="gt-d-e-i-f"),
     ])
 def test_gt(inp, bench, exp):
     """
@@ -136,17 +137,17 @@ def test_gt(inp, bench, exp):
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("inp, bench, exp", [
-    pytest.param("2012.0101", dt("2012.0102"), True, id="le-n-s-i-t"),
-    pytest.param("2011.1231", dt("2012.0101"), True, id="le-n-s-y-t"),
-    pytest.param("2012.0102", dt("2012.0101"), False, id="le-n-s-i-f"),
-    pytest.param("2012.0102", dt("2011.1231"), False, id="le-n-s-y-f"),
-    pytest.param("2012.0102", dt("2012.0102"), True, id="le-n-e-i-t"),
+    pp("2012.0101", dt("2012.0102"), True, id="le-n-s-i-t"),
+    pp("2011.1231", dt("2012.0101"), True, id="le-n-s-y-t"),
+    pp("2012.0102", dt("2012.0101"), False, id="le-n-s-i-f"),
+    pp("2012.0102", dt("2011.1231"), False, id="le-n-s-y-f"),
+    pp("2012.0102", dt("2012.0102"), True, id="le-n-e-i-t"),
 
-    pytest.param("2012.0101", datetime(2012, 1, 2), True, id="le-d-s-i-t"),
-    pytest.param("2011.1231", datetime(2012, 1, 1), True, id="le-d-s-y-t"),
-    pytest.param("2012.0102", datetime(2012, 1, 1), False, id="le-d-s-i-f"),
-    pytest.param("2012.0102", datetime(2011, 12, 31), False, id="le-d-s-y-f"),
-    pytest.param("2012.0102", datetime(2012, 1, 2), True, id="le-d-e-i-t"),
+    pp("2012.0101", datetime(2012, 1, 2), True, id="le-d-s-i-t"),
+    pp("2011.1231", datetime(2012, 1, 1), True, id="le-d-s-y-t"),
+    pp("2012.0102", datetime(2012, 1, 1), False, id="le-d-s-i-f"),
+    pp("2012.0102", datetime(2011, 12, 31), False, id="le-d-s-y-f"),
+    pp("2012.0102", datetime(2012, 1, 2), True, id="le-d-e-i-t"),
     ])
 def test_le(inp, bench, exp):
     """
@@ -159,17 +160,17 @@ def test_le(inp, bench, exp):
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("inp, bench, exp", [
-    pytest.param("2012.0101", dt("2012.0102"), True, id="lt-n-s-i-t"),
-    pytest.param("2011.1231", dt("2012.0101"), True, id="lt-n-s-y-t"),
-    pytest.param("2012.0102", dt("2012.0101"), False, id="lt-n-s-i-f"),
-    pytest.param("2012.0102", dt("2011.1231"), False, id="lt-n-s-y-f"),
-    pytest.param("2012.0102", dt("2012.0102"), False, id="lt-n-e-i-f"),
+    pp("2012.0101", dt("2012.0102"), True, id="lt-n-s-i-t"),
+    pp("2011.1231", dt("2012.0101"), True, id="lt-n-s-y-t"),
+    pp("2012.0102", dt("2012.0101"), False, id="lt-n-s-i-f"),
+    pp("2012.0102", dt("2011.1231"), False, id="lt-n-s-y-f"),
+    pp("2012.0102", dt("2012.0102"), False, id="lt-n-e-i-f"),
 
-    pytest.param("2012.0101", datetime(2012, 1, 2), True, id="lt-d-s-i-t"),
-    pytest.param("2011.1231", datetime(2012, 1, 1), True, id="lt-d-s-y-t"),
-    pytest.param("2012.0102", datetime(2012, 1, 1), False, id="lt-d-s-i-f"),
-    pytest.param("2012.0102", datetime(2011, 12, 31), False, id="lt-d-s-y-f"),
-    pytest.param("2012.0102", datetime(2012, 1, 2), False, id="lt-d-e-i-f"),
+    pp("2012.0101", datetime(2012, 1, 2), True, id="lt-d-s-i-t"),
+    pp("2011.1231", datetime(2012, 1, 1), True, id="lt-d-s-y-t"),
+    pp("2012.0102", datetime(2012, 1, 1), False, id="lt-d-s-i-f"),
+    pp("2012.0102", datetime(2011, 12, 31), False, id="lt-d-s-y-f"),
+    pp("2012.0102", datetime(2012, 1, 2), False, id="lt-d-e-i-f"),
     ])
 def test_lt(inp, bench, exp):
     """
@@ -260,17 +261,17 @@ def test_str():
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("when, fmt, exp", [
-    pytest.param(dt(2000, 12, 1), "%Y.%m%d %H:%M:%S", "2000.1201 00:00:00",
-                 id="2000.1201"),
-    pytest.param(dt(2000, 12, 1), "%s", "975646800", id="epoch"),
-    pytest.param(dt(2000, 12, 1), "%a", "Fri", id="weekday abbrev"),
-    pytest.param(dt(2000, 11, 30), "%A", "Thursday", id="weekday name"),
-    pytest.param(dt(2000, 11, 30), "%b", "Nov", id="month abbrev"),
-    pytest.param(dt(2000, 11, 30), "%B", "November", id="month name"),
-    pytest.param(dt("2000.1130 13:25:19"), "%c", "Thu Nov 30 13:25:19 2000",
-                 id="locale"),
-    pytest.param(dt("2000.1130 13:25:19"), "%I:%M:%S %p", "01:25:19 PM",
-                 id="12 hour"),
+    pp(dt(2000, 12, 1), "%Y.%m%d %H:%M:%S", "2000.1201 00:00:00",
+       id="2000.1201"),
+    pp(dt(2000, 12, 1), "%s", "975646800", id="epoch"),
+    pp(dt(2000, 12, 1), "%a", "Fri", id="weekday abbrev"),
+    pp(dt(2000, 11, 30), "%A", "Thursday", id="weekday name"),
+    pp(dt(2000, 11, 30), "%b", "Nov", id="month abbrev"),
+    pp(dt(2000, 11, 30), "%B", "November", id="month name"),
+    pp(dt("2000.1130 13:25:19"), "%c", "Thu Nov 30 13:25:19 2000",
+       id="locale"),
+    pp(dt("2000.1130 13:25:19"), "%I:%M:%S %p", "01:25:19 PM",
+       id="12 hour"),
     ])
 def test_strftime(when, fmt, exp):
     """
@@ -295,9 +296,9 @@ def test_version():
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("when, fmt, exp", [
-    pytest.param('2016-09-28T16:46:42Z', "%Y-%m-%dT%H:%M:%SZ",
-                 dt(2016, 9, 28, 16, 46, 42)),
-    pytest.param('2020.0229', "%Y.%m%d", dt("2020.0229"))
+    pp('2016-09-28T16:46:42Z', "%Y-%m-%dT%H:%M:%SZ",
+       dt(2016, 9, 28, 16, 46, 42)),
+    pp('2020.0229', "%Y.%m%d", dt("2020.0229"))
     ])
 def test_strptime(when, fmt, exp):
     """
