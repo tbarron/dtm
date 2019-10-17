@@ -64,29 +64,39 @@ class dt(object):
 
         Note that epoch values are always considered to be UTC values.
         """
+        if 'tz' in kw:
+            if kw['tz'] == 'local':
+                self._tz = tzlocal.get_localzone()
+            else:
+                self._tz = pytz.timezone(kw['tz'])
+        else:
+            self._tz = tzlocal.get_localzone()
+
+        utc = pytz.timezone('utc')
+
         if "epoch" in kw:
-            self._dtobj = self._from_epoch(kw["epoch"])
+            self._utc = int(kw['epoch'])
         elif len(args) == 0:
-            self._dtobj = self._from_nothing()
+            self._utc = int(datetime.utcnow().timestamp())
         elif len(args) == 1:
             if isinstance(args[0], dt):
-                self._dtobj = args[0]._dtobj
+                self._utc = args[0]._utc
             elif isinstance(args[0], datetime):
-                self._dtobj = args[0].replace(microsecond=0)
+                self._utc = int(args[0].astimezone(utc).timestamp())
             elif isinstance(args[0], str):
-                self._dtobj = self._from_format(args[0])
+                tmp = self._from_format(args[0])
+                tmp = self._tz.normalize(self._tz.localize(tmp))
+                self._utc = tmp.astimezone(utc).timestamp()
             else:
-                raise dt_error("single arg must be str, dt, or datetime")
+                msg = "single arg must be str, dt, datetime, or epoch=<int>"
+                raise dt_error(msg)
         elif all(isinstance(_, int) for _ in args):
-            self._dtobj = self._from_ints(*args)
+            tmp = self._from_ints(*args)
+            tmp = self._tz.normalize(self._tz.localize(tmp))
+            self._utc = tmp.astimezone(utc).timestamp()
         else:
-            raise dt_error("dt.__init__ expects dt, datetime, str, or ints")
-        self.year = self._dtobj.year
-        self.month = self._dtobj.month
-        self.day = self._dtobj.day
-        self.hour = self._dtobj.hour
-        self.minute = self._dtobj.minute
-        self.second = self._dtobj.second
+            msg = "dt.__init__ expects dt, datetime, str, ints, or epoch=<int>"
+            raise dt_error(msg)
 
     # -------------------------------------------------------------------------
     def _from_epoch(self, val):
