@@ -210,17 +210,22 @@ class dt(object):
         """
         Convert stored utc to local time and display in standard format
         """
-        return self._dtobj.strftime("%Y.%m%d %H:%M:%S")
+        udt = datetime.fromtimestamp(self._utc)
+        ldt = self._tz.normalize(self._tz.localize(udt))
+        return ldt.strftime("%Y.%m%d %H:%M:%S")
 
     # -------------------------------------------------------------------------
     def __repr__(self):
         """
         Report the raw utc time in the object and associated timezone
         """
-        return self._dtobj.strftime("dt(%Y, %m, %d, %H, %M, %S)")
+        udt = datetime.utcfromtimestamp(self._utc)
+        fmt = "dt(%Y, %m, %d, %H, %M, %S, tz='{}')".format(self._tz.zone)
+        return udt.strftime(fmt)
 
     # -------------------------------------------------------------------------
     def _prevday_overcome_dst(self):
+    def next_day(self, count=1):
         """
         Return the dt that is *count* days after current object
         """
@@ -232,24 +237,23 @@ class dt(object):
         #     candy = datetime.fromtimestamp(self._dtobj.timestamp()
         #                                    - mult * 3600)
         return dt(candy)
+        prev_ts = self._utc
+        prev_ldt = datetime.fromtimestamp(self._utc)
+        for day in range(count):
+            ts = prev_ts + 24 * 3600
+            ldt = self.norm_loc_dt(self._tz, ts)
+            if self.askew(prev_ldt.hour, ldt.hour):
+                ts += self.delta(prev_ldt.hour, ldt.hour)
+                ldt = self.norm_loc_dt(self._tz, ts)
+            (prev_ts, prev_ldt) = (ts, ldt)
+
+        return dt(epoch=ts)
 
     # -------------------------------------------------------------------------
-    def next_day(self, count=1):
         """
         Figure out the number of seconds to add to the timestamp to fix the dst
         offset
         """
-        scan = self._dtobj
-        for day in range(count):
-            mult = 24
-            fore = datetime.fromtimestamp(scan.timestamp() + mult * 3600)
-            # as best I can tell, the following lines are not needed
-            # while fore.day == scan.day:
-            #     mult += 1
-            #     fore = datetime.fromtimestamp(scan.timestamp() + mult * 3600)
-            scan = fore
-        fore = dt(fore.year, fore.month, fore.day)
-        return fore
 
     # -------------------------------------------------------------------------
     def next_weekday(self, trgs=None):
