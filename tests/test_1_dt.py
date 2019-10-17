@@ -10,16 +10,11 @@ pp = pytest.param
 # -----------------------------------------------------------------------------
 def test_attributes():
     """
-    A dt object should have members year, month, day, hour, minute, second
+    A dt object should have members _utc and _tz
     """
-    exp = datetime.now()
-    act = dt(exp)
-    assert act.year == exp.year
-    assert act.month == exp.month
-    assert act.day == exp.day
-    assert act.hour == exp.hour
-    assert act.minute == exp.minute
-    assert act.second == exp.second
+    act = dt()
+    assert hasattr(act, '_utc')
+    assert hasattr(act, '_tz')
 
 
 # -----------------------------------------------------------------------------
