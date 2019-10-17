@@ -393,6 +393,20 @@ def test_ymd(when):
 
 
 # -----------------------------------------------------------------------------
+@pytest.mark.parametrize("when, exp", [
+    ("2001.0719", "2001.0719.thu"),
+    ("2007.0917", "2007.0917.mon"),
+    ("2005.0313", "2005.0313.sun"),
+    ])
+def test_ymdw(when, exp):
+    """
+    Test dt().ymd().
+    """
+    pytest.dbgfunc()
+    assert dt(when).ymdw() == exp
+
+
+# -----------------------------------------------------------------------------
 def test_deployable():
     """
     Check that 1) no untracked files are hanging out, 2) no staged but
