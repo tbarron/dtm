@@ -131,13 +131,14 @@ own iteration in special circumstances.
     dtm                         # project directory
     |
     +- .coveragerc              # parameters for test coverage
-    +- .env                     # set env upon cd into this directory (autoenv)
     +- .gitignore               # tell git which files to ignore
     +- LICENSE                  # license for this software
     +- Makefile                 # document command lines for tests and such
     +- README.md                # this file
+    +- CHANGELOG.md             # change history
     +- pytest.ini               # parameters for pytest
     +- requirements.txt         # items this project depends on
+    +- setup.py                 # configuration management
     |
     +- dtm                      # source directory
     |   |
@@ -149,8 +150,11 @@ own iteration in special circumstances.
     |   +- test_0_quality.py    # code quality tests
     |   +- test_1_dt.py         # functionality tests
     |
-    +- venv                     # virtual environment
+    +- pytest.ini*              # pytest configuration
+    +- .env*                    # set env upon cd into this directory (autoenv)
+    +- venv*                    # virtual environment
 
+Files marked with * are not in git.
 
 ## Future Plans
 
