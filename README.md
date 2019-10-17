@@ -11,21 +11,21 @@ Functionality added to datetime:
 
 ## Terms
 
-dtspec::
+*dtspec*
 
     Any date/time specification. Such values may be in the form of an
     epoch, a dt object, a datetime object, a 3 to 9 element tuple of ints,
     or a string containing a date/time spec in a specific format.
 
-default local timezone (DLTZ)::
+*default local timezone (DLTZ)*
 
     The default timezone used by time.localtime()
 
-local machine (LM)::
+*local machine (LM)*
 
     The machine on which the software is running
 
-UTC::
+*UTC*
 
     Universal Coordinated Time. The global reference time which is the same
     as the time in Greenwich, England.
