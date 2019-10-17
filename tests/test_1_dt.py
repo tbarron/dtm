@@ -229,15 +229,22 @@ def test_dt_range():
 
 
 # -----------------------------------------------------------------------------
-def test_next_day():
+@pytest.mark.parametrize("nub, ndargs, exp", [
+    pp(dt(2012, 12, 31), (), dt(2013, 1, 1), id="year"),
+    pp(dt(2012, 12, 31), (30,), dt(2013, 1, 30), id="30 days"),
+    pp(dt(2012, 12, 31), (90,), dt(2013, 3, 31), id="90 days"),
+    pp(dt(2013, 3, 8), (5,), dt(2013, 3, 13), id="rising DST"),
+    pp(dt(2013, 11, 1), (5,), dt(2013, 11, 6), id="falling DST"),
+    pp(dt(1960, 2, 28), (), dt(1960, 2, 29), id="leap year"),
+    pp(dt(1800, 2, 28), (), dt(1800, 3, 1), id="century non-leap year"),
+    pp(dt(2000, 2, 28), (), dt(2000, 2, 29), id="quad century leap year"),
+    ])
+def test_next_day(nub, ndargs, exp):
     """
     Test dt().next_day()
     """
     pytest.dbgfunc()
-    when = dt(2012, 12, 31)
-    assert when.next_day() == dt(2013, 1, 1)
-    assert when.next_day(30) == dt(2013, 1, 30)
-    assert when.next_day(count=90) == dt(2013, 3, 31)
+    assert nub.next_day(*ndargs) == exp
 
 
 # -----------------------------------------------------------------------------
