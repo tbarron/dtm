@@ -75,6 +75,40 @@ def test_init_epoch():
     """
     pytest.dbgfunc()
     assert dt(epoch=1570000000) == dt("2019.1002 03:06:40")
+# -----------------------------------------------------------------------------
+def test_init_tz_explicit():
+    """
+    Specifying an explicit timezone and dtspec should always produce the same
+    UTC epoch value
+    """
+    pytest.dbgfunc()
+    actual = dt("2018.0117 10:00:00", tz='America/Boise')
+    exp = dt(epoch=1516208400)
+    assert actual == exp
+
+
+# -----------------------------------------------------------------------------
+def test_init_tz_local():
+    """
+    In timezone EST5EDT, the test dtspec corresponds to UTC epoch value
+    1516201200. In other timezones, it will correspond to other UTC values, so
+    we have to get the corresponding epoch value from datetime() to verify that
+    the dt constructor with the tz='local' argument is behaving correctly.
+    """
+    pytest.dbgfunc()
+    ldt = datetime(2018, 1, 17, 10, 0, 0)
+    exp_epoch = ldt.timestamp()
+    actual = dt("2018.0117 10:00:00", tz='local')
+    assert actual._utc == exp_epoch
+
+
+# -----------------------------------------------------------------------------
+def test_init_tz_utc():
+    """
+    In UTC, the test dtspec corresponds to the indicated epoch value.
+    """
+    pytest.dbgfunc()
+    assert dt("2018.0117 10:00:00", tz='utc') == dt(epoch=1516183200)
 
 
 # -----------------------------------------------------------------------------
