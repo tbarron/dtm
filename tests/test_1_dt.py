@@ -338,6 +338,8 @@ def test_str(inp, tz, exp):
        id="locale"),
     pp(dt("2000.1130 13:25:19"), "%I:%M:%S %p", "01:25:19 PM",
        id="12 hour"),
+    # pp(dt(2015, 3, 20, 14, 45, 0, tz='cst6cdt'), "%Y.%m%d %H:%M:%S",
+    #    "2015.0320 14:45:00", id="output localized to timezone")
     ])
 def test_strftime(when, fmt, exp):
     """
