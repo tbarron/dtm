@@ -7,6 +7,28 @@ Functionality added to datetime:
   * Easy way to jump forward and backward a day at a time
   * Easy way to get date of next Monday, next Friday, etc.
   * Iterate over a range of dates
+  * Easy conversion from timezone to UTC and back
+
+## Terms
+
+dtspec::
+
+    Any date/time specification. Such values may be in the form of an
+    epoch, a dt object, a datetime object, a 3 to 9 element tuple of ints,
+    or a string containing a date/time spec in a specific format.
+
+default local timezone (DLTZ)::
+
+    The default timezone used by time.localtime()
+
+local machine (LM)::
+
+    The machine on which the software is running
+
+UTC::
+
+    Universal Coordinated Time. The global reference time which is the same
+    as the time in Greenwich, England.
 
 ## dt objects
 The main thing dtm exports is the 'dt' object. It wraps a standard Python
