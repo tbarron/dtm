@@ -1,5 +1,46 @@
 from dtm import version
 from datetime import datetime
+"""
+Epoch values always represent UTC.
+
+To convert a UTC value to a local timezone:
+
+    zone = pytz.timezone('America/New_York')
+    udt = datetime.fromtimestamp(self._utc)
+    loc_tm = pytz.utc.localize(udt).astimezone(zone)
+    return loc_tm
+
+To convert a local time to a UTC value:
+
+    ldt = datetime.strptime(dspec, fmt)
+    utc = pytz.timezone('utc')
+    udt = ldt.astimezone(utc)
+    self._utc = udt.timestamp()
+
+To convert a non-local timezone value to a UTC value:
+
+    ftz = pytz.timezone('PST8PDT')
+    utc = pytz.timezone('UTC')
+    nldt = datetime.strptime(dspec, fmt).replace(tzinfo=ftz)
+    self._utc = nldt.astimezone(utc).timestamp()
+
+The following doesn't work!
+
+    time.mktime(time.gmtime())
+
+Apparently, time.mktime() does a timezone adjustment that we don't want.
+
+The following call sequences that produce human-readable displays of current
+UTC:
+
+    time.strftime(fmt, time.gmtime(time.time()))
+
+    time.strftime(fmt, time.gmtime())
+
+    datetime.utcfromtimestamp(datetime.now().timestamp()).strftime(fmt)
+
+    datetime.fromtimestamp(datetime.utcnow().timestamp()).strftime(fmt)
+"""
 
 
 # -----------------------------------------------------------------------------
