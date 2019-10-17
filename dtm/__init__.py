@@ -290,10 +290,16 @@ class dt(object):
         """
         Return the dt that is *count* days before current object
         """
-        prev = self
+        pts = self._utc
+        pdt = datetime.fromtimestamp(pts)
         for day in range(count):
-            prev = prev._prevday_overcome_dst()
-        return prev
+            ts = pts - 24 * 3600
+            ldt = self.norm_loc_dt(self._tz, ts)
+            if self.askew(pdt.hour, ldt.hour):
+                ts += self.delta(pdt.hour, ldt.hour)
+                ldt = self.norm_loc_dt(self._tz, ts)
+            (pts, pdt) = (ts, ldt)
+        return dt(epoch=ts)
 
     # -------------------------------------------------------------------------
     def dt_range(self, last):
