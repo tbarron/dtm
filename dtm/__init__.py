@@ -143,6 +143,19 @@ class dt(object):
         return datetime(*args)
 
     # -------------------------------------------------------------------------
+    def __call__(self, *args, tz=None):
+        """
+        Generate the date/time in format *args[0]* (default: '%F-%T'). If tz is
+        provided, show the time in that timezone. Otherwise, use the object's
+        internal timezone.
+        """
+        if 0 < len(args):
+            fmt = args[0]
+        else:
+            fmt = "%F-%T"
+        return self.strftime(fmt, tz=tz)
+
+    # -------------------------------------------------------------------------
     def __eq__(self, other):
         """
         This object is equal to a datetime object if _utc is equal to the
