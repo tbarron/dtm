@@ -43,27 +43,28 @@ Functionality added to datetime:
     generally the same as local time in Greenwich, England.
 
 ## dt objects
-The main thing dtm exports is the 'dt' object. It wraps a standard Python
-datetime object so that we can effectively add functionality to the
-datetime class.
 
-We wrap datetime rather than inheriting from it because we ran into issues
-with the inheritance strategy.
+The main thing dtm exports is the 'dt' object. It contains an epoch time
+and a timezone.
 
 The recommended method of import is:
 
     from dtm import dt
 
 ### constructor
+
 The dt object constructor will accept several argument schemes
 
 #### no arguments
+
     myobj = dt()
 
 Create a dt object containing the current date and time. This is analogous to
+
     myobj = datetime().now()
 
 #### a list of ints (year, month, day, hour, minute, second)
+
     myobj = dt(2011, 10, 9)
 
 At least year, month, and day are required. Hour, minute, and second are
@@ -71,20 +72,26 @@ all optional, although somewhat interdependent. For example, because they
 are positional, you can't provide second without providing minute.
 
 #### a string
+
     myobj = dt("2011-10-09 20:07:06")
 
 The code tries to intuit the format of the provided date/time string. Most
-popular formats should work.
+popular formats should work. If not timezone is provided, the input
+date/time is considered to be in the local timezone. This value will be
+converted to UTC and stored as an epoch value.
 
 #### an epoch value
+
     myobj = dt(epoch=1426905900)
     dt("%Y.%m%d %H:%M:%S")
     >>> '2015.0320 22:45:00'
 
 The value provided must be numeric. It can be an integer or a float, so a
-value returned by time.time() or time.mktime() can be used.
+value returned by time.time() or time.mktime() can be used. The value
+provided is stored without any timezone adjustment.
 
 #### a datetime object
+
 If you have a datetime object and want a dt object, the dt can be
 initialized directly from the datetime.
 
@@ -93,12 +100,14 @@ initialized directly from the datetime.
 The microsecond member will be zeroed out.
 
 #### another dt object
+
 Similarly, if you have a dt and want another, just pass in the one you've
 got:
 
     newobj = dt(myobj)
 
 #### timezone
+
 The tz argument is independent of the others. Any tz argument passed to the
 constructor specifies the locality of the input date/time specification.
 
@@ -107,16 +116,18 @@ epoch value.
 
 All of dt's output methods accept a tz argument and will convert the
 internal UTC value to the specified output timezone. If no tz argument is
-specified on output, the internal UTC value is converted to the default
-local timezone for the machine where the software is running.
+specified on output, the internal UTC value is converted to the DLTZ for
+the LM.
 
 ### Comparison
+
 dt objects can be compared for ==, <, or <= to other dt objects and to
 datetime objects. The > and >= operators work for dt to dt comparisons. The
-comparisons datetime > dt or datetime >= dt won't work because datetime
-objects don't know about dt objects.
+comparisons operators won't work if datetime is on the left side because
+datetime objects don't know how to compare themselves to dt objects.
 
 ### Iteration by day
+
     for day in dt(2011, 10, 1).dt_range(dt(2011, 10, 31)):
         # do whatever
 
@@ -138,7 +149,7 @@ own iteration in special circumstances.
     ymdw()
 
 
-## My setup
+## Project setup
 
     dtm                         # project directory
     |
