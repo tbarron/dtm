@@ -314,16 +314,8 @@ class dt(object):
         """
         Pass strftime() calls down to datetime
         """
-        # if tz:
-        #     ozone = pytz.timezone(tz)
-        # else:
-        #     ozone = self._tz
-        #
-        # udt = datetime.fromtimestamp(self._utc)
-        # lts = udt.timestamp() + ozone.utcoffset(udt).total_seconds()
-        # ldt = ozone.normalize(ozone.localize(datetime.fromtimestamp(lts)))
-        # return ldt.strftime(*args)
-        return datetime.fromtimestamp(self._utc).strftime(*args)
+        when = datetime.fromtimestamp(self._utc)
+        return when.astimezone(self._tz).strftime(*args)
 
     # -------------------------------------------------------------------------
     @staticmethod
