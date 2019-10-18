@@ -307,22 +307,19 @@ def test_repr():
 
 
 # -----------------------------------------------------------------------------
-@pytest.mark.parametrize("inp, tz, exp", [
-    pp(dt(2012, 12, 31, 1, 2, 3), None, "2012.1231 01:02:03", id="no tz"),
-    # pp(dt(2012, 12, 31, 1, 2, 3), 'America/Boise', "2012.1231 01:02:03",
-    #    id="explicit tz"),
+@pytest.mark.parametrize("inp, exp", [
+    pp(dt(2012, 12, 31, 1, 2, 3, tz="est5edt"), "2012.1231 06:02:03",
+       id="est"),
+    pp(dt(2012, 12, 31, 1, 2, 3, tz='America/Boise'), "2012.1231 08:02:03",
+       id="mst"),
     ])
-def test_str(inp, tz, exp):
+def test_str(inp, exp):
     """
     str(dt()) should produce a predictable string. It should generate the time
-    ref in the dt object's internal timezone, or the one passed with the
-    optional tz argument
+    ref in utc to show the actual contents of the object.
     """
     pytest.dbgfunc()
-    if tz:
-        assert str(inp, tz=tz) == exp
-    else:
-        assert str(inp) == exp
+    assert str(inp) == exp
 
 
 # -----------------------------------------------------------------------------
