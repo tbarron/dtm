@@ -327,8 +327,12 @@ class dt(object):
         """
         Pass strftime() calls down to datetime
         """
+        if tz:
+            tzobj = pytz.timezone(tz)
+        else:
+            tzobj = self._tz
         when = datetime.fromtimestamp(self._utc)
-        return when.astimezone(self._tz).strftime(*args)
+        return when.astimezone(tzobj).strftime(*args)
 
     # -------------------------------------------------------------------------
     @staticmethod
