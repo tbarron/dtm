@@ -75,28 +75,26 @@ class dt(object):
         else:
             self._tz = tzlocal.get_localzone()
 
-        utc = pytz.timezone('utc')
-
         if "epoch" in kw:
             self._utc = int(kw['epoch'])
         elif len(args) == 0:
-            self._utc = int(datetime.utcnow().timestamp())
+            self._utc = int(datetime.now().timestamp())
         elif len(args) == 1:
             if isinstance(args[0], dt):
                 self._utc = args[0]._utc
             elif isinstance(args[0], datetime):
-                self._utc = int(args[0].astimezone(utc).timestamp())
+                self._utc = int(args[0].timestamp())
             elif isinstance(args[0], str):
                 tmp = self._from_format(args[0])
                 tmp = self._tz.normalize(self._tz.localize(tmp))
-                self._utc = tmp.astimezone(utc).timestamp()
+                self._utc = tmp.timestamp()
             else:
                 msg = "single arg must be str, dt, datetime, or epoch=<int>"
                 raise dt_error(msg)
         elif all(isinstance(_, int) for _ in args):
             tmp = self._from_ints(*args)
             tmp = self._tz.normalize(self._tz.localize(tmp))
-            self._utc = tmp.astimezone(utc).timestamp()
+            self._utc = tmp.timestamp()
         else:
             msg = "dt.__init__ expects dt, datetime, str, ints, or epoch=<int>"
             raise dt_error(msg)
