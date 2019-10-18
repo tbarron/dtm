@@ -25,7 +25,7 @@ def test_attributes():
     pp(datetime(2001, 9, 11, 0, 0, 0), dt("2001.0911"), id="datetime ymd"),
     pp(datetime(2009, 7, 23, 9, 45, 17), dt("2009.0723 09:45:17"),
        id="datetime ymdhms"),
-    pp(datetime.utcnow(), dt(), id="datetime now"),
+    pp(datetime.now(), dt(), id="datetime now"),
     pp((2008, 7, 5), dt("2008.0705"), id="tup ymd"),
     pp((2008, 7, 5, 7), dt("2008.0705 07:00:00"), id="tup ymdh"),
     pp((2008, 7, 5, 7, 38), dt("2008.0705 07:38:00"), id="tup ymdhm"),
@@ -49,7 +49,7 @@ def test_init(inp, exp):
     """
     pytest.dbgfunc()
     if exp is None:
-        exp = dt(datetime.utcnow())
+        exp = dt(datetime.now())
     if isinstance(inp, tuple):
         assert dt(*inp) == exp
     elif isinstance(exp, dt_error):
@@ -113,7 +113,7 @@ def test_init_tz_utc():
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("left, right, exp", [
-    pp(dt(), datetime.utcnow(), True, id="dt eq datetime"),
+    pp(dt(), datetime.now(), True, id="dt eq datetime"),
     pp(dt(epoch=1571315783), datetime.fromtimestamp(1571315784), False,
        id="dt ne datetime"),
     pp(dt(2018, 1, 17), dt("2018.0117"), True, id="dt(ints) eq dt(str)"),
