@@ -11,24 +11,36 @@ Functionality added to datetime:
 
 ## Terms
 
-*dtspec*
+**dtspec**
 
     Any date/time specification. Such values may be in the form of an
     epoch, a dt object, a datetime object, a 3 to 9 element tuple of ints,
     or a string containing a date/time spec in a specific format.
 
-*default local timezone (DLTZ)*
+**default local timezone (DLTZ)**
 
-    The default timezone used by time.localtime()
+    The default timezone used by time.localtime(). That is, the default
+    timezone of the local machine (LM).
 
-*local machine (LM)*
+**epoch**
+
+    "The Epoch" is the beginning of time from the perspective of the
+    underlying date/time software Python depends upon. For most Unix-style
+    operating systems, this is 1970-01-01T00:00:00 UTC.
+
+**epoch value**
+
+    An epoch value is a number of seconds since "The Epoch" (see above).
+    Epoch values always represent UTC, not local times.
+
+**local machine (LM)**
 
     The machine on which the software is running
 
-*UTC*
+**UTC**
 
-    Universal Coordinated Time. The global reference time which is the same
-    as the time in Greenwich, England.
+    Universal Coordinated Time. The global reference time which is
+    generally the same as local time in Greenwich, England.
 
 ## dt objects
 The main thing dtm exports is the 'dt' object. It wraps a standard Python
