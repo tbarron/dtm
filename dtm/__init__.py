@@ -206,11 +206,11 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __str__(self):
         """
-        Convert stored utc to local time and display in standard format
+        Show the contents of the object as a string
         """
         udt = datetime.fromtimestamp(self._utc)
-        ldt = self._tz.normalize(self._tz.localize(udt))
-        return ldt.strftime("%Y.%m%d %H:%M:%S")
+        utc = pytz.timezone('utc')
+        return udt.astimezone(utc).strftime("%Y.%m%d %H:%M:%S")
 
     # -------------------------------------------------------------------------
     def __repr__(self):
