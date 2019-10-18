@@ -336,7 +336,7 @@ class dt(object):
 
     # -------------------------------------------------------------------------
     @staticmethod
-    def strptime(*args):
+    def strptime(*args, tz=None):
         """
         Pass strptime() calls down to datetime
         """
@@ -352,7 +352,7 @@ class dt(object):
         return version._v
 
     # -------------------------------------------------------------------------
-    def weekday(self):
+    def weekday(self, tz=None):
         """
         Return the lowercase abbreviated weekday name for the current object
         """
