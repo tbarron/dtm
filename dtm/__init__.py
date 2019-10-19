@@ -143,6 +143,43 @@ class dt(object):
         return datetime(*args)
 
     # -------------------------------------------------------------------------
+    @staticmethod
+    def _static_brew_tz(tz):
+        """
+        Resolve tz to a timezone: None -> local, str -> timezone object,
+        timezone object -> timezone object. This is the static method, which
+        can be called from anywhere as long as the dt class is available.
+        However, it is intended for internal use within dt().
+        """
+        if isinstance(tz, pytz.BaseTzInfo):
+            rval = tz
+        elif tz == 'local':
+            rval = tzlocal.get_localzone()
+        elif isinstance(tz, str):
+            rval = pytz.timezone(tz)
+        elif tz is None:
+            rval = tzlocal.get_localzone()
+        else:
+            raise dt_error("tz_fromname: tz must be timezone,"
+                           " timezone name, or None")
+        return rval
+
+    # -------------------------------------------------------------------------
+    def _brew_tz(self, tz):
+        """
+        Resolve *tz* to a timezone object. *tz* can be 1) None, 2) a timezone
+        name, or 3) a timezone. If it's None, we're going to return the current
+        object's _tz member. Otherwise, we return whatever the static method
+        generates. This is the object-based method, which can only be called on
+        a dt object.
+        """
+        if tz is None:
+            rval = self._tz
+        else:
+            rval = dt._static_brew_tz(tz)
+        return rval
+
+    # -------------------------------------------------------------------------
     def __call__(self, *args, tz=None):
         """
         Generate the date/time in format *args[0]* (default: '%F-%T'). If tz is
