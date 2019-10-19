@@ -413,6 +413,21 @@ def test_strptime(when, fmt, exp):
 
 
 # -----------------------------------------------------------------------------
+@pytest.mark.parametrize("obj, otz, exp", [
+    pp(dt("2012.0704"), None, "wed", id="wed -> wed"),
+    pp(dt("2012.0704"), 'Pacific/Midway', "tue", id="wed -> tue"),
+    pp(dt("2012.0704 16:00:00", tz='Pacific/Midway'), 'Pacific/Auckland',
+       'thu', id="wed -> thu"),
+    ])
+def test_weekday(obj, otz, exp):
+    """
+    Test dt.weekday()
+    """
+    pytest.dbgfunc()
+    assert obj.weekday(tz=otz) == exp
+
+
+# -----------------------------------------------------------------------------
 def test_weekday_floor():
     """
     Test dt().weekday_floor(). If today is Monday, dt().weekday_floor('mon') is
