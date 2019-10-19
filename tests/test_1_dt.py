@@ -18,6 +18,34 @@ def test_attributes():
 
 
 # -----------------------------------------------------------------------------
+@pytest.mark.parametrize("spec, itz, fmt, otz, exp", [
+    pp("2019.1001", None,
+       "%F", None, "2019-10-01", id="default -> default"),
+    pp("2019.1001", None,
+       "%F %T", 'utc', "2019-10-01 04:00:00", id="default -> utc"),
+    pp("2019.1001 17:00:00", None,
+       "%F %T", 'cst6cdt', "2019-10-01 16:00:00", id="default -> cdt"),
+    pp("2019.1001 13:00:00", 'pst8pdt',
+       "%F %T", 'cst6cdt', "2019-10-01 15:00:00", id="pdt -> cdt"),
+    pp("2019.1001 13:00:00", 'pst8pdt',
+       "%F %T", None, "2019-10-01 13:00:00", id="pdt -> default"),
+    pp("2011.0528 16:00:00", 'cet',
+       "%F %T", 'mst7mdt', "2011-05-28 08:00:00", id="cet -> mdt"),
+    ])
+def test_call(spec, itz, fmt, otz, exp):
+    """
+    """
+    if itz:
+        x = dt(spec, tz=itz)
+    else:
+        x = dt(spec)
+    if otz:
+        assert x(fmt, tz=otz) == exp
+    else:
+        assert x(fmt) == exp
+
+
+# -----------------------------------------------------------------------------
 @pytest.mark.parametrize("inp, exp", [
     pp((), None, id="no arg"),
     pp(datetime(2001, 9, 11), dt(epoch=1000180800), id="datetime epoch"),
