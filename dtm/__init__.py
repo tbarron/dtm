@@ -407,6 +407,9 @@ class dt(object):
 
     # -------------------------------------------------------------------------
     def weekday_list(self):
+        """
+        Return a list of abbreviated weekday names
+        """
         return ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
 
     # -------------------------------------------------------------------------
