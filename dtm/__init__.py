@@ -253,9 +253,9 @@ class dt(object):
         """
         Show the contents of the object as a string
         """
-        udt = datetime.fromtimestamp(self._utc)
-        utc = pytz.timezone('utc')
-        return udt.astimezone(utc).strftime("%Y.%m%d %H:%M:%S")
+        udt = datetime.utcfromtimestamp(self._utc)
+        fmt = "%Y.%m%d %H:%M:%S"
+        return udt.strftime(fmt)
 
     # -------------------------------------------------------------------------
     def __repr__(self):
