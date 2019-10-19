@@ -288,16 +288,16 @@ class dt(object):
         prev_ldt = datetime.fromtimestamp(self._utc)
         for day in range(count):
             ts = prev_ts + 24 * 3600
-            ldt = self.norm_loc_dt(self._tz, ts)
-            if self.askew(prev_ldt.hour, ldt.hour):
-                ts += self.delta(prev_ldt.hour, ldt.hour)
-                ldt = self.norm_loc_dt(self._tz, ts)
+            ldt = self._norm_loc_dt(self._tz, ts)
+            if self._askew(prev_ldt.hour, ldt.hour):
+                ts += self._delta(prev_ldt.hour, ldt.hour)
+                ldt = self._norm_loc_dt(self._tz, ts)
             (prev_ts, prev_ldt) = (ts, ldt)
 
         return dt(epoch=ts)
 
     # -------------------------------------------------------------------------
-    def delta(self, ahour, bhour):
+    def _delta(self, ahour, bhour):
         """
         Figure out the number of seconds to add to the timestamp to fix the dst
         offset
@@ -307,14 +307,14 @@ class dt(object):
         return (ax - bx) * 3600
 
     # -------------------------------------------------------------------------
-    def askew(self, ahour, bhour):
+    def _askew(self, ahour, bhour):
         """
         If there is a dst mismatch, return True, else False
         """
         return ahour != bhour
 
     # -------------------------------------------------------------------------
-    def norm_loc_dt(self, tz, ts):
+    def _norm_loc_dt(self, tz, ts):
         """
         Given timestamp *ts*, localize and normalize to timezone *tz* and
         return the result
@@ -350,10 +350,10 @@ class dt(object):
         pdt = datetime.fromtimestamp(pts)
         for day in range(count):
             ts = pts - 24 * 3600
-            ldt = self.norm_loc_dt(self._tz, ts)
-            if self.askew(pdt.hour, ldt.hour):
-                ts += self.delta(pdt.hour, ldt.hour)
-                ldt = self.norm_loc_dt(self._tz, ts)
+            ldt = self._norm_loc_dt(self._tz, ts)
+            if self._askew(pdt.hour, ldt.hour):
+                ts += self._delta(pdt.hour, ldt.hour)
+                ldt = self._norm_loc_dt(self._tz, ts)
             (pts, pdt) = (ts, ldt)
         return dt(epoch=ts)
 
