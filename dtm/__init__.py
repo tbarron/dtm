@@ -58,12 +58,15 @@ class dt(object):
     def __init__(self, *args, **kw):
         """
         Initialize this object. The time is stored internally as a UTC epoch
-        value. If you specify an epoch value at construction, it will be stored
-        without any timezone conversion as UTC. In this case, you better know
-        what you're doing.
+        value. If the user specifies an epoch value at construction, it will be
+        stored as a UTC epoch value (I know that's somewhat redundant), without
+        any timezone conversion. In this case, the user better know what
+        they're doing.
 
         Otherwise, the incoming dtspec will be converted from the incoming
-        timezone (argument 'tz') to UTC and stored as an epoch.
+        timezone (argument 'tz') to UTC and stored as an epoch. If no incoming
+        timezone is provided, the incoming dtspec will be interpreted as being
+        a local time where 'local' is defined by tzlocal.get_localzone().
 
         Note that epoch values are always considered to be UTC values.
         """
@@ -97,21 +100,26 @@ class dt(object):
     # -------------------------------------------------------------------------
     def _from_epoch(self, val):
         """
-        Initialize the object from epoch value *val*
+        Here we are initializing the object from a (UTC) epoch value. No
+        timezone conversion (see above).
         """
         return datetime.fromtimestamp(val)
 
     # -------------------------------------------------------------------------
     def _from_nothing(self):
         """
-        Initialize to the present time with microseconds zeroed out
+        Here we are initializing from thin air so we store the current time as
+        construction. dt doesn't keep up with microseconds, so just throw them
+        away.
         """
         return datetime.now().replace(microsecond=0)
 
     # -------------------------------------------------------------------------
     def _from_format(self, spec):
         """
-        Initialize from a list of popular date/time formats
+        Initialize from a list of my favorite date/time formats. A nice future
+        feature might be a way to easily add new formats to this list, perhapss
+        through a configuration file.
         """
         fmt_candidates = ["%Y.%m%d",
                           "%Y.%m%d %H:%M:%S",
@@ -133,7 +141,7 @@ class dt(object):
     # -------------------------------------------------------------------------
     def _from_ints(self, *args):
         """
-        Initialize from a list of ints
+        Initialize from a list of ints.
         """
         return datetime(*args)
 
@@ -143,8 +151,8 @@ class dt(object):
         """
         Resolve tz to a timezone: None -> local, str -> timezone object,
         timezone object -> timezone object. This is the static method, which
-        can be called from anywhere as long as the dt class is available.
-        However, it is intended for internal use within dt().
+        can be called from anywhere as long as the dt class is available. It is
+        intended for internal use within dt(), hence the leading underscore.
         """
         if isinstance(tz, pytz.BaseTzInfo):
             rval = tz
@@ -178,8 +186,9 @@ class dt(object):
     def __call__(self, *args, tz=None):
         """
         Generate the date/time in format *args[0]* (default: '%F-%T'). If tz is
-        provided, show the time in that timezone. Otherwise, use the object's
-        internal timezone.
+        provided, show the time for that timezone. Otherwise, use the object's
+        internal timezone. We just pass along the tz argument and strftime
+        figures it out.
         """
         if 0 < len(args):
             fmt = args[0]
@@ -190,8 +199,9 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __eq__(self, other):
         """
-        This object is equal to a datetime object if _utc is equal to the
-        integer value of other.timestamp()
+        This object can be compared to another dt or a datetime obj. This
+        object is equal to a datetime object if _utc is equal to the integer
+        value of other.timestamp().
         """
         if isinstance(other, datetime):
             return self._utc == int(other.timestamp())
@@ -251,7 +261,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __str__(self):
         """
-        Show the contents of the object as a string
+        Report the contents of the object. We return the internal epoch
+        formatted for human readability.
         """
         udt = datetime.utcfromtimestamp(self._utc)
         fmt = "%Y.%m%d %H:%M:%S"
@@ -260,7 +271,9 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __repr__(self):
         """
-        Report the raw utc time in the object and associated timezone
+        Report the contents of the object in tuple format. The date/time
+        numbers reflect the internal epoch value and we also show the object's
+        internal timezone.
         """
         udt = datetime.utcfromtimestamp(self._utc)
         fmt = "dt(%Y, %m, %d, %H, %M, %S, tz='{}')".format(self._tz.zone)
@@ -269,7 +282,7 @@ class dt(object):
     # -------------------------------------------------------------------------
     def next_day(self, count=1):
         """
-        Return the dt that is *count* days after current object
+        Return the dt that is *count* days after the current object
         """
         prev_ts = self._utc
         prev_ldt = datetime.fromtimestamp(self._utc)
@@ -347,7 +360,7 @@ class dt(object):
     # -------------------------------------------------------------------------
     def dt_range(self, last):
         """
-        Yield each date from self to last
+        Yield each date from self to last, including last.
         """
         tmp = self
         while tmp <= last:
@@ -367,7 +380,10 @@ class dt(object):
     @staticmethod
     def strptime(*args, tz=None):
         """
-        Pass strptime() calls down to datetime
+        Here we've been called with a dtspec, a format, and possibly with a
+        timezone. We want to parse the dtspec according to the format in the
+        context of the timezone and wind up with a (UTC) epoch value suitable
+        for initializing a dt object, which we then generate and return.
         """
         zone = dt._static_brew_tz(tz)
         twig = datetime.strptime(args[0], args[1])
@@ -379,7 +395,7 @@ class dt(object):
     @staticmethod
     def version(**args):
         """
-        Return the lowercase abbreviated weekday name for the current object
+        Return the current version of this class.
         """
         return version._v
 
