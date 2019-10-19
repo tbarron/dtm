@@ -388,7 +388,7 @@ class dt(object):
         """
         Return the lowercase abbreviated weekday name for the current object
         """
-        return self.strftime("%a").lower()
+        return self.strftime("%a", tz=tz).lower()
 
     # -------------------------------------------------------------------------
     def weekday_floor(self, wkday):
@@ -410,12 +410,21 @@ class dt(object):
         return ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
 
     # -------------------------------------------------------------------------
-    def ymd(self):
-        return self.strftime("%Y.%m%d")
+    # -------------------------------------------------------------------------
+    def ymd(self, tz=None):
+        """
+        Return the object time in YYYY.mmdd format with optional timezone
+        adjustment
+        """
+        return self.strftime("%Y.%m%d", tz=tz)
 
     # -------------------------------------------------------------------------
-    def ymdw(self):
-        return self.strftime("%Y.%m%d.%a").lower()
+    def ymdw(self, tz=None):
+        """
+        Return the object time in YYYY.mmdd.www format with optional timezone
+        adjustment
+        """
+        return self.strftime("%Y.%m%d.%a", tz=tz).lower()
 
 
 # -----------------------------------------------------------------------------
