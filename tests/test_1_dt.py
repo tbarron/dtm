@@ -405,6 +405,24 @@ def test_version():
     pp('2020.0229', "%Y.%m%d", None, dt("2020.0229"), id="ymd default tz"),
     pp('2013.0310 00:00:00', "%Y.%m%d %H:%M:%S", 'utc',
        dt("2013.0310 00:00:00", tz='utc'), id="utc explicit"),
+
+    pp('2013.0310 02:00:00', "%Y.%m%d %H:%M:%S", 'est5edt',
+       dt("2013.0310 07:00:00", tz='utc'), id="est 2am -> utc 7am"),
+    pp('2013.0310 03:00:00', "%Y.%m%d %H:%M:%S", 'est5edt',
+       dt("2013.0310 07:00:00", tz='utc'), id="est 3am -> utc 7am"),
+
+    pp('2013.0310 02:59:59', "%Y.%m%d %H:%M:%S", 'est5edt',
+       dt("2013.0310 07:59:59", tz='utc'), id="est 2:59:59 -> utc 7:59:59"),
+    pp('2013.0310 03:59:59', "%Y.%m%d %H:%M:%S", 'est5edt',
+       dt("2013.0310 07:59:59", tz='utc'), id="est 3:59:59 -> utc 7:59:59"),
+
+    pp('2013.0310 07:00:00', "%Y.%m%d %H:%M:%S", 'utc',
+       dt("2013.0310 02:00:00", tz='est5edt'), id="utc 7am -> est 2am"),
+    pp('2013.0310 07:00:00', "%Y.%m%d %H:%M:%S", 'utc',
+       dt("2013.0310 03:00:00", tz='est5edt'), id="utc 7am -> est 3am"),
+
+    pp('2013.0310 08:00:00', "%Y.%m%d %H:%M:%S", 'utc',
+       dt("2013.0310 04:00:00", tz='est5edt'), id="utc 8 -> est 4am"),
     ])
 def test_strptime(when, fmt, tzone, exp):
     """
