@@ -399,17 +399,19 @@ def test_version():
 
 
 # -----------------------------------------------------------------------------
-@pytest.mark.parametrize("when, fmt, exp", [
-    pp('2016-09-28T16:46:42Z', "%Y-%m-%dT%H:%M:%SZ",
-       dt(2016, 9, 28, 16, 46, 42)),
-    pp('2020.0229', "%Y.%m%d", dt("2020.0229"))
+@pytest.mark.parametrize("when, fmt, tzone, exp", [
+    pp('2016-09-28T16:46:42Z', "%Y-%m-%dT%H:%M:%SZ", None,
+       dt(2016, 9, 28, 16, 46, 42), id="iso default tz"),
+    pp('2020.0229', "%Y.%m%d", None, dt("2020.0229"), id="ymd default tz"),
+    pp('2013.0310 00:00:00', "%Y.%m%d %H:%M:%S", 'utc',
+       dt("2013.0310 00:00:00", tz='utc'), id="utc explicit"),
     ])
-def test_strptime(when, fmt, exp):
+def test_strptime(when, fmt, tzone, exp):
     """
     Test strptime
     """
     pytest.dbgfunc()
-    assert dt.strptime(when, fmt) == exp
+    assert dt.strptime(when, fmt, tz=tzone) == exp
 
 
 # -----------------------------------------------------------------------------
