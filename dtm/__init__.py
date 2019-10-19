@@ -67,13 +67,8 @@ class dt(object):
 
         Note that epoch values are always considered to be UTC values.
         """
-        if 'tz' in kw:
-            if kw['tz'] == 'local':
-                self._tz = tzlocal.get_localzone()
-            else:
-                self._tz = pytz.timezone(kw['tz'])
-        else:
-            self._tz = tzlocal.get_localzone()
+        tzname = kw['tz'] if 'tz' in kw else None
+        self._tz = dt._static_brew_tz(tzname)
 
         if "epoch" in kw:
             self._utc = int(kw['epoch'])
@@ -364,10 +359,7 @@ class dt(object):
         """
         Pass strftime() calls down to datetime
         """
-        if tz:
-            tzobj = pytz.timezone(tz)
-        else:
-            tzobj = self._tz
+        tzobj = self._brew_tz(tz)
         when = datetime.fromtimestamp(self._utc)
         return when.astimezone(tzobj).strftime(*args)
 
@@ -377,8 +369,11 @@ class dt(object):
         """
         Pass strptime() calls down to datetime
         """
-        twig = datetime.now()
-        return dt(twig.strptime(*args))
+        zone = dt._static_brew_tz(tz)
+        twig = datetime.strptime(args[0], args[1])
+        leaf = zone.normalize(zone.localize(twig))
+        rval = dt(epoch=leaf.astimezone(zone).timestamp())
+        return rval
 
     # -------------------------------------------------------------------------
     @staticmethod
