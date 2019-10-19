@@ -410,6 +410,12 @@ class dt(object):
         return ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
 
     # -------------------------------------------------------------------------
+    def iso(self, tz=None):
+        """
+        Return the object time in ISO format with optional timezone adjustment
+        """
+        return self.strftime("%Y-%m-%d %H:%M:%S", tz=tz)
+
     # -------------------------------------------------------------------------
     def ymd(self, tz=None):
         """
