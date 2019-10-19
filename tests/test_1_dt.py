@@ -31,6 +31,8 @@ def test_attributes():
        "%F %T", None, "2019-10-01 13:00:00", id="pdt -> default"),
     pp("2011.0528 16:00:00", 'cet',
        "%F %T", 'mst7mdt', "2011-05-28 08:00:00", id="cet -> mdt"),
+    pp("2010.1010 10:10:10", 'NZ',
+       "%F %T", 'Pacific/Midway', "2010-10-09 10:10:10", id="NZ -> Midway"),
     ])
 def test_call(spec, itz, fmt, otz, exp):
     """
