@@ -353,27 +353,35 @@ def test_str(inp, exp):
 
 
 # -----------------------------------------------------------------------------
-@pytest.mark.parametrize("when, fmt, exp", [
-    pp(dt(2000, 12, 1), "%Y.%m%d %H:%M:%S", "2000.1201 00:00:00",
+@pytest.mark.parametrize("when, fmt, tzone, exp", [
+    pp(dt(2000, 12, 1), "%Y.%m%d %H:%M:%S", None, "2000.1201 00:00:00",
        id="2000.1201"),
-    pp(dt(2000, 12, 1), "%s", "975646800", id="epoch"),
-    pp(dt(2000, 12, 1), "%a", "Fri", id="weekday abbrev"),
-    pp(dt(2000, 11, 30), "%A", "Thursday", id="weekday name"),
-    pp(dt(2000, 11, 30), "%b", "Nov", id="month abbrev"),
-    pp(dt(2000, 11, 30), "%B", "November", id="month name"),
-    pp(dt("2000.1130 13:25:19"), "%c", "Thu Nov 30 13:25:19 2000",
+    pp(dt(2000, 12, 1), "%Y.%m%d %H:%M:%S", 'utc', "2000.1201 05:00:00",
+       id="2000.1201 utc"),
+    pp(dt(2000, 12, 1), "%s", None, "975646800", id="epoch"),
+    pp(dt(2000, 12, 1), "%a", None, "Fri", id="weekday abbrev"),
+    pp(dt(2000, 12, 1), "%a", "Pacific/Midway", "Thu", id="weekday abbrev"),
+    pp(dt(2000, 11, 30), "%A", None, "Thursday", id="weekday name"),
+    pp(dt(2000, 11, 30), "%b", None, "Nov", id="month abbrev"),
+    pp(dt(2000, 11, 30), "%B", None, "November", id="month name"),
+    pp(dt(2001, 11, 1, tz='NZ'), "%b", "Pacific/Midway", "Oct",
+       id="prev month"),
+    pp(dt("2000.1130 13:25:19"), "%c", None, "Thu Nov 30 13:25:19 2000",
        id="locale"),
-    pp(dt("2000.1130 13:25:19"), "%I:%M:%S %p", "01:25:19 PM",
+    pp(dt("2000.1130 13:25:19"), "%I:%M:%S %p", None, "01:25:19 PM",
        id="12 hour"),
-    pp(dt(2015, 3, 20, 14, 45, 0, tz='cst6cdt'), "%Y.%m%d %H:%M:%S",
+    pp(dt(2015, 3, 20, 14, 45, 0, tz='cst6cdt'), "%Y.%m%d %H:%M:%S", None,
        "2015.0320 14:45:00", id="output localized to timezone")
     ])
-def test_strftime(when, fmt, exp):
+def test_strftime(when, fmt, tzone, exp):
     """
     Test strftime
     """
     pytest.dbgfunc()
-    assert when.strftime(fmt) == exp
+    if tzone:
+        assert when.strftime(fmt, tz=tzone) == exp
+    else:
+        assert when.strftime(fmt) == exp
 
 
 # -----------------------------------------------------------------------------
