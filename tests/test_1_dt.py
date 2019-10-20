@@ -174,15 +174,68 @@ def test_init_epoch(inp, itz, otz, exp):
 
 
 # -----------------------------------------------------------------------------
-def test_init_tz_explicit():
+@pytest.mark.parametrize("inp, itz", [
+    pp("2018.0117 08:00:00", 'US/Samoa',
+       id="2018.0117 08:00:00 Samoa-1100 == 1516215600"),
+    pp("2018.0117 09:00:00", 'US/Hawaii',
+       id="09:00:00 Hawaii         -1000 == 1516215600"),
+    pp("2018.0117 10:00:00", 'US/Alaska',
+       id="10:00:00 Alaska         -0900 == 1516215600"),
+    pp("2018.0117 11:00:00", 'pst8pdt',
+       id="11:00:00 PST            -0800 == 1516215600"),
+    pp("2018.0117 12:00:00", 'mst7mdt',
+       id="12:00:00 MST            -0700 == 1516215600"),
+    pp("2018.0117 13:00:00", 'cst6cdt',
+       id="13:00:00 CST            -0600 == 1516215600"),
+    pp("2018.0117 14:00:00", 'est5edt',
+       id="14:00:00 EST            -0500 == 1516215600"),
+    pp("2018.0117 15:00:00", 'Brazil/West',
+       id="15:00:00 Brazil/West    -0400 == 1516215600"),
+    pp("2018.0117 16:00:00", 'America/Argentina/Buenos_Aires',
+       id="16:00:00 Buenos_Aires   -0300 == 1516215600"),
+    pp("2018.0117 17:00:00", 'America/Noronha',
+       id="17:00:00 Noronha        -0200 == 1516215600"),
+    pp("2018.0117 18:00:00", 'Atlantic/Cape_Verde',
+       id="18:00:00 Cape_Verde     -0100 == 1516215600"),
+    pp("2018.0117 19:00:00", 'Zulu',
+       id="19:00:00 Zulu           +0000 == 1516215600"),
+    pp("2018.0117 20:00:00", 'Africa/Lagos',
+       id="20:00:00 Lagos          +0100 == 1516215600"),
+    pp("2018.0117 21:00:00", 'Africa/Cairo',
+       id="21:00:00 Cairo          +0200 == 1516215600"),
+    pp("2018.0117 22:00:00", 'Asia/Aden',
+       id="22:00:00 Aden           +0300 == 1516215600"),
+    pp("2018.0117 23:00:00", 'Asia/Baku',
+       id="23:00:00 Baku           +0400 == 1516215600"),
+    pp("2018.0118 00:00:00", 'Asia/Oral',
+       id="2018.0118 00:00:00 Oral +0500 == 1516215600"),
+    pp("2018.0118 01:00:00", 'Asia/Omsk',
+       id="01:00:00 Omsk           +0600 == 1516215600"),
+    pp("2018.0118 02:00:00", 'Asia/Jakarta',
+       id="02:00:00 Jakarta        +0700 == 1516215600"),
+    pp("2018.0118 03:00:00", 'Hongkong',
+       id="03:00:00 Hong Kong      +0800 == 1516215600"),
+    pp("2018.0118 04:00:00", 'Asia/Dili',
+       id="04:00:00 Dili           +0900 == 1516215600"),
+    pp("2018.0118 05:00:00", 'asia/ust-nera',
+       id="05:00:00 Ust-Nera       +1000 == 1516215600"),
+    pp("2018.0118 06:00:00", 'Asia/Magadan',
+       id="06:00:00 Magadan        +1100 == 1516215600"),
+    pp("2018.0118 07:00:00", 'Kwajalein',
+       id="07:00:00 Kwajalein      +1200 == 1516215600"),
+    pp("2018.0118 08:00:00", 'NZ',
+       id="08:00:00 NZ             +1300 == 1516215600"),
+    pp("2018.0118 09:00:00", 'Pacific/Apia',
+       id="09:00:00 Pacific/Apia   +1400 == 1516215600"),
+    ])
+def test_init_tz_explicit(inp, itz):
     """
     Specifying an explicit timezone and dtspec should always produce the same
     UTC epoch value
     """
     pytest.dbgfunc()
-    actual = dt("2018.0117 10:00:00", tz='America/Boise')
-    exp = dt(epoch=1516208400)
-    assert actual == exp
+    actual = dt(inp, tz=itz)
+    assert actual._utc == 1516215600
 
 
 # -----------------------------------------------------------------------------
