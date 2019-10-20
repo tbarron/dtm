@@ -11,6 +11,7 @@ def test_attributes():
     """
     A dt object should have members _utc and _tz
     """
+    pytest.dbgfunc()
     act = dt()
     assert hasattr(act, '_utc')
     assert hasattr(act, '_tz')
@@ -185,6 +186,7 @@ def test_iso(obj, otz, exp):
     """
     Testing
     """
+    pytest.dbgfunc()
     if otz:
         assert obj.iso(tz=otz) == exp
     else:
@@ -205,6 +207,7 @@ def test_equal(left, right, exp):
     """
     Test the equality operator for dt()
     """
+    pytest.dbgfunc()
     assert (left == right) is exp
 
 
@@ -444,6 +447,7 @@ def test_version():
         q = dt()
         q.version()
     """
+    pytest.dbgfunc()
     assert dt.version() == version._v
     assert dt().version() == version._v
 
