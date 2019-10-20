@@ -490,26 +490,30 @@ def test_next_day(nub, ndargs, exp):
 
 
 # -----------------------------------------------------------------------------
-def test_next_weekday():
+@pytest.mark.parametrize("when, target, exp", [
+    pp(dt(2001, 4, 12), 'wed', dt(2011, 4, 13)),
+    pp(dt(2001, 4, 12), 'thu', dt(2011, 4, 14)),
+    pp(dt(2001, 4, 12), 'fri', dt(2011, 4, 15)),
+    pp(dt(2001, 4, 12), 'sat', dt(2011, 4, 16)),
+    pp(dt(2001, 4, 12), 'sun', dt(2011, 4, 17)),
+    pp(dt(2001, 4, 12), 'mon', dt(2011, 4, 18)),
+    pp(dt(2001, 4, 12), 'tue', dt(2011, 4, 19)),
+    pp(dt(2001, 4, 12), 3, dt_error("next_weekday requires a string or list")),
+    pp(dt(2001, 4, 12), 'january',
+       dt_error("one of the targets is not a valid weekday")),
+    ])
+def test_next_weekday(when, target, exp):
     """
     Test dt().next_weekday(). If today is Monday, dt().next_weekday('mon')
     should be a week from today.
     """
     pytest.dbgfunc()
-    when = dt(2011, 4, 12)
-    assert when.next_weekday('wed') == dt(2011, 4, 13)
-    assert when.next_weekday('thu') == dt(2011, 4, 14)
-    assert when.next_weekday('fri') == dt(2011, 4, 15)
-    assert when.next_weekday('sat') == dt(2011, 4, 16)
-    assert when.next_weekday('sun') == dt(2011, 4, 17)
-    assert when.next_weekday('mon') == dt(2011, 4, 18)
-    assert when.next_weekday('tue') == dt(2011, 4, 19)
-    with pytest.raises(dt_error) as err:
-        when.next_weekday(3)
-    assert "next_weekday requires a string or list" in str(err.value)
-    with pytest.raises(dt_error) as err:
-        when.next_weekday('january')
-    assert "one of the targets is not a valid weekday" in str(err.value)
+    if isinstance(exp, dt_error):
+        with pytest.raises(dt_error) as err:
+            when.next_weekday(target)
+        assert str(exp) in str(err.value)
+    else:
+        when.next_weekday(target) == exp
 
 
 # -----------------------------------------------------------------------------
@@ -532,15 +536,20 @@ def test_previous_day_pp(nub, pvargs, exp):
 
 
 # -----------------------------------------------------------------------------
-def test_repr():
+@pytest.mark.parametrize("when, exp", [
+    pp(dt(2012, 12, 31, 1, 2, 3, tz="EST5EDT"),
+       "dt(2012, 12, 31, 06, 02, 03, tz='EST5EDT')", id="EST5EDT"),
+    pp(dt(2012, 12, 31, 1, 2, 3),
+       "dt(2012, 12, 31, 06, 02, 03, tz='America/New_York')", id="default"),
+    pp(dt(2012, 12, 31, 1, 2, 3, tz="UTC"),
+       "dt(2012, 12, 31, 01, 02, 03, tz='UTC')", id="UTC"),
+    ])
+def test_repr(when, exp):
     """
     repr(dt()) should produce a predictable string
     """
     pytest.dbgfunc()
-    when = dt(2012, 12, 31, 1, 2, 3, tz="EST5EDT")
-    assert repr(when) == "dt(2012, 12, 31, 06, 02, 03, tz='EST5EDT')"
-    when = dt(2012, 12, 31, 1, 2, 3, tz="UTC")
-    assert repr(when) == "dt(2012, 12, 31, 01, 02, 03, tz='UTC')"
+    assert repr(when) == exp
 
 
 # -----------------------------------------------------------------------------
