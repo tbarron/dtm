@@ -19,32 +19,65 @@ def test_attributes():
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("spec, itz, fmt, otz, exp", [
-    pp("2019.1001", None,
-       "%F", None, "2019-10-01", id="default -> default"),
-    pp("2019.1001", None,
-       "%F %T", 'utc', "2019-10-01 04:00:00", id="default -> utc"),
-    pp("2019.1001 17:00:00", None,
-       "%F %T", 'cst6cdt', "2019-10-01 16:00:00", id="default -> cdt"),
-    pp("2019.1001 13:00:00", 'pst8pdt',
-       "%F %T", 'cst6cdt', "2019-10-01 15:00:00", id="pdt -> cdt"),
-    pp("2019.1001 13:00:00", 'pst8pdt',
-       "%F %T", None, "2019-10-01 13:00:00", id="pdt -> default"),
-    pp("2011.0528 16:00:00", 'cet',
-       "%F %T", 'mst7mdt', "2011-05-28 08:00:00", id="cet -> mdt"),
-    pp("2010.1010 10:10:10", 'NZ',
-       "%F %T", 'Pacific/Midway', "2010-10-09 10:10:10", id="NZ -> Midway"),
+    pp("2019.1001", None, "%F", None, "2019-10-01",
+       id="default -> default"),
+    pp("2019.1001", None, "%F %T", 'utc', "2019-10-01 04:00:00",
+       id="default -> utc"),
+    pp("2019.1001 17:00:00", None, "%F %T", 'cst6cdt', "2019-10-01 16:00:00",
+       id="default -> cdt"),
+    pp("2019.1001 13:00:00", 'pst8pdt', "%F %T", 'cst6cdt',
+       "2019-10-01 15:00:00",
+       id="pdt -> cdt"),
+    pp("2019.1001 13:00:00", 'pst8pdt', "%F %T", None, "2019-10-01 13:00:00",
+       id="pdt -> default"),
+    pp("2011.0528 16:00:00", 'cet', "%F %T", 'mst7mdt', "2011-05-28 08:00:00",
+       id="cet -> mdt"),
+    pp("2010.1010 10:10:10", 'NZ', None, 'Pacific/Midway',
+       "2010-10-09-10:10:10",
+       id="NZ -> Midway"),
+
+    pp("2019.0310 01:00:00", 'est', "%F %T", 'utc', "2019-03-10 06:00:00",
+       id=" * * * DST entry 2019.0310 * * * "),
+    pp("2019.0310 01:59:59", 'est5edt', "%F %T", 'utc', "2019-03-10 06:59:59",
+       id="01:59:59 est == 06:59:59 utc"),
+
+    pp("2019.0310 02:00:00", 'est5edt', "%F %T", 'utc', "2019-03-10 07:00:00",
+       id="02:00:00 est == 07:00:00 utc"),
+    pp("2019.0310 02:30:00", 'est5edt', "%F %T", 'utc', "2019-03-10 07:30:00",
+       id="02:30:00 est == 07:30:00 utc"),
+    pp("2019.0310 02:59:59", 'est5edt', "%F %T", 'utc', "2019-03-10 07:59:59",
+       id="02:59:59 est == 07:59:59 utc"),
+
+    pp("2019.0310 03:00:00", 'est5edt', "%F %T", 'utc', "2019-03-10 07:00:00",
+       id="03:00:00 EDT == 07:00:00 utc"),
+    pp("2019.0310 03:00:01", 'est5edt', "%F %T", 'utc', "2019-03-10 07:00:01",
+       id="03:00:01 EDT == 07:00:01 utc"),
+    pp("2019.0310 03:59:59", 'est5edt', "%F %T", 'utc', "2019-03-10 07:59:59",
+       id="03:59:59 EDT == 07:59:59 utc"),
+
+    pp("2019.0310 04:00:00", 'est5edt', "%F %T", 'utc', "2019-03-10 08:00:00",
+       id="04:00:00 EDT == 08:00:00 utc"),
+
+    pp("2019.1103 00:00:00", 'est5edt', "%F %T", 'utc', "2019-11-03 04:00:00",
+       id=" * * * DST exit 2019.1103 * * * "),
+    pp("2019.1103 00:59:59", 'est5edt', "%F %T", 'utc', "2019-11-03 04:59:59",
+       id="00:59:59 EDT == 04:59:59 utc"),
+    pp("2019.1103 00:59:59", 'est', "%F %T", 'utc', "2019-11-03 05:59:59",
+       id="00:59:59 est == 05:59:59 utc"),
+    pp("2019.1103 01:00:00", 'est5edt', "%F %T", 'utc', "2019-11-03 06:00:00",
+       id="01:00:00 est == 06:00:00 utc"),
     ])
 def test_call(spec, itz, fmt, otz, exp):
     """
+    A dt object initialized with *spec* and *itz* should produce *exp* when
+    __call__()ed with *fmt* and *otz*.
     """
-    if itz:
-        x = dt(spec, tz=itz)
-    else:
-        x = dt(spec)
-    if otz:
-        assert x(fmt, tz=otz) == exp
-    else:
-        assert x(fmt) == exp
+    pytest.dbgfunc()
+    x = dt(spec, tz=itz) if itz else dt(spec)
+    args = [fmt] if fmt else []
+    kw = {'tz': otz} if otz else {}
+    result = x(*args, **kw)
+    assert result == exp
 
 
 # -----------------------------------------------------------------------------
