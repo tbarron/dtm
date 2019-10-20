@@ -239,7 +239,11 @@ def test_init_tz_explicit(inp, itz):
 
 
 # -----------------------------------------------------------------------------
-def test_init_tz_local():
+@pytest.mark.parametrize("locspec, expdt", [
+    pp("2018.0117 10:00:00", datetime(2018, 1, 17, 10, 0, 0)),
+    pp("2007.0528 07:00:00", datetime(2007, 5, 28, 7, 0, 0)),
+    ])
+def test_init_tz_local(locspec, expdt):
     """
     In timezone EST5EDT, the test dtspec corresponds to UTC epoch value
     1516201200. In other timezones, it will correspond to other UTC values, so
@@ -247,9 +251,8 @@ def test_init_tz_local():
     the dt constructor with the tz='local' argument is behaving correctly.
     """
     pytest.dbgfunc()
-    ldt = datetime(2018, 1, 17, 10, 0, 0)
-    exp_epoch = ldt.timestamp()
-    actual = dt("2018.0117 10:00:00", tz='local')
+    exp_epoch = expdt.timestamp()
+    actual = dt(locspec, tz='local')
     assert actual._utc == exp_epoch
 
 
