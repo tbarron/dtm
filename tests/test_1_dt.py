@@ -467,6 +467,7 @@ def test_dt_range():
     for day in dt("2011.1230").dt_range(dt("2012.0107")):
         if last:
             assert day.previous_day() == last
+            assert last.next_day() == day
         last = day
 
 
