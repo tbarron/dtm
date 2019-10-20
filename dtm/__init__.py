@@ -98,12 +98,12 @@ class dt(object):
             raise dt_error(msg)
 
     # -------------------------------------------------------------------------
-    def _from_epoch(self, val):
-        """
-        Here we are initializing the object from a (UTC) epoch value. No
-        timezone conversion (see above).
-        """
-        return datetime.fromtimestamp(val)
+    # def _from_epoch(self, val):
+    #     """
+    #     Here we are initializing the object from a (UTC) epoch value. No
+    #     timezone conversion (see above).
+    #     """
+    #     return datetime.fromtimestamp(val)
 
     # -------------------------------------------------------------------------
     def _from_nothing(self):
