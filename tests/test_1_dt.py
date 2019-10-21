@@ -1,6 +1,7 @@
 from datetime import datetime
 from dtm import dt, dt_error, version
 import pytest
+import pytz
 
 
 pp = pytest.param
@@ -159,6 +160,9 @@ def test_init(inp, exp):
        id="1572764399 == 01:59:59 EST-0500"),
     pp(1572764400, 'utc', 'est5edt', "2019-11-03 02:00:00 EST-0500",
        id="1572764400 == 02:00:00 EST-0500"),
+
+    pp(-305319600, pytz.timezone('cst6cdt'), 'est5edt',
+       "1960-04-29 00:00:00 EST-0500", id="tzobj constructor input"),
     ])
 def test_init_epoch(inp, itz, otz, exp):
     """
@@ -293,6 +297,18 @@ def test_init_tz_utc(spec, itz, epoch):
     obj = dt(spec, tz=itz)
     exp = dt(epoch=epoch, tz='est5edt')
     assert obj == exp
+
+
+# -----------------------------------------------------------------------------
+def test_init_bad_tz():
+    """
+    Tickle the exception when tz arg to dt constructor is not a timezone, a
+    timezone name, or None.
+    """
+    with pytest.raises(dt_error) as err:
+        dt(1960, 4, 28, 0, 0, 0, tz=17)
+    msg = "_static_brew_tz: tz must be timezone, timezone name, or None"
+    assert msg in str(err.value)
 
 
 # -----------------------------------------------------------------------------
