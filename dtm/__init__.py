@@ -98,23 +98,6 @@ class dt(object):
             raise dt_error(msg)
 
     # -------------------------------------------------------------------------
-    # def _from_epoch(self, val):
-    #     """
-    #     Here we are initializing the object from a (UTC) epoch value. No
-    #     timezone conversion (see above).
-    #     """
-    #     return datetime.fromtimestamp(val)
-
-    # -------------------------------------------------------------------------
-    def _from_nothing(self):
-        """
-        Here we are initializing from thin air so we store the current time as
-        construction. dt doesn't keep up with microseconds, so just throw them
-        away.
-        """
-        return datetime.now().replace(microsecond=0)
-
-    # -------------------------------------------------------------------------
     def _from_format(self, spec):
         """
         Initialize from a list of my favorite date/time formats. A nice future
