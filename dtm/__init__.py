@@ -163,7 +163,7 @@ class dt(object):
         elif tz is None:
             rval = tzlocal.get_localzone()
         else:
-            raise dt_error("tz_fromname: tz must be timezone,"
+            raise dt_error("_static_brew_tz: tz must be timezone,"
                            " timezone name, or None")
         return rval
 
