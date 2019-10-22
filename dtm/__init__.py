@@ -269,10 +269,10 @@ class dt(object):
         prev_ldt = datetime.fromtimestamp(self._utc)
         for day in range(count):
             ts = prev_ts + 24 * 3600
-            ldt = self._norm_loc_dt(self._tz, ts)
+            ldt = self._norm_loc_ize(datetime.fromtimestamp(ts))
             if self._askew(prev_ldt.hour, ldt.hour):
                 ts += self._delta(prev_ldt.hour, ldt.hour)
-                ldt = self._norm_loc_dt(self._tz, ts)
+                ldt = self._norm_loc_ize(datetime.fromtimestamp(ts))
             (prev_ts, prev_ldt) = (ts, ldt)
 
         return dt(epoch=ts)
@@ -295,13 +295,16 @@ class dt(object):
         return ahour != bhour
 
     # -------------------------------------------------------------------------
-    def _norm_loc_dt(self, tz, ts):
+    def _norm_loc_ize(self, dtime):
         """
-        Given timestamp *ts*, localize and normalize to timezone *tz* and
-        return the result
+        Localize and normalize *dtime* into zone self._tz, returning the
+        resulting datetime object
         """
-        tmp = datetime.fromtimestamp(ts)
-        return tz.normalize(tz.localize(tmp))
+        if dtime.tzinfo:
+            rval = self._tz.normalize(dtime)
+        else:
+            rval = self._tz.normalize(self._tz.localize(dtime))
+        return rval
 
     # -------------------------------------------------------------------------
     def next_weekday(self, trgs=None):
@@ -331,10 +334,10 @@ class dt(object):
         pdt = datetime.fromtimestamp(pts)
         for day in range(count):
             ts = pts - 24 * 3600
-            ldt = self._norm_loc_dt(self._tz, ts)
+            ldt = self._norm_loc_ize(datetime.fromtimestamp(ts))
             if self._askew(pdt.hour, ldt.hour):
                 ts += self._delta(pdt.hour, ldt.hour)
-                ldt = self._norm_loc_dt(self._tz, ts)
+                ldt = self._norm_loc_ize(datetime.fromtimestamp(ts))
             (pts, pdt) = (ts, ldt)
         return dt(epoch=ts)
 
