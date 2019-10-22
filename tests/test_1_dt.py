@@ -601,7 +601,10 @@ def test_str(inp, exp):
     pp(dt(2000, 12, 1, tz='utc'), "%Y.%m%d %H:%M:%S", 'utc',
        "2000.1201 00:00:00",
        id="2000.1201 utc"),
-    pp(dt(2000, 12, 1, tz='est5edt'), "%s", None, "975646800", id="epoch"),
+
+    pp(dt(2000, 12, 1), "%s", None,
+       "{}".format(int(datetime(2000, 12, 1).timestamp())), id="epoch"),
+
     pp(dt(2000, 12, 1), "%a", None, "Fri", id="weekday abbrev"),
     pp(dt(2000, 12, 1), "%a", "Pacific/Midway", "Thu",
        id="weekday abbrev transition"),
