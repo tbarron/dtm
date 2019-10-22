@@ -1,4 +1,4 @@
-## 1.1.0 ...
+## 1.1.0 ... 2019-10-22 07:27:57
 
  * Add tz arg support on input and output methods: test and functionality.
  * Add iso() method: tests and functionality.
