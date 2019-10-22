@@ -27,16 +27,18 @@ The following sequences provide valid human-readable displays of UTC:
 """
 from docopt_dispatch import dispatch
 from datetime import datetime
+from dtm import dt
 import pdb
 import pytz
 import time
+import tzlocal
 
 
 # -----------------------------------------------------------------------------
 @dispatch.on('ltu')
 def utc_fr_local_tz(**kw):
     """
-    Compute local time from utc and timezone
+    Compute utc from local time and timezone
     """
     if kw['d']:
         pdb.set_trace()
@@ -53,10 +55,22 @@ def utc_fr_local_tz(**kw):
 
 # -----------------------------------------------------------------------------
 @dispatch.on('utl')
-def utc_fr_local_tz(**kw):
+def local_fr_utc_tz(**kw):
     """
-    Compute utc time from local time and timezone
+    Compute local time from utc and timezone
     """
+    if kw['d']:
+        pdb.set_trace()
+    (dtspec, tz) = (kw['UTC_DTSPEC'], kw['TIMEZONE'])
+    if tz:
+        tzobj = pytz.timezone(tz)
+    else:
+        tzobj = tzlocal.get_localzone()
+
+    when = dt(dtspec)
+    udt = datetime.fromtimestamp(when._utc)
+    print(udt.astimezone(tzobj).strftime("%F %T %Z"))
+
 
 # -----------------------------------------------------------------------------
 @dispatch.on('splat')
@@ -93,6 +107,10 @@ def plugh(label, value):
 # -----------------------------------------------------------------------------
 @dispatch.on('zones')
 def zones(**kw):
+    """
+    List all timezones that match kw['SEARCH'] (everything if kw['SEARCH'] is
+    empty)
+    """
     if kw['d']:
         pdb.set_trace()
 
@@ -139,16 +157,14 @@ def westeast(**kw):
         olist.append(tup)
     for each in sorted(olist, key=lambda a: a[1]):
         print("{:30s} {:>8s}".format(each[0], hhmm(each[1])))
-    
-# -----------------------------------------------------------------------------
-def hhmm(secs):
-    hr = int(secs // 3600)
-    mn = int((secs % 3600) / 60)
-    return "{:02d}:{:02d}".format(hr, mn)
+
 
 # -----------------------------------------------------------------------------
 @dispatch.on('zdetails')
 def zdetails(**kw):
+    """
+    Report the details of a specified timezone
+    """
     if kw['d']:
         pdb.set_trace()
     z = pytz.timezone(kw['TIMEZONE'])
@@ -158,10 +174,19 @@ def zdetails(**kw):
     print("tzname: {}".format(z.tzname(datetime.now())))
 
     tsecs = z.utcoffset(datetime.now()).total_seconds()
-    # hr = int(tsecs // 3600)
-    # mn = int((tsecs % 3600) / 60)
     print("utcoffset: {}".format(hhmm(tsecs)))
-                      
 
+
+# -----------------------------------------------------------------------------
+def hhmm(secs):
+    """
+    Format a number of seconds in hours and minutes
+    """
+    hr = int(secs // 3600)
+    mn = int((secs % 3600) / 60)
+    return "{:02d}:{:02d}".format(hr, mn)
+
+
+# -----------------------------------------------------------------------------
 if __name__ == "__main__":
     dispatch(__doc__)
