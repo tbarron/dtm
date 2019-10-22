@@ -8,7 +8,7 @@ import tzlocal
 pp = pytest.param
 tz_utc = pytz.timezone('utc')
 tz_csdt = pytz.timezone('cst6cdt')
-tz_local = tzlocal.get_localzone().zone
+tz_local = tzlocal.get_localzone()
 
 
 # -----------------------------------------------------------------------------
@@ -85,6 +85,24 @@ def test_call(spec, itz, fmt, otz, exp):
     kw = {'tz': otz} if otz else {}
     result = x(*args, **kw)
     assert result == exp
+
+
+# -----------------------------------------------------------------------------
+@pytest.mark.parametrize("nub, exp", [
+    pp(dt(2001, 2, 3, 4, 5, 6, tz='utc'),
+       datetime(2001, 2, 3, 4, 5, 6, tzinfo=tz_utc), id="simple utc"),
+    pp(dt(2005, 10, 7),
+       datetime(2005, 10, 7, tzinfo=tz_local), id="local"),
+    pp(dt(2009, 12, 31, tz='cst6cdt'),
+       datetime(2009, 12, 31, tzinfo=tz_csdt), id="central"),
+    ])
+def test_datetime_x(nub, exp):
+    """
+    Given a dt object, x, we should be able to ask for x.datetime() and get a
+    corresponding datetime object.
+    """
+    pytest.dbgfunc()
+    nub.datetime() == exp
 
 
 # -----------------------------------------------------------------------------

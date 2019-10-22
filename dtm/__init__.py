@@ -261,6 +261,13 @@ class dt(object):
         return udt.strftime(fmt)
 
     # -------------------------------------------------------------------------
+    def datetime(self):
+        """
+        Return a datetime object containing the time ref and zone of *self*.
+        """
+        return datetime.fromtimestamp(self._utc).astimezone(self._tz)
+
+    # -------------------------------------------------------------------------
     def next_day(self, count=1):
         """
         Return the dt that is *count* days after the current object
