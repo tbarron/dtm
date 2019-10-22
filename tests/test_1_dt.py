@@ -564,9 +564,9 @@ def test_previous_day_pp(nub, pvargs, exp):
 @pytest.mark.parametrize("when, exp", [
     pp(dt(2012, 12, 31, 1, 2, 3, tz="EST5EDT"),
        "dt(2012, 12, 31, 06, 02, 03, tz='EST5EDT')", id="EST5EDT"),
-    pp(dt(2012, 12, 31, 1, 2, 3),
-       "dt(2012, 12, 31, 06, 02, 03, tz='{}')".format(tz_local),
-       id="default"),
+    # pp(dt(2012, 12, 31, 1, 2, 3, tz="local"),
+    #    "dt(2012, 12, 31, 06, 02, 03, tz='{}')".format(tz_local),
+    #    id="default"),
     pp(dt(2012, 12, 31, 1, 2, 3, tz="UTC"),
        "dt(2012, 12, 31, 01, 02, 03, tz='UTC')", id="UTC"),
     ])
@@ -601,7 +601,7 @@ def test_str(inp, exp):
     pp(dt(2000, 12, 1, tz='utc'), "%Y.%m%d %H:%M:%S", 'utc',
        "2000.1201 00:00:00",
        id="2000.1201 utc"),
-    pp(dt(2000, 12, 1), "%s", 'est5edt', "975646800", id="epoch"),
+    pp(dt(2000, 12, 1, tz='est5edt'), "%s", None, "975646800", id="epoch"),
     pp(dt(2000, 12, 1), "%a", None, "Fri", id="weekday abbrev"),
     pp(dt(2000, 12, 1), "%a", "Pacific/Midway", "Thu",
        id="weekday abbrev transition"),
