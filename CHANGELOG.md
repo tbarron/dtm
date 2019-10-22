@@ -1,3 +1,27 @@
+## 1.1.0 ... 2019-10-22 05:29:10
+
+ * Add tz arg support on input and output methods: test and functionality.
+ * Add iso() method: tests and functionality.
+ * Add tests that probe dst transitions, both entering and leaving on all
+   input and output methods.
+ * Make sure all methods have a descriptive comment.
+ * Add __call__() method: tests and functionality.
+ * Add __str__() method: tests and functionality.
+ * Catch README.md up to the package functionality.
+ * Add test_2_recipes.py for verifying timezone conversion recipes.
+ * Move test_deployable() from test_1_dt.py to test_9_deploy.py so it runs
+   last.
+ * Replace ._dtobj and other members with ._utc and ._tz.
+ * Internal: helper functions for next_day, previous_day, normalizing and
+   localizing datetime objects.
+ * Internal: define and use 'pp' for 'pytest.param' in test files.
+ * Tests involving tz conversions that probe dst entry and exit
+   > __call__.
+ * Add dtm/__main__.py to git to provide command line functions for
+   browsing the timezone database.
+ * Add .travis.yml to institute CI for this project.
+
+
 ## 1.0.0 ... 2019-10-12 13:15:12
 
  * Added CHANGELOG.md to dtm project.
