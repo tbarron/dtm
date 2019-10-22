@@ -45,9 +45,9 @@ Functionality added to datetime:
 ## dt objects
 
 The main thing dtm exports is the 'dt' object. It contains an epoch time
-and a timezone.
+(which represents UTC by definition) and a timezone.
 
-The recommended method of import is:
+The recommended method for importing the dt class is:
 
     from dtm import dt
 
@@ -108,7 +108,7 @@ got:
 
 #### timezone
 
-The tz argument is independent of the others. Any tz argument passed to the
+The tz argument is independent of any others. Any tz argument passed to the
 constructor specifies the locality of the input date/time specification.
 
 Internally, the date/time value is converted to UTC and stored as a UTC
@@ -116,17 +116,23 @@ epoch value.
 
 All of dt's output methods accept a tz argument and will convert the
 internal UTC value to the specified output timezone. If no tz argument is
-specified on output, the internal UTC value is converted to the DLTZ for
-the LM.
+specified on output, the internal UTC value is converted to the default
+local timezone (DLTZ) for the local machine (LM).
 
 ### Comparison
 
-dt objects can be compared for ==, <, or <= to other dt objects and to
-datetime objects. The > and >= operators work for dt to dt comparisons. The
-comparisons operators won't work if datetime is on the left side because
-datetime objects don't know how to compare themselves to dt objects.
+dt objects can be compared for ==, <, <=, >, or >= to other dt objects and
+to datetime objects. The comparisons operators won't work if datetime is on
+the left side because datetime objects don't know how to compare themselves
+to dt objects.
 
-### Iteration by day
+### __call__([fmt,] tz=None) (Format default output time)
+
+Adjust the stored time reference per tz (if given) and format it per fmt
+(if provided). If tz is not provided, use the dt object's internal tz
+value. If format is not provided, the default format is used ('%F-%T').
+
+### dt.dt_range() (Iteration by day)
 
     for day in dt(2011, 10, 1).dt_range(dt(2011, 10, 31)):
         # do whatever
@@ -136,17 +142,67 @@ That is, the above loop will process 2011-10-31 as well as the rest of the
 month. Most Python range functions terminate before processing the end
 value.
 
-dt also provides next_day() and previous_day() functions so you can do your
-own iteration in special circumstances.
+### dt.next_day(count=1) (Increment by day)
 
-### Other methods
+Return a dt object containing a time reference 24 hours later than the
+value in the object on which the method is called.
 
-    strftime()
-    strptime()
-    weekday()
-    weekday_floor()
-    ymd()
-    ymdw()
+### dt.previous_day(count=1) (Decrement by day)
+
+Return a dt object containing a time reference 24 hours earlier than the
+value in the object on which the method is called.
+
+### dt.next_weekday(trgs=None) (Find the subsequent occurence of a target after today)
+
+The argument, trgs, is one or more weekday names, either a string or a list
+of strings. The method searches forward in time to find the next occurrence
+of one of the entries in the list. If the target matches the weekday of the
+stored time ref, the result is a week later.
+
+### dt.strftime(fmt, tz=None) (Format output time)
+
+The time reference in the object is adjusted based on tz (if specified) and
+formatted according to fmt. If tz is not provided (or is None), the
+timezone value in the object is used to determine the timezone adjustment.
+
+### dt.strptime(spec, fmt, tz=None) [static] (Parse input time)
+
+The string spec is parsed according to format fmt and interpreted in terms
+of the timezone indicated by the tz argument. If tz is not specified, 
+
+### dt.version() [static] (Get the package version)
+
+Return the version of the dtm package.
+
+### dt.weekday(tz=None) (Determine the weekday of the stored time ref)
+
+Return the weekday name of the stored time ref.
+
+### dt.weekday_floor(wkdays) (Determine latest preceding occurrence of a weekday)
+    
+Search backward in time from the stored time ref to the most recent day
+matching a day in the weekday list, wkdays (may be a single string or a
+list of strings). If an entry in the list matches the weekday of the stored
+time ref, return self.
+
+### dt.weekday_list() (Get a list of weekday name abbreviations)
+
+Return a list of abbreviated, lowercase weekday names.
+
+### dt.iso(tz=None) (Return the stored time in ISO format)
+
+Return the stored time adjusted to the stored timezone (or tz if provided)
+in ISO format (YYYY-mm-dd-HH:MM:SS).
+
+### dt.ymd(tz=None) (Return the stored time in YYYY.mmdd format)
+
+Return the stored time adjusted to the stored timezone (or tz if provided)
+in YYYY.mmdd format.
+
+### dt.ymdw(tz=None) (Return stored time in YYYY.mmdd.www format)
+
+Return the stored time adjust to the stored timezone (or tz if provided) in
+YYYY.mmdd.www format.
 
 
 ## Project setup
@@ -181,7 +237,21 @@ Files marked with * are not in git.
 
 ## Future Plans
 
-### Timezone support
+### configuration file
+
+Get the list of favorite parsing formats from a configuration file, perhaps
+located at $HOME/.dtm/dtm.ini. The default list provided by the module
+would always be present (unless the user overwrites it; perhaps we need a
+way of specifying this in the config file) and the user could easily
+augment the list by adding formats to the config file.
+
+### datetime output
+
+Provide a dt method that returns a datetime object, foo, containing the dt
+object's time reference and timezone such that foo.strftime("%F %T %Z")
+produces the same output as mydt.strftime("%F %T %Z").
+
+### Timezone support (DONE)
 
 I would like to add timezone support as follows.
 
