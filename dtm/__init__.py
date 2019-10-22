@@ -6,18 +6,17 @@ import tzlocal
 """
 Epoch values always represent UTC.
 
-To convert a UTC value to a local timezone:
+To convert a UTC value to a formatted local timezone:
 
     zone = pytz.timezone('America/New_York')
     udt = datetime.fromtimestamp(self._utc)
-    loc_tm = pytz.utc.localize(udt).astimezone(zone)
-    return loc_tm
+    return udt.astimezone(zone).strftime(format)
 
 To convert a local time to a UTC value:
 
     ldt = datetime.strptime(dspec, fmt)
     utc = pytz.timezone('utc')
-    udt = ldt.astimezone(utc)
+    udt = utc.normalize(utc.localize(ldt).astimezone(utc)
     self._utc = udt.timestamp()
 
 To convert a non-local timezone value to a UTC value:
@@ -31,29 +30,28 @@ The following doesn't work!
 
     time.mktime(time.gmtime())
 
-Apparently, time.mktime() does a timezone adjustment that we don't want.
+Apparently, time.mktime() does a timezone adjustment that we don't want so the
+result winds up being 2*utc_offset seconds into the future relative to local
+time.
 
-The following call sequences that produce human-readable displays of current
-UTC:
-
-    time.strftime(fmt, time.gmtime(time.time()))
+The following call sequences produce human-readable displays of current UTC:
 
     time.strftime(fmt, time.gmtime())
 
-    datetime.utcfromtimestamp(datetime.now().timestamp()).strftime(fmt)
+    datetime.utcnow().strftime(fmt)
 
-    datetime.fromtimestamp(datetime.utcnow().timestamp()).strftime(fmt)
 """
 
 
 # -----------------------------------------------------------------------------
 class dt(object):
+    """
+    This object wraps an epoch (UTC) time and a timezone with various goodies,
+    like 'next_day', 'next_weekday', 'weekday_floor', etc.
+    """
+
     _version = version._v
 
-    """
-    This object wraps a datetime object and adds various goodies, like
-    'next_day', 'next_weekday', 'weekday_floor', etc.
-    """
     # -------------------------------------------------------------------------
     def __init__(self, *args, **kw):
         """
@@ -437,4 +435,7 @@ class dt(object):
 
 # -----------------------------------------------------------------------------
 class dt_error(Exception):
+    """
+    This object is used to raise exceptions in dt().
+    """
     pass
