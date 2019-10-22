@@ -2,9 +2,13 @@ from datetime import datetime
 from dtm import dt, dt_error, version
 import pytest
 import pytz
+import tzlocal
 
 
 pp = pytest.param
+tz_utc = pytz.timezone('utc')
+tz_csdt = pytz.timezone('cst6cdt')
+tz_local = tzlocal.get_localzone().zone
 
 
 # -----------------------------------------------------------------------------
@@ -22,9 +26,11 @@ def test_attributes():
 @pytest.mark.parametrize("spec, itz, fmt, otz, exp", [
     pp("2019.1001", None, "%F", None, "2019-10-01",
        id="default -> default"),
-    pp("2019.1001", None, "%F %T", 'utc', "2019-10-01 04:00:00",
+    pp("2019.1001", None, "%F %T", 'utc',
+       datetime(2019, 10, 1).astimezone(tz_utc).strftime("%F %T"),
        id="default -> utc"),
-    pp("2019.1001 17:00:00", None, "%F %T", 'cst6cdt', "2019-10-01 16:00:00",
+    pp("2019.1001 17:00:00", None, "%F %T", 'cst6cdt',
+       datetime(2019, 10, 1, 17, 0, 0).astimezone(tz_csdt).strftime("%F %T"),
        id="default -> cdt"),
     pp("2019.1001 13:00:00", 'pst8pdt', "%F %T", 'cst6cdt',
        "2019-10-01 15:00:00",
@@ -84,8 +90,10 @@ def test_call(spec, itz, fmt, otz, exp):
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("inp, exp", [
     pp((), None, id="no arg"),
-    pp(datetime(2001, 9, 11), dt(epoch=1000180800), id="datetime epoch"),
-    pp("2001.0911", dt(epoch=1000180800), id="str ymd"),
+    pp(datetime(2001, 9, 11), dt(epoch=datetime(2001, 9, 11).timestamp()),
+       id="datetime epoch"),
+    pp("2001.0911", dt(epoch=datetime(2001, 9, 11).timestamp()),
+       id="str ymd"),
     pp(datetime(2001, 9, 11, 0, 0, 0), dt("2001.0911"), id="datetime ymd"),
     pp(datetime(2009, 7, 23, 9, 45, 17), dt("2009.0723 09:45:17"),
        id="datetime ymdhms"),
@@ -557,7 +565,8 @@ def test_previous_day_pp(nub, pvargs, exp):
     pp(dt(2012, 12, 31, 1, 2, 3, tz="EST5EDT"),
        "dt(2012, 12, 31, 06, 02, 03, tz='EST5EDT')", id="EST5EDT"),
     pp(dt(2012, 12, 31, 1, 2, 3),
-       "dt(2012, 12, 31, 06, 02, 03, tz='America/New_York')", id="default"),
+       "dt(2012, 12, 31, 06, 02, 03, tz='{}')".format(tz_local),
+       id="default"),
     pp(dt(2012, 12, 31, 1, 2, 3, tz="UTC"),
        "dt(2012, 12, 31, 01, 02, 03, tz='UTC')", id="UTC"),
     ])
@@ -589,9 +598,10 @@ def test_str(inp, exp):
 @pytest.mark.parametrize("when, fmt, tzone, exp", [
     pp(dt(2000, 12, 1), "%Y.%m%d %H:%M:%S", None, "2000.1201 00:00:00",
        id="2000.1201"),
-    pp(dt(2000, 12, 1), "%Y.%m%d %H:%M:%S", 'utc', "2000.1201 05:00:00",
+    pp(dt(2000, 12, 1, tz='utc'), "%Y.%m%d %H:%M:%S", 'utc',
+       "2000.1201 00:00:00",
        id="2000.1201 utc"),
-    pp(dt(2000, 12, 1), "%s", None, "975646800", id="epoch"),
+    pp(dt(2000, 12, 1), "%s", 'est5edt', "975646800", id="epoch"),
     pp(dt(2000, 12, 1), "%a", None, "Fri", id="weekday abbrev"),
     pp(dt(2000, 12, 1), "%a", "Pacific/Midway", "Thu",
        id="weekday abbrev transition"),
