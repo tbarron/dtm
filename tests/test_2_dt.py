@@ -580,13 +580,10 @@ def test_previous_day_pp(nub, pvargs, exp):
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("when, exp", [
-    pp(dt(2012, 12, 31, 1, 2, 3, tz="EST5EDT"),
-       "dt(2012, 12, 31, 06, 02, 03, tz='EST5EDT')", id="EST5EDT"),
-    # pp(dt(2012, 12, 31, 1, 2, 3, tz="local"),
-    #    "dt(2012, 12, 31, 06, 02, 03, tz='{}')".format(tz_local),
-    #    id="default"),
-    pp(dt(2012, 12, 31, 1, 2, 3, tz="UTC"),
-       "dt(2012, 12, 31, 01, 02, 03, tz='UTC')", id="UTC"),
+    pp(dt(2012, 12, 31, 1, 2, 3, tz="EST5EDT"), "dt(1356933723, tz='EST5EDT')",
+       id="EST5EDT"),
+    pp(dt(2012, 12, 31, 1, 2, 3, tz="UTC"), "dt(1356915723, tz='UTC')",
+       id="UTC"),
     ])
 def test_repr(when, exp):
     """
@@ -598,9 +595,9 @@ def test_repr(when, exp):
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("inp, exp", [
-    pp(dt(2012, 12, 31, 1, 2, 3, tz="est5edt"), "2012.1231 06:02:03",
+    pp(dt(2012, 12, 31, 1, 2, 3, tz="est5edt"), "2012.1231 01:02:03 EST",
        id="est"),
-    pp(dt(2012, 12, 31, 1, 2, 3, tz='America/Boise'), "2012.1231 08:02:03",
+    pp(dt(2012, 12, 31, 1, 2, 3, tz='America/Boise'), "2012.1231 01:02:03 MST",
        id="mst"),
     ])
 def test_str(inp, exp):

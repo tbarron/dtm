@@ -245,8 +245,8 @@ class dt(object):
         Report the contents of the object. We return the internal epoch
         formatted for human readability.
         """
-        udt = datetime.utcfromtimestamp(self._utc)
-        fmt = "%Y.%m%d %H:%M:%S"
+        udt = datetime.fromtimestamp(self._utc).astimezone(self._tz)
+        fmt = "%Y.%m%d %H:%M:%S %Z"
         return udt.strftime(fmt)
 
     # -------------------------------------------------------------------------
@@ -256,9 +256,7 @@ class dt(object):
         numbers reflect the internal epoch value and we also show the object's
         internal timezone.
         """
-        udt = datetime.utcfromtimestamp(self._utc)
-        fmt = "dt(%Y, %m, %d, %H, %M, %S, tz='{}')".format(self._tz.zone)
-        return udt.strftime(fmt)
+        return "dt({}, tz='{}')".format(int(self._utc), self._tz.zone)
 
     # -------------------------------------------------------------------------
     def datetime(self):
