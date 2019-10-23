@@ -1,3 +1,16 @@
+## 1.2.0 ... 2019-10-23 18:53:52
+
+ * Improve internal function _norm_loc_ize() by making it take a datetime
+   rather than a timestamp and always use the dt internal self._tz.
+ * Rearranged test files to allow for test_1_dt_internals.py.
+ * Added test and code for method dt.datetime()
+ * Updated tests and code for __str__ and __repr__ to make __str__ use
+   format "%F %T %Z" and make __repr__ show the raw timestamp and timezone.
+ * Wrote dt._fail() and replaced 'raise dt_error(<message>)' with
+   dt._fail(<message>)
+ * Added tests for internal helper functions.
+
+
 ## 1.1.0 ... 2019-10-22 07:27:57
 
  * Add tz arg support on input and output methods: test and functionality.
