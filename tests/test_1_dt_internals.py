@@ -93,3 +93,35 @@ def test_from_ints(tup, itz, otz, exp):
     else:
         actual = dt(*tup, tz=itz)
         assert actual("%F %T %Z", tz=otz) == exp
+
+
+# -----------------------------------------------------------------------------
+@pytest.mark.parametrize("inp, exp", [
+    pp(pytz.timezone('est5edt'), pytz.timezone('est5edt'), id="tz -> tz"),
+    pp('local', tzlocal.get_localzone(), id="'local' -> local tz"),
+    pp('est5edt', pytz.timezone('est5edt'), id="tz name -> tz"),
+    pp(None, tzlocal.get_localzone(), id="None -> local tz"),
+    pp(17,
+       dt_error("tz must be timezone, timezone name, or None"),
+       id="invalid timezone")
+    ])
+def test_static_brew_tz(inp, exp):
+    """
+    This function can take a pytz.BaseTzInfo object, a string containing
+    'local' or the name of a timezone, or None.
+
+        tz == pytz.BaseTzInfo        => return tz
+        tz == 'local'                => return tzlocal.get_localzone()
+        tz == timezone name          => return pytz.timezone(tz)
+        tz is None                   => return tzlocal.get_localzone()
+        something else               => dt_error( msg )
+    """
+    pytest.dbgfunc()
+    if isinstance(exp, dt_error):
+        with pytest.raises(dt_error) as err:
+            dt._static_brew_tz(inp)
+        assert str(exp) in str(err.value)
+    else:
+        assert dt._static_brew_tz(inp) == exp
+
+
