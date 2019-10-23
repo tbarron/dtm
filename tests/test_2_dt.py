@@ -655,6 +655,41 @@ def test_next_weekday(when, target, exp):
         assert when.next_weekday(target) == exp
 
 
+# -----------------------------------------------------------------------------
+@pytest.mark.parametrize("when, target, exp", [
+    pp(dt(2012, 12, 30), 'sat', dt(2012, 12, 29), id="sun: last sat"),
+    pp(dt(2012, 12, 30), 'fri', dt(2012, 12, 28), id="sun: last fri"),
+    pp(dt(2012, 12, 30), 'thu', dt(2012, 12, 27), id="sun: last thu"),
+    pp(dt(2012, 12, 30), 'wed', dt(2012, 12, 26), id="sun: last wed"),
+    pp(dt(2012, 12, 30), 'tue', dt(2012, 12, 25), id="sun: last tue"),
+    pp(dt(2012, 12, 30), 'mon', dt(2012, 12, 24), id="sun: last mon"),
+    pp(dt(2012, 12, 30), 'sun', dt(2012, 12, 23), id="sun: last sun"),
+
+    pp(dt(2001, 4, 10), ['mon', 'fri'], dt(2001, 4, 9),
+       id="tue: last mon, fri"),
+    pp(dt(2001, 4, 9), ['mon', 'fri'], dt(2001, 4, 6),
+       id="mon: last mon, fri"),
+    pp(dt(2001, 4, 6), ['mon', 'fri'], dt(2001, 4, 2),
+       id="fri: last mon, fri"),
+
+    pp(dt(2001, 4, 10), 3, dt_error("last_weekday requires a string or list"),
+       id="non-string arg"),
+    pp(dt(2001, 4, 10), 'january',
+       dt_error("one of the targets is not a valid weekday"),
+       id="non weekday arg"),
+    ])
+def test_last_weekday(when, target, exp):
+    """
+    Test dt().last_weekday(). If today is Monday, dt().last_weekday('mon')
+    should return a week before today.
+    """
+    pytest.dbgfunc()
+    if isinstance(exp, dt_error):
+        with pytest.raises(dt_error) as err:
+            when.last_weekday(target)
+        assert str(exp) in str(err.value)
+    else:
+        assert when.last_weekday(target) == exp
 
 
 # -----------------------------------------------------------------------------
