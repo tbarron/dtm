@@ -246,7 +246,7 @@ class dt(object):
         formatted for human readability.
         """
         udt = datetime.fromtimestamp(self._utc).astimezone(self._tz)
-        fmt = "%Y.%m%d %H:%M:%S %Z"
+        fmt = "%F %T %Z"
         return udt.strftime(fmt)
 
     # -------------------------------------------------------------------------
