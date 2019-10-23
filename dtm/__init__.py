@@ -85,15 +85,15 @@ class dt(object):
                 tmp = self._tz.normalize(self._tz.localize(tmp))
                 self._utc = tmp.timestamp()
             else:
-                msg = "single arg must be str, dt, datetime, or epoch=<int>"
-                raise dt_error(msg)
+                dt._fail("single arg must be str, dt, datetime,"
+                         " or epoch=<int>")
         elif all(isinstance(_, int) for _ in args):
             tmp = self._from_ints(*args)
             tmp = self._tz.normalize(self._tz.localize(tmp))
             self._utc = tmp.timestamp()
         else:
-            msg = "dt.__init__ expects dt, datetime, str, ints, or epoch=<int>"
-            raise dt_error(msg)
+            dt._fail("dt.__init__ expects dt, datetime, str, ints,"
+                     " or epoch=<int>")
 
     # -------------------------------------------------------------------------
     def _from_format(self, spec):
@@ -116,7 +116,7 @@ class dt(object):
             except ValueError:
                 pass
         if rval is None:
-            raise dt_error("None of the formats matched '{}'".format(spec))
+            dt._fail("None of the formats matched '{}'".format(spec))
         return rval
 
     # -------------------------------------------------------------------------
@@ -144,8 +144,8 @@ class dt(object):
         elif tz is None:
             rval = tzlocal.get_localzone()
         else:
-            raise dt_error("_static_brew_tz: tz must be timezone,"
-                           " timezone name, or None")
+            dt._fail("_static_brew_tz: tz must be timezone, timezone"
+                     " name, or None")
         return rval
 
     # -------------------------------------------------------------------------
@@ -266,7 +266,8 @@ class dt(object):
         return datetime.fromtimestamp(self._utc).astimezone(self._tz)
 
     # -------------------------------------------------------------------------
-    def _fail(self, msg):
+    @staticmethod
+    def _fail(msg):
         """
         Raise dt_error with *msg*
         """
@@ -292,8 +293,7 @@ class dt(object):
             delta = 60 * delta + (seconds or 0)
         else:
             if seconds or minutes or hours or days:
-                self._fail("dt.increment expects either *args or **kw,"
-                           " not both")
+                dt._fail("dt.increment expects either *args or **kw, not both")
             largs = list(args)
             mult = [24*3600, 3600, 60]
             delta = largs.pop()
@@ -384,10 +384,10 @@ class dt(object):
         if isinstance(trgs, str):
             trgs = [trgs]
         if not isinstance(trgs, list):
-            raise dt_error("next_weekday requires a string or list")
+            dt._fail("next_weekday requires a string or list")
         wkdl = self.weekday_list()
         if any(_ not in wkdl for _ in trgs):
-            raise dt_error("one of the targets is not a valid weekday")
+            dt._fail("one of the targets is not a valid weekday")
         scan = dt(self.next_day())
         while scan.weekday() not in trgs:
             scan = scan.next_day()
