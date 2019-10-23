@@ -44,6 +44,7 @@ def test_from_format(dtspec, itz, otz, exp):
     Exercise each of the supported formats and fail on at least one unsupported
     one
     """
+    pytest.dbgfunc()
     if isinstance(exp, dt_error):
         with pytest.raises(dt_error) as err:
             dt(dtspec, tz=itz)
@@ -86,6 +87,7 @@ def test_from_ints(tup, itz, otz, exp):
     Exercise each of the supported formats and fail on at least one unsupported
     one
     """
+    pytest.dbgfunc()
     if isinstance(exp, dt_error):
         with pytest.raises(dt_error) as err:
             dt(*tup, tz=itz)
@@ -167,6 +169,7 @@ def test_delta(left, right, exp):
     """
     Tests for _delta
     """
+    pytest.dbgfunc()
     q = dt()
     assert q._delta(left, right) == exp
 
