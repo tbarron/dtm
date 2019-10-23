@@ -156,3 +156,44 @@ def test_brew_tz(obj, itz, exp):
         assert obj._brew_tz(itz) == exp
 
 
+# -----------------------------------------------------------------------------
+@pytest.mark.parametrize("left, right, exp", [
+    pp(10, 9, 3600, id="positive ordered"),
+    pp(9, 10, -3600, id="negative ordered"),
+    pp(0, 23, 3600, id="positive reversed"),
+    pp(23, 0, -3600, id="negative reversed"),
+    ])
+def test_delta(left, right, exp):
+    """
+    Tests for _delta
+    """
+    q = dt()
+    assert q._delta(left, right) == exp
+
+
+# -----------------------------------------------------------------------------
+@pytest.mark.parametrize("input, itz, exp", [
+    pp(datetime(2019, 3, 10, 1, 59, 59), 'est5edt',
+       datetime(2019, 3, 10, 1, 59, 59, tzinfo=tz_esdt),
+       id="non-local before"),
+    pp(datetime(2019, 3, 10, 2, 0, 0), 'est5edt',
+       datetime(2019, 3, 10, 2, 0, 0, tzinfo=tz_esdt), id="non-local after"),
+
+    pp(datetime(2019, 3, 10, 1, 59, 59, tzinfo=tz_esdt), None,
+       datetime(2019, 3, 10, 1, 59, 59, tzinfo=tz_esdt), id="local before"),
+    pp(datetime(2019, 3, 10, 2, 0, 0, tzinfo=tz_esdt), None,
+       datetime(2019, 3, 10, 2, 0, 0, tzinfo=tz_esdt), id="local after"),
+    ])
+def test_norm_loc(input, itz, exp):
+    """
+    input: dtspec
+    output: normalized and localized datetime object
+    """
+    pytest.dbgfunc()
+    if itz:
+        nub = dt(input, tz=itz)
+    else:
+        nub = dt(input)
+
+    actual = nub._norm_loc_ize(input)
+    assert actual == exp
