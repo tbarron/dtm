@@ -266,6 +266,69 @@ class dt(object):
         return datetime.fromtimestamp(self._utc).astimezone(self._tz)
 
     # -------------------------------------------------------------------------
+    def _fail(self, msg):
+        """
+        Raise dt_error with *msg*
+        """
+        raise dt_error(msg)
+
+    # -------------------------------------------------------------------------
+    def _duration(self, *args, seconds=None, minutes=None, hours=None,
+                  days=None):
+        """
+        Convert seconds, minutes, hours, days into a number of seconds and
+        return that.
+
+        If *args* is not empty, we expect the following:
+
+            ([[[days,] hours,] minutes,] seconds)
+
+        If any of the keyword args are not None, *args* must be empty.
+        """
+        if len(args) == 0:
+            delta = days or 0
+            delta = 24 * delta + (hours or 0)
+            delta = 60 * delta + (minutes or 0)
+            delta = 60 * delta + (seconds or 0)
+        else:
+            if seconds or minutes or hours or days:
+                self._fail("dt.increment expects either *args or **kw,"
+                           " not both")
+            largs = list(args)
+            mult = [24*3600, 3600, 60]
+            delta = largs.pop()
+            while largs:
+                delta = delta + mult.pop() * largs.pop()
+        return delta
+
+    # -------------------------------------------------------------------------
+    def decrement(self, *args, seconds=None, minutes=None, hours=None,
+                  days=None):
+        """
+        Same as increment, but subtract the delta
+        """
+        delta = self._duration(*args, seconds=seconds, minutes=minutes,
+                               hours=hours, days=days)
+        return dt(epoch=self._utc - delta, tz=self._tz)
+
+    # -------------------------------------------------------------------------
+    def increment(self, *args, seconds=None, minutes=None, hours=None,
+                  days=None):
+        """
+        If *args* is not empty, we expect one of the following:
+
+            (seconds)
+            (minutes, seconds)
+            (hours, minutes, seconds)
+            (days, hours, minutes, seconds)
+
+        If any of the keyword args are not None, *args* must be empty.
+        """
+        delta = self._duration(*args, seconds=seconds, minutes=minutes,
+                               hours=hours, days=days)
+        return dt(epoch=self._utc + delta, tz=self._tz)
+
+    # -------------------------------------------------------------------------
     def next_day(self, count=1):
         """
         Return the dt that is *count* days after the current object

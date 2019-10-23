@@ -106,6 +106,92 @@ def test_datetime_x(nub, exp):
 
 
 # -----------------------------------------------------------------------------
+@pytest.mark.parametrize("start, kw, argl, exp", [
+    pp(dt(2003, 5, 7, 10, 38, 17), None, (15,), dt(2003, 5, 7, 10, 38, 2),
+       id="- 00:00:15 args"),
+    pp(dt(2003, 5, 7, 10, 38, 17), None, (4, 15,), dt(2003, 5, 7, 10, 34, 2),
+       id="- 00:04:15 args"),
+    pp(dt(2003, 5, 7, 10, 38, 17), None, (3, 4, 15,), dt(2003, 5, 7, 7, 34, 2),
+       id="- 03:04:15 args"),
+    pp(dt(2003, 5, 7, 10, 38, 17), None, (32, 3, 4, 15,),
+       dt(2003, 4, 5, 6, 34, 2), id="- 32+03:04:15 args"),
+    pp(dt("2004.0301 00:00:08"), {'seconds': 42}, None,
+       dt("2004.0229 23:59:26"), id="- 00:00:42 kw"),
+    pp(dt("2004.0301 00:00:08"), {'minutes': 17, 'seconds': 42}, None,
+       dt("2004.0229 23:42:26"),
+       id="- 00:17:42 kw"),
+    pp(dt("2004.0228 23:59:58"), {'hours': 7, 'minutes': 17, 'seconds': 42},
+       None, dt("2004.0228 16:42:16"), id="- 07:17:42 kw"),
+    ])
+def test_decr(start, kw, argl, exp):
+    """
+    Add or subtract time segments against a dt object
+    """
+    pytest.dbgfunc()
+    if isinstance(exp, dt_error):
+        with pytest.raises(dt_error) as err:
+            assert start.decrement(*argl, **kw)
+        assert str(exp) in str(err.value)
+    elif argl:
+        actual = start.decrement(*argl)
+        assert actual == exp, "{} != {}".format(actual, exp)
+    elif kw:
+        actual = start.decrement(**kw)
+        assert actual == exp, "{} != {}".format(actual, exp)
+    else:
+        pytest.fail("unknown argument format")
+
+
+# -----------------------------------------------------------------------------
+@pytest.mark.parametrize("start, kw, argl, exp", [
+    pp(dt(2003, 5, 7, 10, 38, 17), None, (15,), dt(2003, 5, 7, 10, 38, 32),
+       id="+ 00:00:15 args"),
+    pp(dt(2003, 5, 7, 10, 38, 17), None, (4, 15,), dt(2003, 5, 7, 10, 42, 32),
+       id="+ 00:04:15 args"),
+    pp(dt(2003, 5, 7, 10, 38, 17), None, (3, 4, 15,),
+       dt(2003, 5, 7, 13, 42, 32), id="+ 03:04:15 args"),
+    pp(dt(2003, 5, 7, 10, 38, 17), None, (32, 3, 4, 15,),
+       dt(2003, 6, 8, 13, 42, 32), id="+ 32+03:04:15 args"),
+    pp(dt("2019.0310 23:45:00", tz='est5edt'), None, (1, -19, 0, 0),
+       dt("2019.0311 04:45:00", tz='est5edt'),
+       id="+ 1-19:00:00 = +05:00:00"),
+    pp(dt("2004.0228 23:59:58"), {'seconds': 42}, None,
+       dt("2004.0229 00:00:40"), id="+ 00:00:42 kw"),
+    pp(dt("2004.0228 23:59:58"), {'minutes': 17, 'seconds': 42}, None,
+       dt("2004.0229 00:17:40"),
+       id="+ 00:17:42 kw"),
+    pp(dt("2004.0228 23:59:58"), {'hours': 7, 'minutes': 17, 'seconds': 42},
+       None, dt("2004.0229 07:17:40"), id="+ 07:17:42 kw"),
+    pp(dt("2004.0228 23:32:55"), None, (5324,), dt("2004.0229 01:01:39"),
+       id="+ 5324 secs args"),
+    pp(dt("2004.0228 23:32:55"), None, (900, 0), dt("2004.0229 14:32:55"),
+       id="+ 900 mins args"),
+    pp(dt("2004.0228 23:32:55"), {'minutes': 900}, None,
+       dt("2004.0229 14:32:55"), id="+ 900 mins kw"),
+    pp(dt("2004.0228 23:32:55"), {'minutes': 900}, (17,),
+       dt_error("dt.increment expects either *args or **kw, not both"),
+       id="bad args"),
+    ])
+def test_incr(start, kw, argl, exp):
+    """
+    Add or subtract time segments against a dt object
+    """
+    pytest.dbgfunc()
+    if isinstance(exp, dt_error):
+        with pytest.raises(dt_error) as err:
+            assert start.increment(*argl, **kw)
+        assert str(exp) in str(err.value)
+    elif argl:
+        actual = start.increment(*argl)
+        assert actual == exp, "{} != {}".format(actual, exp)
+    elif kw:
+        actual = start.increment(**kw)
+        assert actual == exp, "{} != {}".format(actual, exp)
+    else:
+        pytest.fail("unknown argument format")
+
+
+# -----------------------------------------------------------------------------
 @pytest.mark.parametrize("inp, exp", [
     pp((), None, id="no arg"),
     pp(datetime(2001, 9, 11), dt(epoch=datetime(2001, 9, 11).timestamp()),
