@@ -125,3 +125,34 @@ def test_static_brew_tz(inp, exp):
         assert dt._static_brew_tz(inp) == exp
 
 
+# -----------------------------------------------------------------------------
+@pytest.mark.parametrize("obj, itz, exp", [
+    pp(dt(), pytz.timezone('est5edt'), pytz.timezone('est5edt'),
+       id="tz -> tz"),
+    pp(dt(), 'local', tzlocal.get_localzone(),
+       id="'local' -> local tz"),
+    pp(dt(), 'est5edt', pytz.timezone('est5edt'),
+       id="tz name -> tz"),
+    pp(dt(), None, tzlocal.get_localzone(),
+       id="None -> local tz"),
+    pp(dt(), 17,
+       dt_error("tz must be timezone, timezone name, or None"),
+       id="invalid timezone")
+    ])
+def test_brew_tz(obj, itz, exp):
+    """
+    This function can take a pytz.BaseTzInfo object, a string containing
+    'local' or the name of a timezone, or None.
+
+        tz is None                   => self._tz
+        something else               => _static_brew_tz()
+    """
+    pytest.dbgfunc()
+    if isinstance(exp, dt_error):
+        with pytest.raises(dt_error) as err:
+            obj._brew_tz(itz)
+        assert str(exp) in str(err.value)
+    else:
+        assert obj._brew_tz(itz) == exp
+
+
