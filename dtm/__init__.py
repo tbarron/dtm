@@ -81,16 +81,12 @@ class dt(object):
             elif isinstance(args[0], datetime):
                 self._utc = int(args[0].timestamp())
             elif isinstance(args[0], str):
-                tmp = self._from_format(args[0])
-                tmp = self._tz.normalize(self._tz.localize(tmp))
-                self._utc = tmp.timestamp()
+                self._utc = self._from_format(args[0])
             else:
                 dt._fail("single arg must be str, dt, datetime,"
                          " or epoch=<int>")
         elif all(isinstance(_, int) for _ in args):
-            tmp = self._from_ints(*args)
-            tmp = self._tz.normalize(self._tz.localize(tmp))
-            self._utc = tmp.timestamp()
+            self._utc = self._from_ints(*args)
         else:
             dt._fail("dt.__init__ expects dt, datetime, str, ints,"
                      " or epoch=<int>")
@@ -108,15 +104,16 @@ class dt(object):
                           "%Y-%m-%dT%H:%M:%SZ",
                           "%Y-%m-%dT%H:%M:%S",
                           ]
-        rval = None
+        formatted_dt = None
         for fmt in fmt_candidates:
             try:
-                rval = datetime.strptime(spec, fmt)
+                formatted_dt = datetime.strptime(spec, fmt)
                 break
             except ValueError:
                 pass
-        if rval is None:
+        if formatted_dt is None:
             dt._fail("None of the formats matched '{}'".format(spec))
+        rval = self._norm_loc_ize(formatted_dt).timestamp()
         return rval
 
     # -------------------------------------------------------------------------
@@ -124,7 +121,7 @@ class dt(object):
         """
         Initialize from a list of ints.
         """
-        return datetime(*args)
+        return self._norm_loc_ize(datetime(*args)).timestamp()
 
     # -------------------------------------------------------------------------
     @staticmethod
