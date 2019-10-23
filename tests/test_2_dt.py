@@ -620,16 +620,26 @@ def test_next_day(nub, ndargs, exp):
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("when, target, exp", [
-    pp(dt(2001, 4, 12), 'wed', dt(2011, 4, 13)),
-    pp(dt(2001, 4, 12), 'thu', dt(2011, 4, 14)),
-    pp(dt(2001, 4, 12), 'fri', dt(2011, 4, 15)),
-    pp(dt(2001, 4, 12), 'sat', dt(2011, 4, 16)),
-    pp(dt(2001, 4, 12), 'sun', dt(2011, 4, 17)),
-    pp(dt(2001, 4, 12), 'mon', dt(2011, 4, 18)),
-    pp(dt(2001, 4, 12), 'tue', dt(2011, 4, 19)),
-    pp(dt(2001, 4, 12), 3, dt_error("next_weekday requires a string or list")),
-    pp(dt(2001, 4, 12), 'january',
-       dt_error("one of the targets is not a valid weekday")),
+    pp(dt(2001, 4, 10), 'wed', dt(2001, 4, 11), id="tue: next wed"),
+    pp(dt(2001, 4, 10), 'thu', dt(2001, 4, 12), id="tue: next thu"),
+    pp(dt(2001, 4, 10), 'fri', dt(2001, 4, 13), id="tue: next fri"),
+    pp(dt(2001, 4, 10), 'sat', dt(2001, 4, 14), id="tue: next sat"),
+    pp(dt(2001, 4, 10), 'sun', dt(2001, 4, 15), id="tue: next sun"),
+    pp(dt(2001, 4, 10), 'mon', dt(2001, 4, 16), id="tue: next mon"),
+    pp(dt(2001, 4, 10), 'tue', dt(2001, 4, 17), id="tue: next tue"),
+
+    pp(dt(2001, 4, 10), ['mon', 'fri'], dt(2001, 4, 13),
+       id="tue: next mon, fri"),
+    pp(dt(2001, 4, 14), ['mon', 'fri'], dt(2001, 4, 16),
+       id="sat: next mon, fri"),
+    pp(dt(2001, 4, 17), ['mon', 'fri'], dt(2001, 4, 20),
+       id="tue: next mon, fri"),
+
+    pp(dt(2001, 4, 10), 3, dt_error("next_weekday requires a string or list"),
+       id="non-string arg"),
+    pp(dt(2001, 4, 10), 'january',
+       dt_error("one of the targets is not a valid weekday"),
+       id="non weekday arg"),
     ])
 def test_next_weekday(when, target, exp):
     """
@@ -642,7 +652,9 @@ def test_next_weekday(when, target, exp):
             when.next_weekday(target)
         assert str(exp) in str(err.value)
     else:
-        when.next_weekday(target) == exp
+        assert when.next_weekday(target) == exp
+
+
 
 
 # -----------------------------------------------------------------------------
