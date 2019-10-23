@@ -372,6 +372,25 @@ class dt(object):
         return rval
 
     # -------------------------------------------------------------------------
+    def last_weekday(self, trgs=None):
+        """
+        The argument can be a string or list of strings. Each string should be
+        the lowercase abbreviated name of a weekday. The date of the last one
+        preceding the current object will be returned.
+        """
+        if isinstance(trgs, str):
+            trgs = [trgs]
+        if not isinstance(trgs, list):
+            dt._fail("last_weekday requires a string or list")
+        wkdl = self.weekday_list()
+        if any(_ not in wkdl for _ in trgs):
+            dt._fail("one of the targets is not a valid weekday")
+        scan = dt(self.previous_day())
+        while scan.weekday() not in trgs:
+            scan = scan.previous_day()
+        return scan
+
+    # -------------------------------------------------------------------------
     def next_weekday(self, trgs=None):
         """
         The argument can be a string or list of strings. Each string should be
