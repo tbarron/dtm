@@ -1,4 +1,4 @@
-## 1.2.0 ... 2019-10-23 18:53:52
+## 1.2.0 ... 2019-10-24 05:19:17
 
  * Improve internal function _norm_loc_ize() by making it take a datetime
    rather than a timestamp and always use the dt internal self._tz.
