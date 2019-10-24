@@ -843,7 +843,6 @@ def test_weekday(obj, otz, exp):
 
 
 # -----------------------------------------------------------------------------
-def test_weekday_floor():
 @pytest.mark.parametrize("when, wkday, exp", [
     pp( dt(2000, 12, 4), 'mon', dt(2000, 12, 4), id="weekday_ceiling mon" ),
     pp( dt(2000, 12, 4), 'sun', dt(2000, 12, 10), id="weekday_ceiling sun" ),
@@ -863,20 +862,24 @@ def test_weekday_ceiling(when, wkday, exp):
     assert when.weekday_ceiling(wkday) == exp
 
 
+# -----------------------------------------------------------------------------
+@pytest.mark.parametrize("when, wkday, exp", [
+    pp( dt(2000, 12, 1), 'sat', dt(2000, 11, 25), id="weekday_floor sat" ),
+    pp( dt(2000, 12, 1), 'sun', dt(2000, 11, 26), id="weekday_floor sun" ),
+    pp( dt(2000, 12, 1), 'mon', dt(2000, 11, 27), id="weekday_floor mon" ),
+    pp( dt(2000, 12, 1), 'tue', dt(2000, 11, 28), id="weekday_floor tue" ),
+    pp( dt(2000, 12, 1), 'wed', dt(2000, 11, 29), id="weekday_floor wed" ),
+    pp( dt(2000, 12, 1), 'thu', dt(2000, 11, 30), id="weekday_floor thu" ),
+    pp( dt(2000, 12, 1), 'fri', dt(2000, 12, 1), id="weekday_floor fri" ),
+    ])
+def test_weekday_floor(when, wkday, exp):
     """
     Test dt().weekday_floor(). If today is Monday, dt().weekday_floor('mon') is
     today, dt().weekday_floor('sun') is yesterday, and
     dt().weekday_floor('tue') is last Tuesday
     """
     pytest.dbgfunc()
-    when = dt(2000, 12, 1)
-    assert when.weekday_floor('sat') == dt(2000, 11, 25)
-    assert when.weekday_floor('sun') == dt(2000, 11, 26)
-    assert when.weekday_floor('mon') == dt(2000, 11, 27)
-    assert when.weekday_floor('tue') == dt(2000, 11, 28)
-    assert when.weekday_floor('wed') == dt(2000, 11, 29)
-    assert when.weekday_floor('thu') == dt(2000, 11, 30)
-    assert when.weekday_floor('fri') == dt(2000, 12, 1)
+    assert when.weekday_floor(wkday) == exp
 
 
 # -----------------------------------------------------------------------------
