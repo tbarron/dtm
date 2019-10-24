@@ -475,32 +475,42 @@ class dt(object):
         return self.strftime("%a", tz=tz).lower()
 
     # -------------------------------------------------------------------------
-    def weekday_floor(self, wkday):
-        """
-        Return a dt containing the preceding *wkday* unless it's today. In that
-        case, return self
-        """
-        if wkday == self.weekday():
-            rval = self
-        else:
-            candy = self.previous_day()
-            while candy.weekday() != wkday:
-                candy = candy.previous_day()
-            rval = candy
-        return rval
-
-    # -------------------------------------------------------------------------
     def weekday_ceiling(self, wkday):
         """
         Return a dt containing the following *wkday* unless it's today. In that
         case, return self.
         """
-        if wkday == self.weekday():
+        if isinstance(wkday, str):
+            wkday = [wkday]
+        if not isinstance(wkday, list):
+            self._fail("weekday_ceiling: argument must be a str or list")
+
+        if self.weekday() in wkday:
             rval = self
         else:
             candy = self.next_day()
-            while candy.weekday() != wkday:
+            while candy.weekday() not in wkday:
                 candy = candy.next_day()
+            rval = candy
+        return rval
+
+    # -------------------------------------------------------------------------
+    def weekday_floor(self, wkday):
+        """
+        Return a dt containing the preceding *wkday* unless it's today. In that
+        case, return self
+        """
+        if isinstance(wkday, str):
+            wkday = [wkday]
+        elif not isinstance(wkday, list):
+            self._fail("weekday_floor: argument must be a str or list")
+
+        if self.weekday() in wkday:
+            rval = self
+        else:
+            candy = self.previous_day()
+            while candy.weekday() not in wkday:
+                candy = candy.previous_day()
             rval = candy
         return rval
 
