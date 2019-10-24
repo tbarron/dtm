@@ -844,6 +844,25 @@ def test_weekday(obj, otz, exp):
 
 # -----------------------------------------------------------------------------
 def test_weekday_floor():
+@pytest.mark.parametrize("when, wkday, exp", [
+    pp( dt(2000, 12, 4), 'mon', dt(2000, 12, 4), id="weekday_ceiling mon" ),
+    pp( dt(2000, 12, 4), 'sun', dt(2000, 12, 10), id="weekday_ceiling sun" ),
+    pp( dt(2000, 12, 4), 'sat', dt(2000, 12, 9), id="weekday_ceiling sat" ),
+    pp( dt(2000, 12, 4), 'fri', dt(2000, 12, 8), id="weekday_ceiling fri" ),
+    pp( dt(2000, 12, 4), 'thu', dt(2000, 12, 7), id="weekday_ceiling thu" ),
+    pp( dt(2000, 12, 4), 'wed', dt(2000, 12, 6), id="weekday_ceiling wed" ),
+    pp( dt(2000, 12, 4), 'tue', dt(2000, 12, 5), id="weekday_ceiling tue" ),
+    ])
+def test_weekday_ceiling(when, wkday, exp):
+    """
+    Test dt().weekday_ceiling(). If today is Monday,
+    dt().weekday_ceiling('mon') is today, dt().weekday_ceiling('tue') is
+    tomorrow, and dt().weekday_ceiling('sun') is the upcoming Sunday.
+    """
+    pytest.dbgfunc()
+    assert when.weekday_ceiling(wkday) == exp
+
+
     """
     Test dt().weekday_floor(). If today is Monday, dt().weekday_floor('mon') is
     today, dt().weekday_floor('sun') is yesterday, and
