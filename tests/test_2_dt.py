@@ -844,13 +844,31 @@ def test_weekday(obj, otz, exp):
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("when, wkday, exp", [
-    pp( dt(2000, 12, 4), 'mon', dt(2000, 12, 4), id="weekday_ceiling mon" ),
-    pp( dt(2000, 12, 4), 'sun', dt(2000, 12, 10), id="weekday_ceiling sun" ),
-    pp( dt(2000, 12, 4), 'sat', dt(2000, 12, 9), id="weekday_ceiling sat" ),
-    pp( dt(2000, 12, 4), 'fri', dt(2000, 12, 8), id="weekday_ceiling fri" ),
-    pp( dt(2000, 12, 4), 'thu', dt(2000, 12, 7), id="weekday_ceiling thu" ),
-    pp( dt(2000, 12, 4), 'wed', dt(2000, 12, 6), id="weekday_ceiling wed" ),
-    pp( dt(2000, 12, 4), 'tue', dt(2000, 12, 5), id="weekday_ceiling tue" ),
+    pp(dt(2005, 5, 1), 17, dt_error("argument must be a str or list"),
+        id="bad argument"),
+
+    pp(dt(2000, 12, 4), 'mon', dt(2000, 12, 4), id="weekday_ceiling mon"),
+    pp(dt(2000, 12, 4), 'sun', dt(2000, 12, 10), id="weekday_ceiling sun"),
+    pp(dt(2000, 12, 4), 'sat', dt(2000, 12, 9), id="weekday_ceiling sat"),
+    pp(dt(2000, 12, 4), 'fri', dt(2000, 12, 8), id="weekday_ceiling fri"),
+    pp(dt(2000, 12, 4), 'thu', dt(2000, 12, 7), id="weekday_ceiling thu"),
+    pp(dt(2000, 12, 4), 'wed', dt(2000, 12, 6), id="weekday_ceiling wed"),
+    pp(dt(2000, 12, 4), 'tue', dt(2000, 12, 5), id="weekday_ceiling tue"),
+
+    pp(dt(2003, 7, 4), ['sat', 'wed'], dt(2003, 7, 5),
+        id="fri.ceil(sat, wed)"),
+    pp(dt(2003, 7, 5), ['sat', 'wed'], dt(2003, 7, 5),
+        id="sat.ceil(sat, wed)"),
+    pp(dt(2003, 7, 6), ['sat', 'wed'], dt(2003, 7, 9),
+        id="sun.ceil(sat, wed)"),
+    pp(dt(2003, 7, 7), ['sat', 'wed'], dt(2003, 7, 9),
+        id="mon.ceil(sat, wed)"),
+    pp(dt(2003, 7, 8), ['sat', 'wed'], dt(2003, 7, 9),
+        id="tue.ceil(sat, wed)"),
+    pp(dt(2003, 7, 9), ['sat', 'wed'], dt(2003, 7, 9),
+        id="wed.ceil(sat, wed)"),
+    pp(dt(2003, 7, 10), ['sat', 'wed'], dt(2003, 7, 12),
+        id="thu.ceil(sat, wed)"),
     ])
 def test_weekday_ceiling(when, wkday, exp):
     """
@@ -869,13 +887,31 @@ def test_weekday_ceiling(when, wkday, exp):
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("when, wkday, exp", [
-    pp( dt(2000, 12, 1), 'sat', dt(2000, 11, 25), id="weekday_floor sat" ),
-    pp( dt(2000, 12, 1), 'sun', dt(2000, 11, 26), id="weekday_floor sun" ),
-    pp( dt(2000, 12, 1), 'mon', dt(2000, 11, 27), id="weekday_floor mon" ),
-    pp( dt(2000, 12, 1), 'tue', dt(2000, 11, 28), id="weekday_floor tue" ),
-    pp( dt(2000, 12, 1), 'wed', dt(2000, 11, 29), id="weekday_floor wed" ),
-    pp( dt(2000, 12, 1), 'thu', dt(2000, 11, 30), id="weekday_floor thu" ),
-    pp( dt(2000, 12, 1), 'fri', dt(2000, 12, 1), id="weekday_floor fri" ),
+    pp(dt(2005, 5, 1), 17, dt_error("argument must be a str or list"),
+        id="bad argument"),
+
+    pp(dt(2000, 12, 1), 'sat', dt(2000, 11, 25), id="weekday_floor sat"),
+    pp(dt(2000, 12, 1), 'sun', dt(2000, 11, 26), id="weekday_floor sun"),
+    pp(dt(2000, 12, 1), 'mon', dt(2000, 11, 27), id="weekday_floor mon"),
+    pp(dt(2000, 12, 1), 'tue', dt(2000, 11, 28), id="weekday_floor tue"),
+    pp(dt(2000, 12, 1), 'wed', dt(2000, 11, 29), id="weekday_floor wed"),
+    pp(dt(2000, 12, 1), 'thu', dt(2000, 11, 30), id="weekday_floor thu"),
+    pp(dt(2000, 12, 1), 'fri', dt(2000, 12, 1), id="weekday_floor fri"),
+
+    pp(dt(2003, 7, 4), ['sat', 'wed'], dt(2003, 7, 2),
+        id="fri.floor(sat, wed)"),
+    pp(dt(2003, 7, 5), ['sat', 'wed'], dt(2003, 7, 5),
+        id="sat.floor(sat, wed)"),
+    pp(dt(2003, 7, 6), ['sat', 'wed'], dt(2003, 7, 5),
+        id="sun.floor(sat, wed)"),
+    pp(dt(2003, 7, 7), ['sat', 'wed'], dt(2003, 7, 5),
+        id="mon.floor(sat, wed)"),
+    pp(dt(2003, 7, 8), ['sat', 'wed'], dt(2003, 7, 5),
+        id="tue.floor(sat, wed)"),
+    pp(dt(2003, 7, 9), ['sat', 'wed'], dt(2003, 7, 9),
+        id="wed.floor(sat, wed)"),
+    pp(dt(2003, 7, 10), ['sat', 'wed'], dt(2003, 7, 9),
+        id="thu.floor(sat, wed)"),
     ])
 def test_weekday_floor(when, wkday, exp):
     """
