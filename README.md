@@ -168,7 +168,7 @@ timezone value in the object is used to determine the timezone adjustment.
 ### dt.strptime(spec, fmt, tz=None) [static] (Parse input time)
 
 The string spec is parsed according to format fmt and interpreted in terms
-of the timezone indicated by the tz argument. If tz is not specified, 
+of the timezone indicated by the tz argument. If tz is not specified,
 
 ### dt.version() [static] (Get the package version)
 
@@ -179,7 +179,7 @@ Return the version of the dtm package.
 Return the weekday name of the stored time ref.
 
 ### dt.weekday_floor(wkdays) (Determine latest preceding occurrence of a weekday)
-    
+
 Search backward in time from the stored time ref to the most recent day
 matching a day in the weekday list, wkdays (may be a single string or a
 list of strings). If an entry in the list matches the weekday of the stored
