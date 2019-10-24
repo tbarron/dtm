@@ -490,6 +490,21 @@ class dt(object):
         return rval
 
     # -------------------------------------------------------------------------
+    def weekday_ceiling(self, wkday):
+        """
+        Return a dt containing the following *wkday* unless it's today. In that
+        case, return self.
+        """
+        if wkday == self.weekday():
+            rval = self
+        else:
+            candy = self.next_day()
+            while candy.weekday() != wkday:
+                candy = candy.next_day()
+            rval = candy
+        return rval
+
+    # -------------------------------------------------------------------------
     def weekday_list(self):
         """
         Return a list of abbreviated weekday names
