@@ -9,6 +9,7 @@
  * Wrote dt._fail() and replaced 'raise dt_error(<message>)' with
    dt._fail(<message>)
  * Added tests for internal helper functions.
+ * Tweaked some tests to address failures on travis.
 
 
 ## 1.1.0 ... 2019-10-22 07:27:57
