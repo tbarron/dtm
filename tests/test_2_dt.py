@@ -859,7 +859,12 @@ def test_weekday_ceiling(when, wkday, exp):
     tomorrow, and dt().weekday_ceiling('sun') is the upcoming Sunday.
     """
     pytest.dbgfunc()
-    assert when.weekday_ceiling(wkday) == exp
+    if isinstance(exp, dt_error):
+        with pytest.raises(dt_error) as err:
+            when.weekday_ceiling(wkday) == exp
+        assert str(exp) in str(err.value)
+    else:
+        assert when.weekday_ceiling(wkday) == exp
 
 
 # -----------------------------------------------------------------------------
@@ -879,7 +884,12 @@ def test_weekday_floor(when, wkday, exp):
     dt().weekday_floor('tue') is last Tuesday
     """
     pytest.dbgfunc()
-    assert when.weekday_floor(wkday) == exp
+    if isinstance(exp, dt_error):
+        with pytest.raises(dt_error) as err:
+            when.weekday_floor(wkday) == exp
+        assert str(exp) in str(err.value)
+    else:
+        assert when.weekday_floor(wkday) == exp
 
 
 # -----------------------------------------------------------------------------
