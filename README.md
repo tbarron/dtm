@@ -9,6 +9,72 @@ Functionality added to datetime:
   * Iterate over a range of dates
   * Easy conversion from timezone to UTC and back
 
+## Quick Start
+
+Import the module:
+
+    >>> from dtm import dt
+
+Get the current date/time:
+
+    >>> a = dt()
+    >>> a
+    dt(1571952371, tz='America/New_York')
+    >>> a()
+    '2019-10-24-17:26:11'
+
+Get a target date/time based on a default format:
+
+    >>> b = dt("2004.0226 12:17:30")
+    >>> b()
+    '2004-02-26-12:17:30'
+
+Jump forward or backward by one or more days:
+
+    >>> c = b.next_day(6)
+    >>> c()
+    '2004-03-03-12:17:30'
+    >>> d = c.previous_day(17)
+    >>> d()
+    '2004-02-15-12:17:30'
+
+Get the date of the Monday after April 3, 2019, and the Friday before that:
+
+    >>> e = d.next_weekday('mon')
+    >>> e()
+    '2019-04-08-12:17:30'
+    >>> f = e.last_weekday('fri')
+    >>> f()
+    '2019-04-05-12:17:30'
+
+Iterate over a range of dates:
+
+    >>> for day in b.dt_range(c):
+    >>>     day()
+    '2004-02-26-12:17:30'
+    '2004-02-27-12:17:30'
+    '2004-02-28-12:17:30'
+    '2004-02-29-12:17:30'
+    '2004-03-01-12:17:30'
+    '2004-03-02-12:17:30'
+    '2004-03-03-12:17:30'
+    '2004-03-04-12:17:30'
+
+Convert between timezones:
+
+    >>> q = dt(2019, 3, 10, 3, 0, 0)
+    >>> q("%F %T %A %Z")
+    '2019-03-10 03:00:00 Sunday EDT'
+    >>> q("%F %T %Z %A", tz='utc')
+    '2019-03-10 07:00:00 UTC Sunday'
+    >>> q("%F %T %Z %A", tz='pst8pdt')
+    '2019-03-09 23:00:00 PST Saturday'
+    >>> q("%F %T %Z %A", tz='cet')
+    '2019-03-10 08:00:00 CET Sunday'
+    >>> q("%F %T %Z %A", tz='Asia/Jakarta')
+    '2019-03-10 14:00:00 WIB Sunday'
+
+
 ## Terms
 
 **dtspec**
