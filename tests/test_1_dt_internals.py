@@ -2,6 +2,7 @@ from datetime import datetime
 from dtm import dt, dt_error
 import pytest
 import pytz
+import tbx
 import tzlocal
 
 
@@ -156,6 +157,43 @@ def test_brew_tz(obj, itz, exp):
         assert str(exp) in str(err.value)
     else:
         assert obj._brew_tz(itz) == exp
+
+
+# -----------------------------------------------------------------------------
+@pytest.mark.parametrize("fmts, inp, exp", [
+    pp("%d/%m/%y %H:%M:%S; %d/%m/%y; %d/%m/%Y",
+       "12/11/25", "1925-11-12 00:00:00", id="dd/mm/yy"),
+    pp("%d/%m/%y %H:%M:%S; %d/%m/%y; %d/%m/%Y %H:%M:%S",
+       "12/3/2025 17:32:19", "2025-03-12 17:32:19",
+       id="dd/mm/yyyy hh:mm:ss"),
+    pp(None, "12/11/25", "1925-12-11 00:00:00", id="dd/mm/yy"),
+    pp(None,
+       "12/3/2025 17:32:19", "2025-12-03 17:32:19",
+       id="dd/mm/yyyy hh:mm:ss"),
+    ])
+def test_env_dtm_formats(fmts, inp, exp):
+    """
+    If $DTM_FORMATS is set, its value should be added at the beginning of the
+    default parseable input formats.
+    """
+    with tbx.envset(DTM_FORMATS=fmts):
+        a = dt(inp)
+        assert a() == exp
+
+
+# -----------------------------------------------------------------------------
+# def test_env_dtm_str():
+#     """
+#     If $DTM_STR is set, its value should be used as the output format for
+#     dt.__str__().
+#     """
+#     dtmdir = tmpdir.join(".dtm").ensure(dir=True)
+#     cfile = dtmdir.join("dtm.ini")
+#     cfile.write("".join(["[dtm]",
+#                          "formats: '%Y-%m-%d %H:%M:%S',",
+#                          "   %Y-%m-%d-%H:%M:%S,",
+#                          "   %m/%d/%y"]))
+#     with tbx.envset(HOME=tmpdir.strpath):
 
 
 # -----------------------------------------------------------------------------
