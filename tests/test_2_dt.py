@@ -174,18 +174,25 @@ def test_env_dtm_formats(fmts, inp, exp):
 
 
 # -----------------------------------------------------------------------------
-# def test_env_dtm_str():
-#     """
-#     If $DTM_STR is set, its value should be used as the output format for
-#     dt.__str__().
-#     """
-#     dtmdir = tmpdir.join(".dtm").ensure(dir=True)
-#     cfile = dtmdir.join("dtm.ini")
-#     cfile.write("".join(["[dtm]",
-#                          "formats: '%Y-%m-%d %H:%M:%S',",
-#                          "   %Y-%m-%d-%H:%M:%S,",
-#                          "   %m/%d/%y"]))
-#     with tbx.envset(HOME=tmpdir.strpath):
+@pytest.mark.parametrize("inp, itz, fmt, exp", [
+    pp("2019.0901 07:32:19", None, "%H:%M:%S, %A, %B %d, %Y",
+       "07:32:19, Sunday, September 01, 2019", id="ymdhms -> hmswmdy"),
+    pp("2019.0309 23:00:00", "pst8pdt", "%c %Z",
+       "Sat Mar  9 23:00:00 2019 PST", id="est -> cZ pst"),
+    pp("2001.1002 11:22:33", None, "bratwurst", "bratwurst",
+       id="no strftime formatters"),
+    pp("2001.1002 11:22:33", 'est5edt', None, "2001-10-02 11:22:33 EDT",
+       id="default format"),
+    ])
+def test_env_dtm_str(inp, itz, fmt, exp):
+    """
+    If $DTM_STR is set, its value should be used as the output format for
+    dt.__str__().
+    """
+    pytest.dbgfunc()
+    with tbx.envset(DTM_STR=fmt):
+        nib = dt(inp, tz=itz)
+        assert str(nib) == exp
 
 
 # -----------------------------------------------------------------------------
