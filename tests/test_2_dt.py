@@ -145,6 +145,9 @@ def test_decr(start, kw, argl, exp):
 
 # -----------------------------------------------------------------------------
 def century():
+    """
+    Return the two digit century for validating %y processing
+    """
     return datetime.now().year // 100
 
 
@@ -1007,5 +1010,3 @@ def test_ymdw(when, exp):
     """
     pytest.dbgfunc()
     assert dt(when).ymdw() == exp
-
-
