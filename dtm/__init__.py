@@ -251,7 +251,7 @@ class dt(object):
         formatted for human readability.
         """
         udt = datetime.fromtimestamp(self._utc).astimezone(self._tz)
-        fmt = "%F %T %Z"
+        fmt = os.getenv("DTM_STR") or "%F %T %Z"
         return udt.strftime(fmt)
 
     # -------------------------------------------------------------------------
