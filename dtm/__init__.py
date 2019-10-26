@@ -108,8 +108,12 @@ class dt(object):
         feature might be a way to easily add new formats to this list, perhapss
         through a configuration file.
         """
+        udfmts = self._user_defined_formats()
+        if udfmts:
+            udfmts.extend(self._pformats)
+            self._pformats = udfmts
         formatted_dt = None
-        for fmt in fmt_candidates:
+        for fmt in self._pformats:
             try:
                 formatted_dt = datetime.strptime(spec, fmt)
                 break
