@@ -1,5 +1,6 @@
 from dtm import version
 from datetime import datetime
+import os
 import pytz
 import tzlocal
 
@@ -254,6 +255,16 @@ class dt(object):
         internal timezone.
         """
         return "dt({}, tz='{}')".format(int(self._utc), self._tz.zone)
+
+    # -------------------------------------------------------------------------
+    def _user_defined_formats(self):
+        """
+        Read and parse $DTM_FORMATS if set for user defined parsing formats
+        """
+        rval = os.getenv("DTM_FORMATS")
+        if rval:
+            rval = [_.strip() for _ in rval.split(';')]
+        return rval
 
     # -------------------------------------------------------------------------
     def datetime(self):
