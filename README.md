@@ -303,13 +303,31 @@ Files marked with * are not in git.
 
 ## Future Plans
 
-### configuration file
+### configuration
 
-Get the list of favorite parsing formats from a configuration file, perhaps
-located at $HOME/.dtm/dtm.ini. The default list provided by the module
-would always be present (unless the user overwrites it; perhaps we need a
-way of specifying this in the config file) and the user could easily
-augment the list by adding formats to the config file.
+The value of environment variable DTM_FORMATS will be prepended to the list
+of default parseable formats. For example, the following
+
+    export DTM_FORMATS="%d/%m/%Y; %d/%m/%y; %d/%m/%y %H:%M:%S"
+
+would add European date formatting (day, month, year) in front of the
+default American (month, day, year) formats. This would result in
+12/11/2019 being interprested as November 12, 2019 rather than December 11,
+2019.
+
+The value will be split on ';' and leading and trailing whitespace will be
+removed from each segment.
+
+The value of environment variable DTM_STR, if set, will be used to format
+dt.__str__() output. For example,
+
+    export DTM_STR="%H:%M:%S %B %d, %Y"
+
+would result in the following:
+
+    >>> a = dt()
+    >>> a()
+    '09:09:29 October 26, 2019'
 
 ### datetime output
 
