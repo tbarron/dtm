@@ -1,3 +1,18 @@
+## 1.3.0 ... 2019-10-26 13:51:20
+
+ * Add test and code for dt.weekday_ceiling(), parametrize test for
+   dt.weekday_floor().
+ * Update tests for weekday_{ceiling,floor}() to check for
+    * exception raised on invalid argument,
+    * target input being a list.
+ * Update weekday_{ceiling,floor}() to raise exception on invalid argument
+   and handle the target input being a list of weekdays.
+ * Add Quick Start section to README.md.
+ * Add test and code for $DTM_FORMATS support for adding user-defined
+   entries to the list of default parseable formats
+ * Add test and code for $DTM_STR support to allow user to specify the
+   format __str__() should use.
+
 ## 1.2.0 ... 2019-10-24 05:19:17
 
  * Improve internal function _norm_loc_ize() by making it take a datetime
