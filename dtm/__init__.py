@@ -52,6 +52,15 @@ class dt(object):
     """
 
     _version = version._v
+    _pformats = ["%Y.%m%d",
+                 "%Y.%m%d %H:%M:%S",
+                 "%Y/%m/%d %H:%M",
+                 "%Y-%m-%dT%H:%M:%SZ",
+                 "%Y-%m-%dT%H:%M:%S",
+                 "%m/%d/%Y %H:%M:%S",
+                 "%m/%d/%Y",
+                 "%m/%d/%y %H:%M:%S",
+                 "%m/%d/%y",]
 
     # -------------------------------------------------------------------------
     def __init__(self, *args, **kw):
@@ -99,12 +108,6 @@ class dt(object):
         feature might be a way to easily add new formats to this list, perhapss
         through a configuration file.
         """
-        fmt_candidates = ["%Y.%m%d",
-                          "%Y.%m%d %H:%M:%S",
-                          "%Y/%m/%d %H:%M",
-                          "%Y-%m-%dT%H:%M:%SZ",
-                          "%Y-%m-%dT%H:%M:%S",
-                          ]
         formatted_dt = None
         for fmt in fmt_candidates:
             try:
