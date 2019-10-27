@@ -40,16 +40,16 @@ def utc_fr_local_tz(**kw):
     Compute utc from local time and timezone
     """
     if kw['d']:
-        pdb.set_trace()
-    dtspec = kw['UTC_DTSPEC']
-    tz = kw['TIMEZONE']
-    tzobj = pytz.timezone(tz)
+        pdb.set_trace()                                      # pragma: no cover
+    dtspec = kw['LOC_DTSPEC'] or 'now'
+    if dtspec == 'now':
+        dtspec = dt().strftime("%F %T")
+
+    tzname = kw['TIMEZONE'] or 'local'
+
     utc = pytz.timezone('utc')
-    fmt = "%Y.%m%d %H:%M:%S"
-    nl = datetime.strptime(dtspec, fmt)
-    nl = tzobj.normalize(tzobj.localize(nl))
-    print(nl.astimezone(utc).timestamp())
-    print(nl.timestamp())
+    nl = dt(dtspec, tz=tzname)
+    print(nl("%F %T %Z", tz=utc))
 
 
 # -----------------------------------------------------------------------------
