@@ -1,8 +1,8 @@
 """
 Usage:
     dtm splat [-d]
-    dtm utl [-d] UTC_DTSPEC TIMEZONE
-    dtm ltu [-d] LOC_DTSPEC TIMEZONE
+    dtm utl [-d] [UTC_DTSPEC] [TIMEZONE]
+    dtm ltu [-d] [LOC_DTSPEC] [TIMEZONE]
     dtm zones [-d] [SEARCH]
     dtm zdetails [-d] TIMEZONE
     dtm westeast [-d]
@@ -31,7 +31,6 @@ from dtm import dt
 import pdb
 import pytz
 import time
-import tzlocal
 
 
 # -----------------------------------------------------------------------------

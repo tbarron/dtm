@@ -55,6 +55,7 @@ class dt(object):
     _pformats = ["%Y.%m%d",
                  "%Y.%m%d %H:%M:%S",
                  "%Y/%m/%d %H:%M",
+                 "%Y-%m-%d %H:%M:%S",
                  "%Y-%m-%dT%H:%M:%SZ",
                  "%Y-%m-%dT%H:%M:%S",
                  "%m/%d/%Y %H:%M:%S",
