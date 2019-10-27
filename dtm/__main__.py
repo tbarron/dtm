@@ -79,7 +79,7 @@ def splat(**kw):
     Will the real UTC please stand up?
     """
     if kw['d']:
-        pdb.set_trace()
+        pdb.set_trace()                                      # pragma: no cover
     plugh("t", time.time())
     plugh("n", datetime.now().timestamp())
     plugh("u", datetime.utcnow().timestamp())
@@ -112,7 +112,7 @@ def zones(**kw):
     empty)
     """
     if kw['d']:
-        pdb.set_trace()
+        pdb.set_trace()                                      # pragma: no cover
 
     zlist = pytz.all_timezones
     if kw['SEARCH']:
