@@ -4,9 +4,6 @@ import dtm_test_utils as dtu
 import pytest
 import pytz
 import tbx
-import tzlocal
-
-
 
 
 # -----------------------------------------------------------------------------

@@ -4,7 +4,6 @@ Tests for code in dtm/__main__.py
 from dtm import dt
 import pytest
 import re
-# import tbx
 import dtm.__main__
 import dtm_test_utils as dtu
 
