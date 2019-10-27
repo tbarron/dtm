@@ -1,15 +1,9 @@
 from datetime import datetime
 from dtm import dt, dt_error
+import dtm_test_utils as dtu
 import pytest
 import pytz
 import tzlocal
-
-
-pp = pytest.param
-tz_utc = pytz.timezone('utc')
-tz_esdt = pytz.timezone('est5edt')
-tz_csdt = pytz.timezone('cst6cdt')
-tz_local = tzlocal.get_localzone()
 
 
 # -----------------------------------------------------------------------------
