@@ -115,7 +115,7 @@ The main thing dtm exports is the 'dt' object. It contains an epoch time
 
 The recommended method for importing the dt class is:
 
-    from dtm import dt
+    >>> from dtm import dt
 
 ### constructor
 
@@ -123,15 +123,15 @@ The dt object constructor will accept several argument schemes
 
 #### no arguments
 
-    myobj = dt()
+    >>> myobj = dt()
 
 Create a dt object containing the current date and time. This is analogous to
 
-    myobj = datetime().now()
+    >>> myobj = datetime().now()
 
 #### a list of ints (year, month, day, hour, minute, second)
 
-    myobj = dt(2011, 10, 9)
+    >>> myobj = dt(2011, 10, 9)
 
 At least year, month, and day are required. Hour, minute, and second are
 all optional, although somewhat interdependent. For example, because they
@@ -139,18 +139,18 @@ are positional, you can't provide second without providing minute.
 
 #### a string
 
-    myobj = dt("2011-10-09 20:07:06")
+    >>> myobj = dt("2011-10-09 20:07:06")
 
 The code tries to intuit the format of the provided date/time string. Most
-popular formats should work. If not timezone is provided, the input
+popular formats should work. If no timezone is provided, the input
 date/time is considered to be in the local timezone. This value will be
 converted to UTC and stored as an epoch value.
 
 #### an epoch value
 
-    myobj = dt(epoch=1426905900)
-    dt("%Y.%m%d %H:%M:%S")
-    >>> '2015.0320 22:45:00'
+    >>> myobj = dt(epoch=1426905900)
+    >>> dt("%Y.%m%d %H:%M:%S")
+    '2015.0320 22:45:00'
 
 The value provided must be numeric. It can be an integer or a float, so a
 value returned by time.time() or time.mktime() can be used. The value
@@ -161,7 +161,7 @@ provided is stored without any timezone adjustment.
 If you have a datetime object and want a dt object, the dt can be
 initialized directly from the datetime.
 
-    myobj = dt(datetime(2011, 10, 9))
+    >>> myobj = dt(datetime(2011, 10, 9))
 
 The microsecond member will be zeroed out.
 
@@ -170,7 +170,7 @@ The microsecond member will be zeroed out.
 Similarly, if you have a dt and want another, just pass in the one you've
 got:
 
-    newobj = dt(myobj)
+    >>> newobj = dt(myobj)
 
 #### timezone
 
@@ -200,8 +200,8 @@ value. If format is not provided, the default format is used ('%F-%T').
 
 ### dt.dt_range() (Iteration by day)
 
-    for day in dt(2011, 10, 1).dt_range(dt(2011, 10, 31)):
-        # do whatever
+    >>> for day in dt(2011, 10, 1).dt_range(dt(2011, 10, 31)):
+    >>>        # do whatever
 
 Unlike other Python range functions, the dt_range() function is inclusive.
 That is, the above loop will process 2011-10-31 as well as the rest of the
@@ -303,12 +303,18 @@ Files marked with * are not in git.
 
 ## Future Plans
 
-### configuration
+### configuration (DONE)
+
+Note: I decided to use environment variables DTM_FORMATS and DTM_STR rather
+than reading a file every time the dt constructor is called because this
+class should not add much weight to packages that use it. Environment
+variables seem like the right balance between configurability and
+light-weight-ness.
 
 The value of environment variable DTM_FORMATS will be prepended to the list
 of default parseable formats. For example, the following
 
-    export DTM_FORMATS="%d/%m/%Y; %d/%m/%y; %d/%m/%y %H:%M:%S"
+    $ export DTM_FORMATS="%d/%m/%Y; %d/%m/%y; %d/%m/%y %H:%M:%S"
 
 would add European date formatting (day, month, year) in front of the
 default American (month, day, year) formats. This would result in
@@ -321,7 +327,7 @@ removed from each segment.
 The value of environment variable DTM_STR, if set, will be used to format
 dt.__str__() output. For example,
 
-    export DTM_STR="%H:%M:%S %B %d, %Y"
+    $ export DTM_STR="%H:%M:%S %B %d, %Y"
 
 would result in the following:
 
@@ -329,7 +335,7 @@ would result in the following:
     >>> a()
     '09:09:29 October 26, 2019'
 
-### datetime output
+### datetime output (DONE)
 
 Provide a dt method that returns a datetime object, foo, containing the dt
 object's time reference and timezone such that foo.strftime("%F %T %Z")
@@ -366,11 +372,11 @@ This makes zone to zone conversions as easy as easy:
     >>> q.strftime('%Y.%m%d %H:%M:%S', z='EST')
     '2004.1007 10:19:17'
 
-Output methods will also accept an optional zone argument, allowing for
-on-the-fly conversions. For example,
+Most output methods will also accept an optional zone argument, allowing
+for on-the-fly conversions. For example,
 
-    q = dt('2015.0428 00:14:00')       # local time is EST
-    q.strftime('%Y.%m%d %H:%M:%S', z='MST')
-    >>> 2015.0427 21:14:00
-    q.strftime('%Y.%m%d %H:%M:%S', z='Paris')
-    >>> 2015.0428 06:14:00
+    >>> q = dt('2015.0428 00:14:00')       # local time is EDT
+    >>> q.strftime('%Y.%m%d %H:%M:%S', z='MST')
+    2015.0427 21:14:00
+    >>> q.strftime('%Y.%m%d %H:%M:%S', z='Europe/Paris')
+    2015.0428 06:14:00
