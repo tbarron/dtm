@@ -80,6 +80,21 @@ def test_splat(capsys):
 
 
 # -----------------------------------------------------------------------------
+@pytest.mark.parametrize("tzname, exp", [
+    dtu.pp("EET", ["tzname: EET", "utcoffset: 02:00"]),
+    dtu.pp("America/Port_of_Spain", ["utcoffset: -4:00", "tzname: AST"]),
+    ])
+def test_zdetails(tzname, exp, capsys):
+    """
+    """
+    pytest.dbgfunc()
+    kw = {'d': False, 'TIMEZONE': tzname}
+    dtm.__main__.zdetails(**kw)
+    (out, err) = capsys.readouterr()
+    assert all([_ in out for _ in exp])
+
+
+# -----------------------------------------------------------------------------
 @pytest.mark.parametrize("inp, exp", [
     dtu.pp("Guay", ["America/Guayaquil"], id="match 'Guay'"),
     dtu.pp("St_", ["America/St_Barthelemy", "America/St_Johns",
