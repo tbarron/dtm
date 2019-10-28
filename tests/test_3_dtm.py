@@ -62,6 +62,7 @@ def test_splat(capsys):
     """
     Code to determine real UTC
     """
+    pytest.dbgfunc()
     kw = {'d': False}
     dtm.__main__.splat(**kw)
     (out, err) = capsys.readouterr()
