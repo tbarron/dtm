@@ -133,15 +133,13 @@ def zones(**kw):
                 except KeyError:
                     dct[chunk] = {}
                     dct = dct[chunk]
+        report_tzset('roots', zdict)
         for each in zdict:
-            print("{}:".format(each))
-            line = ""
+            report_tzset(each, zdict[each])
             for item in zdict[each]:
-                line += "  {:14s}".format(item)
-                if 70 < len(line):
-                    print(line)
-                    line = ""
-            if 4 < len(line):
+                report_tzset("{}/{}".format(each, item), zdict[each][item])
+
+
 # -----------------------------------------------------------------------------
 def report_tzset(label, data):
     """
