@@ -75,3 +75,18 @@ def test_splat(capsys):
     for line in out.strip().split("\n"):
         rgx = exps.pop(0)
         assert re.search(rgx, line), "{} doesn't match {}".format(rgx, line)
+
+
+# -----------------------------------------------------------------------------
+@pytest.mark.parametrize("inp, exp", [
+    dtu.pp("Guay", "America/Guayaquil"),
+    ])
+def test_zones_search(inp, exp, capsys):
+    """
+    Testing for 'dtm zones SEARCH'
+    """
+    pytest.dbgfunc()
+    kw = {'d': False, 'SEARCH': inp}
+    dtm.__main__.zones(**kw)
+    (out, err) = capsys.readouterr()
+    assert exp in out
