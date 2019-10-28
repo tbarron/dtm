@@ -156,7 +156,7 @@ def westeast(**kw):
         tup = (tz.zone, tz.utcoffset(datetime.now()).total_seconds())
         olist.append(tup)
     for each in sorted(olist, key=lambda a: a[1]):
-        print("{:30s} {:>8s}".format(each[0], hhmm(each[1])))
+        print("{:35s} {:>8s}".format(each[0], hhmm(each[1])))
 
 
 # -----------------------------------------------------------------------------
