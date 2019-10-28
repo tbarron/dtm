@@ -149,7 +149,7 @@ def westeast(**kw):
     List the known timezones from west to east
     """
     if kw['d']:
-        pdb.set_trace()
+        pdb.set_trace()                                      # pragma: no cover
     olist = []
     for each in pytz.all_timezones:
         tz = pytz.timezone(each)
@@ -166,7 +166,7 @@ def zdetails(**kw):
     Report the details of a specified timezone
     """
     if kw['d']:
-        pdb.set_trace()
+        pdb.set_trace()                                      # pragma: no cover
     z = pytz.timezone(kw['TIMEZONE'])
     print("zone: {}".format(z.zone))
     print("_dst: {}".format(z._dst))
@@ -189,4 +189,4 @@ def hhmm(secs):
 
 # -----------------------------------------------------------------------------
 if __name__ == "__main__":
-    dispatch(__doc__)
+    dispatch(__doc__)                                        # pragma: no cover
