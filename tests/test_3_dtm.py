@@ -80,7 +80,19 @@ def test_splat(capsys):
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("inp, exp", [
-    dtu.pp("Guay", "America/Guayaquil"),
+    dtu.pp("Guay", ["America/Guayaquil"], id="match 'Guay'"),
+    dtu.pp("St_", ["America/St_Barthelemy", "America/St_Johns",
+                   "America/St_Kitts", "America/St_Lucia", "America/St_Thomas",
+                   "America/St_Vincent", "Atlantic/St_Helena", ],
+           id="match 'St_'"),
+    dtu.pp("Rio_", ["America/Argentina/Rio_Gallegos", "America/Rio_Branco"],
+           id="match 'Rio_'"),
+    dtu.pp("ton", ["America/Creston",
+                   "America/Edmonton",
+                   "America/Moncton",
+                   "Pacific/Johnston",
+                   "Pacific/Rarotonga"],
+           id="match 'ton'")
     ])
 def test_zones_search(inp, exp, capsys):
     """
@@ -90,7 +102,7 @@ def test_zones_search(inp, exp, capsys):
     kw = {'d': False, 'SEARCH': inp}
     dtm.__main__.zones(**kw)
     (out, err) = capsys.readouterr()
-    assert exp in out
+    assert all([_ in out for _ in exp])
 # -----------------------------------------------------------------------------
 def test_westeast(capsys):
     """
