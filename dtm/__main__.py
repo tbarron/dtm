@@ -3,7 +3,7 @@ Usage:
     dtm splat [-d]
     dtm utl [-d] [UTC_DTSPEC] [TIMEZONE]
     dtm ltu [-d] [LOC_DTSPEC] [TIMEZONE]
-    dtm zones [-d] [SEARCH]
+    dtm zones [-d] [-r] [SEARCH]
     dtm zdetails [-d] TIMEZONE
     dtm westeast [-d]
 
@@ -119,6 +119,9 @@ def zones(**kw):
         for each in zlist:
             if kw['SEARCH'] in each:
                 print(each)
+    elif kw['r']:
+        for each in zlist:
+            print(each)
     else:
         zdict = {}
         for each in zlist:
