@@ -119,6 +119,22 @@ def test_zones_search(inp, exp, capsys):
     dtm.__main__.zones(**kw)
     (out, err) = capsys.readouterr()
     assert all([_ in out for _ in exp])
+
+
+# -----------------------------------------------------------------------------
+def test_zones_raw(capsys):
+    """
+    Verify that all the timezones show up in 'dtm zones -r' output
+    """
+    pytest.dbgfunc()
+    kw = {'d': False, 'r': True, 'SEARCH': None}
+    dtm.__main__.zones(**kw)
+    (out, err) = capsys.readouterr()
+    assert all([_ in out for _ in pytz.all_timezones])
+    for critical in ['CET', 'EET']:
+        assert critical in out
+
+
 # -----------------------------------------------------------------------------
 def test_westeast(capsys):
     """
