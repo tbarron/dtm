@@ -142,7 +142,21 @@ def zones(**kw):
                     print(line)
                     line = ""
             if 4 < len(line):
+# -----------------------------------------------------------------------------
+def report_tzset(label, data):
+    """
+    Report *label* and *data*
+    """
+    if data:
+        print("{}:".format(label))
+        line = ""
+        for item in data:
+            line += "  {:14s}".format(item)
+            if 70 < len(line):
                 print(line)
+                line = ""
+        if 4 < len(line):
+            print(line)
 
 
 # -----------------------------------------------------------------------------
