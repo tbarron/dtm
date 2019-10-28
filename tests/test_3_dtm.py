@@ -136,6 +136,24 @@ def test_zones_raw(capsys):
 
 
 # -----------------------------------------------------------------------------
+def test_zones_noargs(capsys):
+    """
+    Code to display and browse timezones
+    """
+    pytest.dbgfunc()
+    kw = {'d': False, 'r': False, 'SEARCH': None}
+    dtm.__main__.zones(**kw)
+    (out, err) = capsys.readouterr()
+
+    names = {}
+    for tz in pytz.all_timezones:
+        for name in tz.split('/'):
+            names[name] = 1
+    for name in names:
+        assert name in out
+
+
+# -----------------------------------------------------------------------------
 def test_westeast(capsys):
     """
     Each line should be '<name> ... <hh:mm>'. The hhmm value should constantly
