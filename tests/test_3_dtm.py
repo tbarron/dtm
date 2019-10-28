@@ -90,3 +90,28 @@ def test_zones_search(inp, exp, capsys):
     dtm.__main__.zones(**kw)
     (out, err) = capsys.readouterr()
     assert exp in out
+# -----------------------------------------------------------------------------
+def test_westeast(capsys):
+    """
+    Each line should be '<name> ... <hh:mm>'. The hhmm value should constantly
+    increase from -12:00 up to 14:00.
+    """
+    kw = {'d': False}
+    dtm.__main__.westeast(**kw)
+    (out, err) = capsys.readouterr()
+    last = None
+    pytest.dbgfunc()
+    for line in out.strip().split("\n"):
+        (names, hhmms) = line.split()
+        (hhs, mms) = hhmms.split(':')
+        hh = int(hhs)
+        mm = int(mms)
+        current = 60*hh + mm
+        if last:
+            assert last <= current
+        last = current
+    assert "Etc/GMT+12" in out
+    assert "America/Chihuahua" in out
+    assert "MST" in out
+    assert "America/Inuvik" in out
+    assert "Pacific/Kiritimati" in out
