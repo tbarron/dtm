@@ -51,9 +51,31 @@ def calendar(**kw):
     else:
         when = dt()
 
-    mday = int(when("%d"))
-    start = when.previous_day(mday-1)
-    print(start)
+    mday = int(when("%d"))                    # month day
+    start = when.previous_day(mday-1)         # beginning of month
+    end = when.next_day(32 - mday)            # next month
+    while end("%b") != start("%b"):           # back to end of target month
+        end = end.previous_day()
+    mlen = int(end("%d"))                     # number of last day
+    op = start("%B %Y")                       # month name and year
+    lsp = (22 - len(op)) // 2                   # count leading spaces
+    wsp = lsp * " "                           # generate leading space
+    op = wsp + op + wsp + "\n"                # insert leading & trailing space
+    op += " mo tu we th fr sa su\n"           # weekday names
+    lslots = weekday_ordinal(start.weekday()) - 1   # leading slots
+    slot = 0
+    for n in range(lslots):                   # generate leading slots
+        op += "   "
+        slot += 1
+    for day in range(1, mlen + 1):            # add each day to the month
+        op += " {:2d}".format(day)
+        slot += 1
+        if slot % 7 == 0:                     # newline on every 7th slot
+            op += "\n"
+    while slot % 7 != 0:
+        op += "   "
+        slot += 1
+    print(op)
 
 
 # -----------------------------------------------------------------------------
