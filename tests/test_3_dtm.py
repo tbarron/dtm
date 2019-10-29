@@ -12,55 +12,69 @@ import re
 # -----------------------------------------------------------------------------
 # There are 28 month calendars:
 #     length: [28, 29, 30, 31]
-#     start: ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
-#
-#     mon28: 1971.02
-#     tue28: 1977.02
-#     wed28: 1978.02
-#     thu28: 1973.02
-#     fri28: 1974.02
-#     sat28: 1975.02
-#     sun28: 1970.02
-#
-#     mon29: 1988.02
-#     tue29: 1972.02
-#     wed29: 1984.02
-#     thu29: 1996.02
-#     fri29: 1980.02
-#     sat29: 1992.02
-#     sun29: 1976.02
-#
-#     mon30: 2019.04
-#     tue30: 2016.11
-#     wed30: 2017.11
-#     thu30: 2018.11
-#     fri30: 2019.11
-#     sat30: 2019.06
-#     sun30: 2019.09
-#
-#     mon31: 2018.01
-#     tue31: 2019.01
-#     wed31: 2018.08
-#     thu31: 2018.03
-#     fri31: 2017.12
-#     sat31: 2018.12
-#     sun31: 2018.07
-#
-#
+#     start: ['mo', 'tu', 'we', 'th', 'fr', 'sa', 'su']
 @pytest.mark.parametrize("inp, wkday, length", [
     dtu.pp("1971.0201", "mo", 28),
     dtu.pp("1977.0201", "tu", 28),
     dtu.pp("1978.0201", "we", 28),
+    dtu.pp("1973.0208", "th", 28),
+    dtu.pp("1974.0208", "fr", 28),
+    dtu.pp("1975.0208", "sa", 28),
+    dtu.pp("1970.0208", "su", 28),
+
+    dtu.pp("1988.0201", "mo", 29),
+    dtu.pp("1972.0201", "tu", 29),
+    dtu.pp("1984.0201", "we", 29),
+    dtu.pp("1996.0208", "th", 29),
+    dtu.pp("1980.0208", "fr", 29),
+    dtu.pp("1992.0208", "sa", 29),
+    dtu.pp("1976.0208", "su", 29),
+
+    dtu.pp("2019.0428", "mo", 30),
+    dtu.pp("2016.1119", "tu", 30),
+    dtu.pp("2017.1118", "we", 30),
+    dtu.pp("2018.1117", "th", 30),
+    dtu.pp("2019.1107", "fr", 30),
+    dtu.pp("2019.0606", "sa", 30),
+    dtu.pp("2019.0905", "su", 30),
+
+    dtu.pp("2018.0131", "mo", 31),
+    dtu.pp("2019.0130", "tu", 31),
+    dtu.pp("2018.0808", "we", 31),
+    dtu.pp("2018.0331", "th", 31),
+    dtu.pp("2017.1212", "fr", 31),
+    dtu.pp("2018.1219", "sa", 31),
+    dtu.pp("2018.0704", "su", 31),
     ])
 def test_calendar(inp, wkday, length, capsys):
     """
-    Test for 'dtm calendar', which should produce the calendar for the current
-    month
+    Test for 'dtm calendar DTSPEC', which should produce the calendar for the
+    month indicated by DTSPEC.
     """
     kw = {'d': False, 'DTSPEC': inp}
     dtmain.calendar(**kw)
     (out, err) = capsys.readouterr()
     exp = month_ref(wkday, length)
+    pytest.dbgfunc()
+    assert exp in out, "\n{} \n  not in \n\n{}".format(exp, out)
+
+
+# -----------------------------------------------------------------------------
+def test_calendar_now(capsys):
+    """
+    Test 'dtm calendar' for the current month
+    """
+    kw = {'d': False, 'DTSPEC': None}
+    when = dt()
+    mday = int(when("%d"))
+    start = when.previous_day(mday - 1)
+    end = when.next_day(32 - mday)
+    while end("%b") != start("%b"):
+        end = end.previous_day()
+
+    exp = month_ref(start.weekday(), int(end("%d")))
+    dtmain.calendar(**kw)
+    (out, err) = capsys.readouterr()
     pytest.dbgfunc()
     assert exp in out, "\n{} \n  not in \n\n{}".format(exp, out)
 
