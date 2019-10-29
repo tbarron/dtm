@@ -1,5 +1,6 @@
 """
 Usage:
+    dtm calendar [DTSPEC]
     dtm ltu [-d] [LOC_DTSPEC] [TIMEZONE]
     dtm splat [-d]
     dtm utl [-d] [UTC_DTSPEC] [TIMEZONE]
@@ -31,6 +32,28 @@ from dtm import dt
 import pdb
 import pytz
 import time
+
+
+# -----------------------------------------------------------------------------
+@dispatch.on('calendar')
+def calendar(**kw):
+    """
+    Generate calendars
+
+        dtm calendar                 # calendar for current month
+        dtm calendar DTSPEC          # calendar for month containing DTSPEC
+    """
+    if kw['d']:
+        pdb.set_trace()                                      # pragma: no cover
+
+    if kw['DTSPEC']:
+        when = dt(kw['DTSPEC'])
+    else:
+        when = dt()
+
+    mday = int(when("%d"))
+    start = when.previous_day(mday-1)
+    print(start)
 
 
 # -----------------------------------------------------------------------------
