@@ -352,6 +352,7 @@ class dt(object):
         """
         prev_ts = self._utc
         prev_ldt = datetime.fromtimestamp(self._utc)
+        ts = self._utc
         for day in range(count):
             ts = prev_ts + 24 * 3600
             ldt = self._norm_loc_ize(datetime.fromtimestamp(ts))
@@ -436,6 +437,7 @@ class dt(object):
         """
         pts = self._utc
         pdt = datetime.fromtimestamp(pts)
+        ts = self._utc
         for day in range(count):
             ts = pts - 24 * 3600
             ldt = self._norm_loc_ize(datetime.fromtimestamp(ts))
