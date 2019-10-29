@@ -10,6 +10,100 @@ import re
 
 
 # -----------------------------------------------------------------------------
+# There are 28 month calendars:
+#     length: [28, 29, 30, 31]
+#     start: ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+#
+#     mon28: 1971.02
+#     tue28: 1977.02
+#     wed28: 1978.02
+#     thu28: 1973.02
+#     fri28: 1974.02
+#     sat28: 1975.02
+#     sun28: 1970.02
+#
+#     mon29: 1988.02
+#     tue29: 1972.02
+#     wed29: 1984.02
+#     thu29: 1996.02
+#     fri29: 1980.02
+#     sat29: 1992.02
+#     sun29: 1976.02
+#
+#     mon30: 2019.04
+#     tue30: 2016.11
+#     wed30: 2017.11
+#     thu30: 2018.11
+#     fri30: 2019.11
+#     sat30: 2019.06
+#     sun30: 2019.09
+#
+#     mon31: 2018.01
+#     tue31: 2019.01
+#     wed31: 2018.08
+#     thu31: 2018.03
+#     fri31: 2017.12
+#     sat31: 2018.12
+#     sun31: 2018.07
+#
+#
+@pytest.mark.parametrize("inp, wkday, length", [
+    dtu.pp("1971.0201", "mo", 28),
+    dtu.pp("1977.0201", "tu", 28),
+    dtu.pp("1978.0201", "we", 28),
+    ])
+def test_calendar(inp, wkday, length, capsys):
+    """
+    Test for 'dtm calendar', which should produce the calendar for the current
+    month
+    """
+    kw = {'d': False, 'DTSPEC': inp}
+    dtm.__main__.calendar(**kw)
+    (out, err) = capsys.readouterr()
+    exp = month_ref(wkday, length)
+    pytest.dbgfunc()
+    assert exp in out, "\n{} \n  not in \n\n{}".format(exp, out)
+
+
+# -----------------------------------------------------------------------------
+def month_ref(wkday, length):
+    """
+    This function provides a reference for each of the 28 possible months.
+    *wkday* is the starting day of the month ('sun', 'mon', 'tue', etc.) and
+    *length* is the number of days in the month [28 ... 31].
+    """
+    head = "mo tu we th fr sa su"
+    ref = " " + head + "\n"
+    lspaces = weekday_ordinal(wkday) - 1
+    slot = 0
+    for q in range(lspaces):
+        ref += "   "
+        slot += 1
+    for day in range(length):
+        ref += " {:2d}".format(day + 1)
+        slot += 1
+        if slot % 7 == 0:
+            ref += "\n"
+    while slot % 7 != 0:
+        ref += "   "
+        slot += 1
+    return ref
+
+
+# -----------------------------------------------------------------------------
+def weekday_ordinal(wkday):
+    """
+    Return the ordinal value of *wkday* where mo == 1, tu == 2, ... su == 7
+    """
+    try:
+        rval = weekday_ordinal.spread
+    except AttributeError:
+        weekday_ordinal.spread = ['mo', 'tu', 'we', 'th', 'fr', 'sa', 'su']
+    rval = weekday_ordinal.spread.index(wkday)
+    return rval + 1
+
+
+# -----------------------------------------------------------------------------
 @pytest.mark.parametrize("dtspec, zone, expi, expf, expz", [
     dtu.pp("now", "local", None, "%F %T %Z", 'utc', id="ltu now local"),
     dtu.pp("now", "",  None, "%F %T %Z", 'utc', id="ltu now <empty>"),
