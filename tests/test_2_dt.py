@@ -663,6 +663,7 @@ def test_dt_range():
     dtu.pp(dt(1960, 2, 28), (), dt(1960, 2, 29), id="leap year"),
     dtu.pp(dt(1800, 2, 28), (), dt(1800, 3, 1), id="century non-leap year"),
     dtu.pp(dt(2000, 2, 28), (), dt(2000, 2, 29), id="quad century leap year"),
+    dtu.pp(dt(2000, 3, 1), (0, ), dt(2000, 3, 1), id="0 day offset"),
     ])
 def test_next_day(nub, ndargs, exp):
     """
@@ -758,6 +759,7 @@ def test_last_weekday(when, target, exp):
     dtu.pp(dt(2008, 3, 1), (), dt(2008, 2, 29), id="leap year"),
     dtu.pp(dt(1900, 3, 1), (), dt(1900, 2, 28), id="century year"),
     dtu.pp(dt(2000, 3, 1), (), dt(2000, 2, 29), id="quad century year"),
+    dtu.pp(dt(2000, 3, 1), (0, ), dt(2000, 3, 1), id="0 day offset"),
     ])
 def test_previous_day_pp(nub, pvargs, exp):
     """
