@@ -1,11 +1,11 @@
 """
 Usage:
+    dtm ltu [-d] [LOC_DTSPEC] [TIMEZONE]
     dtm splat [-d]
     dtm utl [-d] [UTC_DTSPEC] [TIMEZONE]
-    dtm ltu [-d] [LOC_DTSPEC] [TIMEZONE]
-    dtm zones [-d] [-r] [SEARCH]
-    dtm zdetails [-d] TIMEZONE
     dtm westeast [-d]
+    dtm zdetails [-d] TIMEZONE
+    dtm zones [-d] [-r] [SEARCH]
 
 time.time() provides the number of seconds since the epoch and defines UTC
 
