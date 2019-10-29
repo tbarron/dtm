@@ -2,7 +2,7 @@
 Tests for code in dtm/__main__.py
 """
 from dtm import dt
-import dtm.__main__
+import dtm.__main__ as dtmain
 import dtm_test_utils as dtu
 import pytest
 import pytz
@@ -58,7 +58,7 @@ def test_calendar(inp, wkday, length, capsys):
     month
     """
     kw = {'d': False, 'DTSPEC': inp}
-    dtm.__main__.calendar(**kw)
+    dtmain.calendar(**kw)
     (out, err) = capsys.readouterr()
     exp = month_ref(wkday, length)
     pytest.dbgfunc()
@@ -74,7 +74,7 @@ def month_ref(wkday, length):
     """
     head = "mo tu we th fr sa su"
     ref = " " + head + "\n"
-    lspaces = weekday_ordinal(wkday) - 1
+    lspaces = dtmain.weekday_ordinal(wkday) - 1
     slot = 0
     for q in range(lspaces):
         ref += "   "
@@ -109,7 +109,7 @@ def test_ltu(dtspec, zone, expi, expf, expz, capsys):
     expi = expi or ()
     exp = dt(*expi, tz=expz)(expf, tz=expz)
     kw = {'LOC_DTSPEC': dtspec, 'TIMEZONE': zone, 'd': False}
-    dtm.__main__.utc_fr_local_tz(**kw)
+    dtmain.utc_fr_local_tz(**kw)
     (out, err) = capsys.readouterr()
     assert exp in out, "'{}' not found in '{}'".format(exp, out)
 
@@ -133,7 +133,7 @@ def test_utl(dtspec, zone, expi, expf, expz, capsys):
     expi = expi or ()
     exp = dt(*expi, tz=expz)(expf, tz=expz)
     kw = {'UTC_DTSPEC': dtspec, 'TIMEZONE': zone, 'd': False}
-    dtm.__main__.local_fr_utc_tz(**kw)
+    dtmain.local_fr_utc_tz(**kw)
     (out, err) = capsys.readouterr()
     assert re.search(exp, out), "'{}' not found in '{}'".format(
         exp, out)
@@ -146,7 +146,7 @@ def test_splat(capsys):
     """
     pytest.dbgfunc()
     kw = {'d': False}
-    dtm.__main__.splat(**kw)
+    dtmain.splat(**kw)
     (out, err) = capsys.readouterr()
     exps = []
     pytest.dbgfunc()
@@ -170,7 +170,7 @@ def test_zdetails(tzname, exp, capsys):
     """
     pytest.dbgfunc()
     kw = {'d': False, 'TIMEZONE': tzname}
-    dtm.__main__.zdetails(**kw)
+    dtmain.zdetails(**kw)
     (out, err) = capsys.readouterr()
     assert all([_ in out for _ in exp])
 
@@ -197,7 +197,7 @@ def test_zones_search(inp, exp, capsys):
     """
     pytest.dbgfunc()
     kw = {'d': False, 'SEARCH': inp}
-    dtm.__main__.zones(**kw)
+    dtmain.zones(**kw)
     (out, err) = capsys.readouterr()
     assert all([_ in out for _ in exp])
 
@@ -209,7 +209,7 @@ def test_zones_raw(capsys):
     """
     pytest.dbgfunc()
     kw = {'d': False, 'r': True, 'SEARCH': None}
-    dtm.__main__.zones(**kw)
+    dtmain.zones(**kw)
     (out, err) = capsys.readouterr()
     assert all([_ in out for _ in pytz.all_timezones])
     for critical in ['CET', 'EET']:
@@ -223,7 +223,7 @@ def test_zones_noargs(capsys):
     """
     pytest.dbgfunc()
     kw = {'d': False, 'r': False, 'SEARCH': None}
-    dtm.__main__.zones(**kw)
+    dtmain.zones(**kw)
     (out, err) = capsys.readouterr()
 
     names = {}
@@ -241,7 +241,7 @@ def test_westeast(capsys):
     increase from -12:00 up to 14:00.
     """
     kw = {'d': False}
-    dtm.__main__.westeast(**kw)
+    dtmain.westeast(**kw)
     (out, err) = capsys.readouterr()
     last = None
     pytest.dbgfunc()
