@@ -57,6 +57,21 @@ def calendar(**kw):
 
 
 # -----------------------------------------------------------------------------
+def weekday_ordinal(wkday):
+    """
+    Return the ordinal value of *wkday* where mo == 1, tu == 2, ... su == 7
+    """
+    done = False
+    while not done:
+        try:
+            rval = weekday_ordinal.spread.index(wkday[0:2])
+            done = True
+        except AttributeError:
+            weekday_ordinal.spread = ['mo', 'tu', 'we', 'th', 'fr', 'sa', 'su']
+    return rval + 1
+
+
+# -----------------------------------------------------------------------------
 @dispatch.on('ltu')
 def utc_fr_local_tz(**kw):
     """

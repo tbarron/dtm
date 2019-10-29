@@ -91,19 +91,6 @@ def month_ref(wkday, length):
 
 
 # -----------------------------------------------------------------------------
-def weekday_ordinal(wkday):
-    """
-    Return the ordinal value of *wkday* where mo == 1, tu == 2, ... su == 7
-    """
-    try:
-        rval = weekday_ordinal.spread
-    except AttributeError:
-        weekday_ordinal.spread = ['mo', 'tu', 'we', 'th', 'fr', 'sa', 'su']
-    rval = weekday_ordinal.spread.index(wkday)
-    return rval + 1
-
-
-# -----------------------------------------------------------------------------
 @pytest.mark.parametrize("dtspec, zone, expi, expf, expz", [
     dtu.pp("now", "local", None, "%F %T %Z", 'utc', id="ltu now local"),
     dtu.pp("now", "",  None, "%F %T %Z", 'utc', id="ltu now <empty>"),
