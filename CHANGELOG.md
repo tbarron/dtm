@@ -1,3 +1,14 @@
+## 1.3.1 ... 2019-10-30 05:59:17
+
+ * Addressed the "0 offset" bug that was causing .next_day() and
+   .previous_day() to traceback when they got an argument of 0. Added tests
+   that tickled the bug, then fixed the payload code to resolve it and
+   satisfy the tests.
+ * Wrote tests (and test helper code) for 'dtm calendar'.
+ * Wrote payload code for 'dtm calendar'.
+ * Reordered dtm commands in the source code.
+
+
 ## 1.3.0 ... 2019-10-26 13:51:20
 
  * Add test and code for dt.weekday_ceiling(), parametrize test for
@@ -12,6 +23,7 @@
    entries to the list of default parseable formats
  * Add test and code for $DTM_STR support to allow user to specify the
    format __str__() should use.
+
 
 ## 1.2.0 ... 2019-10-24 05:19:17
 
