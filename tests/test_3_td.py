@@ -1,9 +1,9 @@
-from datetime import datetime, timedelta
-from dtm import dt, dt_error, td, version
+from datetime import timedelta
+from dtm import dt_error, td
 import dtm_test_utils as dtu
 import pytest
-import pytz
-import tbx
+# import pytz
+# import tbx
 
 
 # -----------------------------------------------------------------------------
@@ -95,5 +95,3 @@ def test_td_repr(obj, exp):
     Test td.__repr__()
     """
     assert repr(obj) == exp
-
-    
