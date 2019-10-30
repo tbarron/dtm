@@ -1,12 +1,21 @@
-## 1.3.1 ... 2019-10-30 05:59:17
+## 1.3.1 ... 2019-10-30 06:26:38
 
+ * Put common test utility items in importable file dtm_test_utils.py and
+   started using them instead of repeating them in each test file. Eg.,
+   'dtu.pp' rather than 'pp'.
+ * Wrote tests for payload code already in dtm/__main__.py.
+ * Fixed up payload code to pass its tests.
+ * Whitespace cleanup and typos.
+ * Ensuring all tests call pytest.dbgfunc() so they are debuggable.
+ * Reordered dtm commands in the source code.
+ * Made improvements to the payload code for reporting raw timezones, a
+   structured set of timezones, etc.
  * Addressed the "0 offset" bug that was causing .next_day() and
    .previous_day() to traceback when they got an argument of 0. Added tests
    that tickled the bug, then fixed the payload code to resolve it and
    satisfy the tests.
  * Wrote tests (and test helper code) for 'dtm calendar'.
  * Wrote payload code for 'dtm calendar'.
- * Reordered dtm commands in the source code.
 
 
 ## 1.3.0 ... 2019-10-26 13:51:20
