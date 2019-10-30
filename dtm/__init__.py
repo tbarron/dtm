@@ -573,3 +573,91 @@ class dt_error(Exception):
     This object is used to raise exceptions in dt().
     """
     pass
+
+
+# -----------------------------------------------------------------------------
+def count_in(dct, seq):
+    """
+    Count the number of items in *seq* that are in *dct*. This is used to
+    decide whether multiple forms of keyword arguments are used in the td
+    constructor. For example, the user should not provide both 's' and 'secs'.
+    """
+    return sum([1 for _ in seq if _ in dct])
+
+
+# -----------------------------------------------------------------------------
+class td(object):
+    """
+    This object represents a period of time, stored as a number of seconds.
+    """
+    # -------------------------------------------------------------------------
+    def __init__(self, *args, **kw):
+        """
+        Argument formats:
+            ([[[days,] hours,] minutes,] seconds)
+            {'s': <int>,         # seconds
+             'secs': <int>,
+             'seconds': <int>,
+             'm': <int>,         # minutes
+             'mins': <int>,
+             'minutes': <int>,
+             'h': <int>,         # hours
+             'hrs': <int>,
+             'hours': <int>,
+             'd': <int>,         # days
+             'days': <int>,
+            }
+        """
+        sunits = ['s', 'secs', 'seconds']
+        munits = ['m', 'mins', 'minutes']
+        hunits = ['h', 'hrs', 'hours']
+        dunits = ['d', 'days']
+        if len(args) == 0:
+            if 1 < count_in(kw, sunits):
+                self._fail("Mutually exclusive arguments: s, secs, seconds")
+            elif 1 < count_in(kw, ['m', 'mins', 'minutes']):
+                self._fail("Mutually exclusive arguments: m, mins, minutes")
+            elif 1 < count_in(kw, ['h', 'hrs', 'hours']):
+                self._fail("Mutually exclusive arguments: h, hrs, hours")
+            elif 1 < count_in(kw, ['d', 'days']):
+                self._fail("Mutually exclusive arguments: d, days")
+
+            secs = kw.get('s') or kw.get('secs') or kw.get('seconds') or 0
+            mins = kw.get('m') or kw.get('mins') or kw.get('minutes') or 0
+            hours = kw.get('h') or kw.get('hrs') or kw.get('hours') or 0
+            days = kw.get('d') or kw.get('days') or 0
+
+            duration = secs + 60 * (mins + (60 * (hours + 24 * days)))
+        elif any([_ in kw for _ in sunits + munits + hunits + dunits]):
+            self._fail("Expected either *args or *kw, not both")
+        else:
+            largs = list(args)
+            mult = [24*3600, 3600, 60]
+            duration = largs.pop()
+            while largs:
+                duration = duration + mult.pop() * largs.pop()
+        if duration < 0:
+            raise ValueError("td cannot be negative")
+        self._duration = duration
+
+    # -------------------------------------------------------------------------
+    def __eq__(self, other):
+        """
+        True if *self*._duration == *other*._duration, otherwise False.
+        """
+        return self._duration == other._duration
+
+    # -------------------------------------------------------------------------
+    def __repr__(self):
+        """
+        Show the representation of *self*.
+        """
+        return "<dtm.td({})>".format(self._duration)
+
+    # -------------------------------------------------------------------------
+    @staticmethod
+    def _fail(msg):
+        """
+        Raise dt_error with *msg*
+        """
+        raise dt_error(msg)
