@@ -16,6 +16,7 @@
    satisfy the tests.
  * Wrote tests (and test helper code) for 'dtm calendar'.
  * Wrote payload code for 'dtm calendar'.
+ * Made sure that 100% of payload code has test coverage.
 
 
 ## 1.3.0 ... 2019-10-26 13:51:20
