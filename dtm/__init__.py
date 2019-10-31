@@ -114,6 +114,8 @@ class dt(object):
             return dt(epoch=self._utc + other.total_seconds())
         elif isinstance(other, (int, float)):
             return dt(epoch=self._utc + int(other))
+        else:
+            return NotImplemented
 
     # -------------------------------------------------------------------------
     def __radd__(self, other):
