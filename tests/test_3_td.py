@@ -30,6 +30,8 @@ import pytest
     dtu.pp((), {'d': 4, 'h': 3, 'm': 2, 's': 1}, td(356521),
            id="kw: {d, h, m, s}"),
 
+    dtu.pp((timedelta(0, 17, 0), ), {}, td(17), id="args: (timedelta())"),
+
     dtu.pp((), {'s': 5, 'secs': 32},
            dt_error("Mutually exclusive arguments: s, secs, seconds"),
            id="fail: seconds"),
