@@ -638,8 +638,6 @@ class td(object):
             duration = largs.pop()
             while largs:
                 duration = duration + mult.pop() * largs.pop()
-        if duration < 0:
-            raise ValueError("td cannot be negative")
         self._duration = duration
 
     # -------------------------------------------------------------------------
