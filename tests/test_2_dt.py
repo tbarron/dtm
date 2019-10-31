@@ -18,6 +18,23 @@ def test_dt_attrs():
 
 
 # -----------------------------------------------------------------------------
+@pytest.mark.parametrize("left, right, result", [
+    dtu.pp(dt("2001.0102 10:00:00"), 365, dt("2001.0102 10:06:05"),
+           id="<dt> + <int> => <dt>"),
+    ])
+def test_dt_add(left, right, result):
+    """
+    Test dt.__add__ for various cases
+    """
+    if isinstance(result, Exception):
+        with pytest.raises(type(result)) as err:
+            left + right
+        assert str(result) in str(err.value)
+    else:
+        assert left + right == result
+
+
+# -----------------------------------------------------------------------------
 # test_call()
 @pytest.mark.parametrize("spec, itz, fmt, otz, exp", [
     dtu.pp("2019.1001", None, "%F", None, "2019-10-01",
