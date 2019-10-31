@@ -13,6 +13,8 @@ import pytest
     dtu.pp((1, 1), {}, td(secs=61), id="args: (m, s)"),
     dtu.pp((1, 1, 1), {}, td(secs=3661), id="args: (h, m, s)"),
     dtu.pp((1, 1, 1, 1), {}, td(secs=90061), id="args: (d, h, m, s)"),
+    dtu.pp((-1, ), {}, td(secs=-1), id="negative td okay"),
+    dtu.pp((-3, 10, 7), {}, td(secs=-10193), id="net negative"),
 
     dtu.pp((), {'s': 95}, td(1, 35), id="kw: {s}"),
     dtu.pp((), {'m': 75}, td(4500), id="kw: {m}"),
@@ -50,8 +52,6 @@ import pytest
     dtu.pp((1, 2, 3), {'h': 1, 'm': 2, 's': 3},
            dt_error("Expected either *args or *kw, not both"),
            id="fail: not both"),
-    dtu.pp((-1, ), {}, ValueError("td cannot be negative"),
-           id="fail: negative td"),
     ])
 def test_td_init(args, kw, exp):
     """
