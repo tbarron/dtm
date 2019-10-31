@@ -2,8 +2,6 @@ from datetime import timedelta
 from dtm import dt_error, td
 import dtm_test_utils as dtu
 import pytest
-# import pytz
-# import tbx
 
 
 # -----------------------------------------------------------------------------
