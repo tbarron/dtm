@@ -116,6 +116,13 @@ class dt(object):
             return dt(epoch=self._utc + int(other))
 
     # -------------------------------------------------------------------------
+    def __radd__(self, other):
+        """
+        Handle <other> + <dt>
+        """
+        return self.__add__(other)
+
+    # -------------------------------------------------------------------------
     def _from_format(self, spec):
         """
         Initialize from a list of my favorite date/time formats. A nice future
