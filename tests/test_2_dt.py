@@ -45,6 +45,18 @@ def test_dt_attrs():
            id="<timedelta> + <dt> => <dt>"),
     dtu.pp(timedelta(-3), dt("2000.0102 10:00:00"), dt("1999.1230 10:00:00"),
            id="(-<timedelta>) + <td> => <dt>"),
+
+    dtu.pp(dt(), dt("2001.0901 17:00:00"),
+           TypeError("unsupported operand type(s) for +: 'dt' and 'dt'"),
+           id="<dt> + <dt> => error"),
+    dtu.pp(dt(), datetime.now(),
+           TypeError("unsupported operand type(s) for +:"
+                     " 'dt' and 'datetime.datetime'"),
+           id="<dt> + <datetime> => error"),
+    dtu.pp(datetime.now(), dt(),
+           TypeError("unsupported operand type(s) for +:"
+                     " 'datetime.datetime' and 'dt'"),
+           id="<datetime> + <dt> => error"),
     ])
 def test_dt_add(left, right, result):
     """
