@@ -18,6 +18,7 @@ def test_dt_attrs():
 
 
 # -----------------------------------------------------------------------------
+# test_call()
 @pytest.mark.parametrize("spec, itz, fmt, otz, exp", [
     dtu.pp("2019.1001", None, "%F", None, "2019-10-01",
            id="default -> default"),
@@ -344,6 +345,7 @@ def test_init_epoch(inp, itz, otz, exp):
 
 
 # -----------------------------------------------------------------------------
+# test_init_tz_explicit()
 @pytest.mark.parametrize("inp, itz", [
     dtu.pp("2018.0117 08:00:00", 'US/Samoa',
            id="2018.0117 08:00:00 Samoa-1100 == 1516215600"),
