@@ -630,6 +630,8 @@ class td(object):
             duration = secs + 60 * (mins + (60 * (hours + 24 * days)))
         elif any([_ in kw for _ in sunits + munits + hunits + dunits]):
             self._fail("Expected either *args or *kw, not both")
+        elif isinstance(args[0], timedelta):
+            duration = args[0].total_seconds()
         else:
             largs = list(args)
             mult = [24*3600, 3600, 60]
