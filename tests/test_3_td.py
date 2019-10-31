@@ -78,6 +78,15 @@ def test_td_init(args, kw, exp):
     dtu.pp(td(59), timedelta(0, 25), False, id="td(59) != timedelta(0, 25)"),
     dtu.pp(timedelta(0, 25), td(25), True, id="timedelta(0, 25) == td(25)"),
     dtu.pp(timedelta(0, 14), td(25), False, id="timedelta(0, 25) != td(25)"),
+    dtu.pp(td(55), "17",
+           ValueError("td can be compared to number, td, or timedelta,"
+                      " but not to <class 'str'>"),
+           id="number =/= td()"),
+    dtu.pp(td(55), ["17", 19, 35],
+           ValueError("td can be compared to number, td, or timedelta,"
+                      " but not to <class 'list'>"),
+           id="list =/= td()"),
+
     ])
 def test_td_eq(left, right, exp):
     """
