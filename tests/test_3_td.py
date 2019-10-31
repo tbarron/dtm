@@ -7,6 +7,14 @@ import pytest
 
 
 # -----------------------------------------------------------------------------
+def test_td_attrs():
+    """
+    Check that a new td object has all the right attributes
+    """
+    a = td()
+    assert hasattr(a, '_duration')
+
+
 @pytest.mark.parametrize("args, kw, exp", [
     dtu.pp((15, ), {}, td(secs=15), id="args: (s < 60,)"),
     dtu.pp((90, ), {}, td(mins=1, secs=30), id="args: (60 < s,)"),

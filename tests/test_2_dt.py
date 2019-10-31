@@ -7,7 +7,7 @@ import tbx
 
 
 # -----------------------------------------------------------------------------
-def test_attributes():
+def test_dt_attrs():
     """
     A dt object should have members _utc and _tz
     """
