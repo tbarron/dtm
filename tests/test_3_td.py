@@ -105,7 +105,11 @@ def test_td_eq(left, right, exp):
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("obj, exp", [
-    dtu.pp(td(27), "<dtm.td(27)>"),
+    dtu.pp(td(27), "<dtm.td(27)>", id="27"),
+    dtu.pp(td(7, 13), "<dtm.td(433)>", id="433"),
+    dtu.pp(td(1, 0, 0), "<dtm.td(3600)>", id="3600"),
+    dtu.pp(td(1, -1, 0), "<dtm.td(3540)>", id="3540"),
+    dtu.pp(td(1, 0, -1), "<dtm.td(3599)>", id="3599"),
     ])
 def test_td_repr(obj, exp):
     """
