@@ -31,7 +31,8 @@ def test_dt_attrs():
     dtu.pp(dt("2001.0102 10:00:00"), timedelta(0, 365),
            dt("2001.0102 10:06:05"), id="dt+05: <dt> + <timedelta> => <dt>"),
     dtu.pp(dt("2001.0102 10:00:00"), timedelta(0, -365),
-           dt("2001.0102 09:53:55"), id="dt+06: <dt> + (-<timedelta>) => <dt>"),
+           dt("2001.0102 09:53:55"),
+           id="dt+06: <dt> + (-<timedelta>) => <dt>"),
 
     dtu.pp(365, dt("2001.0102 10:00:00"), dt("2001.0102 10:06:05"),
            id="dt+07: <int> + <dt> => <dt>"),
