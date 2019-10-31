@@ -26,6 +26,7 @@ def test_dt_add(left, right, result):
     """
     Test dt.__add__ for various cases
     """
+    pytest.dbgfunc()
     if isinstance(result, Exception):
         with pytest.raises(type(result)) as err:
             left + right

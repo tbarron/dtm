@@ -104,6 +104,14 @@ class dt(object):
                      " or epoch=<int>")
 
     # -------------------------------------------------------------------------
+    def __add__(self, other):
+        """
+        <dt> + <int> => <dt>
+        """
+        if isinstance(other, (int, float)):
+            return dt(epoch=self._utc + int(other))
+
+    # -------------------------------------------------------------------------
     def _from_format(self, spec):
         """
         Initialize from a list of my favorite date/time formats. A nice future
