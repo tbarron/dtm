@@ -1,5 +1,5 @@
-from datetime import datetime
-from dtm import dt, dt_error, version
+from datetime import datetime, timedelta
+from dtm import dt, dt_error, td, version
 import dtm_test_utils as dtu
 import pytest
 import pytz
@@ -21,6 +21,13 @@ def test_dt_attrs():
 @pytest.mark.parametrize("left, right, result", [
     dtu.pp(dt("2001.0102 10:00:00"), 365, dt("2001.0102 10:06:05"),
            id="<dt> + <int> => <dt>"),
+    dtu.pp(dt("2001.0102 10:00:00"), td(365), dt("2001.0102 10:06:05"),
+           id="<dt> + <td> => <dt>"),
+    dtu.pp(dt("2001.0102 10:00:00"), timedelta(0, 365),
+           dt("2001.0102 10:06:05"), id="<dt> + <timedelta> => <dt>"),
+
+    dtu.pp(365, dt("2001.0102 10:00:00"), dt("2001.0102 10:06:05"),
+           id="<int> + <dt> => <dt>"),
     ])
 def test_dt_add(left, right, result):
     """
