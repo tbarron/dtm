@@ -83,7 +83,13 @@ def test_td_eq(left, right, exp):
     """
     Test td.__eq__()
     """
-    assert (left == right) is exp
+    pytest.dbgfunc()
+    if isinstance(exp, Exception):
+        with pytest.raises(type(exp)) as err:
+            assert (left == right) is exp
+        assert str(exp) in str(err.value)
+    else:
+        assert (left == right) is exp
 
 
 # -----------------------------------------------------------------------------
