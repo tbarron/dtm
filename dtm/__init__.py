@@ -108,7 +108,11 @@ class dt(object):
         """
         <dt> + <int> => <dt>
         """
-        if isinstance(other, (int, float)):
+        if isinstance(other, td):
+            return dt(epoch=self._utc + other._duration)
+        elif isinstance(other, timedelta):
+            return dt(epoch=self._utc + other.total_seconds())
+        elif isinstance(other, (int, float)):
             return dt(epoch=self._utc + int(other))
 
     # -------------------------------------------------------------------------
