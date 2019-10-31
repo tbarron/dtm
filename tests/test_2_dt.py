@@ -67,6 +67,58 @@ def test_dt_add(left, right, result):
 
 
 # -----------------------------------------------------------------------------
+# test_dt_sub()
+@pytest.mark.parametrize("left, right, result", [
+    dtu.pp(dt("2002.1231 10:00:00"), dt("2001.1231 10:00:00"), td(days=365),
+           id="dt-01: <DT> - <dt> => <td>"),
+    dtu.pp(dt("2001.1231 10:00:00"), dt("2002.1231 10:00:00"), td(days=-365),
+           id="dt-02: <dt> - <DT> => (-)<td>"),
+
+    dtu.pp(dt("2002.1231 10:00:00"), datetime(2001, 12, 31, 10, 0, 0),
+           td(days=365), id="dt-03: <DT> - <datetime> => <td>"),
+    dtu.pp(dt("2001.1231 10:00:00"), datetime(2002, 12, 31, 10, 0, 0),
+           td(days=-365), id="dt-04: <dt> - <DATETIME> => (-)<td>"),
+
+    dtu.pp(datetime(2002, 12, 31, 10, 0, 0), dt("2001.1231 10:00:00"),
+           td(days=365), id="dt-05: <DATETIME> - <dt> => <td>"),
+    dtu.pp(datetime(2001, 12, 31, 10, 0, 0), dt("2002.1231 10:00:00"),
+           td(days=-365), id="dt-06: <datetime> - <DT> => (-)<td>"),
+
+    dtu.pp(dt("2005.0101 10:07:00"), 420, dt("2005.0101 10:00:00"),
+           id="dt-07: <dt> - <int> => <dt>"),
+    dtu.pp(dt("2005.0101 10:07:00"), -420, dt("2005.0101 10:14:00"),
+           id="dt-08: <dt> - <int> => <dt>"),
+    dtu.pp(dt("2005.0101 10:07:00"), td(420), dt("2005.0101 10:00:00"),
+           id="dt-09: <dt> - <int> => <dt>"),
+    dtu.pp(dt("2005.0101 10:07:00"), td(-420), dt("2005.0101 10:14:00"),
+           id="dt-10: <dt> - <int> => <dt>"),
+    dtu.pp(dt("2005.0101 10:07:00"), timedelta(600), dt("2005.0101 09:57:00"),
+           id="dt-11: <dt> - <int> => <dt>"),
+    dtu.pp(dt("2005.0101 10:07:00"), timedelta(-600), dt("2005.0101 10:17:00"),
+           id="dt-12: <dt> - <int> => <dt>"),
+
+    dtu.pp(577, dt(), dtu.unsupp("-", 'int', 'dt'),
+           id="dt-13: <int> - <dt> => TypeError"),
+    dtu.pp(td(577), dt(), dtu.unsupp("-", 'td', 'dt'),
+           id="dt-14: <td> - <dt> => TypeError"),
+    dtu.pp(timedelta(0, 577), dt(),
+           dtu.unsupp("-", 'datetime.timedelta', 'dt'),
+           id="dt-15: <td> - <dt> => TypeError"),
+    ])
+def test_dt_sub(left, right, result):
+    """
+    Test dt.__sub__ for various cases
+    """
+    pytest.dbgfunc()
+    if isinstance(result, Exception):
+        with pytest.raises(type(result)) as err:
+            left - right
+        assert str(result) in str(err.value)
+    else:
+        assert left - right == result
+
+
+# -----------------------------------------------------------------------------
 # test_call()
 @pytest.mark.parametrize("spec, itz, fmt, otz, exp", [
     dtu.pp("2019.1001", None, "%F", None, "2019-10-01",
