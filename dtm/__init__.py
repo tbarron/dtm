@@ -106,7 +106,7 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __add__(self, other):
         """
-        <dt> + <int> => <dt>
+        <dt> + [<int>, <td>, <timedelta>] => <dt>
         """
         if isinstance(other, td):
             return dt(epoch=self._utc + other._duration)
@@ -123,6 +123,36 @@ class dt(object):
         Handle <other> + <dt>
         """
         return self.__add__(other)
+
+    # -------------------------------------------------------------------------
+    def __sub__(self, other):
+        """
+        <dt> - [<dt>, <datetime>] => <td>
+        <dt> - [<td>, <timedelta>, <int>] => <dt>
+        """
+        if isinstance(other, dt):
+            return td(self._utc - other._utc)
+        elif isinstance(other, datetime):
+            return td(self._utc - other.timestamp())
+        elif isinstance(other, td):
+            return dt(epoch=self._utc - other._duration)
+        elif isinstance(other, timedelta):
+            return dt(epoch=self._utc - other.total_seconds())
+        elif isinstance(other, (int, float)):
+            return dt(epoch=self._utc - int(other))
+        else:
+            return NotImplemented
+
+    # -------------------------------------------------------------------------
+    def __rsub__(self, other):
+        """
+        <datetime> - <dt> => <td>
+        [<timedelta>, <td>, <int>] - <dt> => TypeError
+        """
+        if isinstance(other, datetime):
+            return td(other.timestamp() - self._utc)
+        else:
+            return NotImplemented
 
     # -------------------------------------------------------------------------
     def _from_format(self, spec):
