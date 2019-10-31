@@ -1,5 +1,5 @@
 from dtm import version
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 import pytz
 import tzlocal
@@ -645,7 +645,16 @@ class td(object):
         """
         True if *self*._duration == *other*._duration, otherwise False.
         """
-        return self._duration == other._duration
+        if isinstance(other, timedelta):
+            return self._duration == other.total_seconds()
+        elif isinstance(other, td):
+            return self._duration == other._duration
+        elif isinstance(other, (int, float)):
+            return self._duration == other
+        else:
+            msg = ("td can be compared to number, td, or timedelta,"
+                   " but not to {}".format(type(other)))
+            raise ValueError(msg)
 
     # -------------------------------------------------------------------------
     def __repr__(self):
