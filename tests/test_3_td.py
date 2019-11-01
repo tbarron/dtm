@@ -155,9 +155,9 @@ def test_td_add(left, right, exp):
            id="td-06: <timedelta> - <td> => -<td>"),
 
     dtu.pp(datetime(1972, 12, 16, 20, 16, 44), td(9, 33, 41),
-           dt("1972.1217 05:50:25"), id="td-07: <datetime> - <td> => <dt>"),
+           dt("1972.1216 10:43:03"), id="td-07: <datetime> - <td> => <dt>"),
     dtu.pp(datetime(2021, 4, 8, 1, 21, 14), td(-48311),
-           dt("2021.0407 11:56:03"), id="td-08: <datetime> - (-)<td> => <dt>"),
+           dt("2021.0408 14:46:25"), id="td-08: <datetime> - (-)<td> => <dt>"),
 
     dtu.pp(td(32194), 18611, td(13583), id="td-09: <td> - <int> => <td>"),
     dtu.pp(70684, td(-1401), td(72085), id="td-10: <int> - <td> => <td>"),
