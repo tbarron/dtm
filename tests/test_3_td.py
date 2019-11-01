@@ -234,3 +234,17 @@ def test_td_repr(obj, exp):
     Test td.__repr__()
     """
     assert repr(obj) == exp
+
+
+# -----------------------------------------------------------------------------
+@pytest.mark.parametrize("obj, exp", [
+    dtu.pp(td(43), "0d00:00:43", id="< minute"),
+    dtu.pp(td(143), "0d00:02:23", id="< hour"),
+    dtu.pp(td(72015), "0d20:02:15", id="< day"),
+    dtu.pp(td(937231), "10d20:20:31", id="day <"),
+    ])
+def test_td_str(obj):
+    """
+    Test td.__str__()
+    """
+    assert str(obj) == exp
