@@ -874,6 +874,21 @@ class td(object):
         return "<dtm.td({})>".format(self._duration)
 
     # -------------------------------------------------------------------------
+    def __str__(self):
+        """
+        [class td]
+
+        Show the str-formatted value of *self*.
+        """
+        r = self._duration
+        v = []
+        for div in [24*3600, 3600, 60]:
+            v.append(r // div)
+            r = r % div
+        v.append(r)
+        return "{}d{:02d}:{:02d}:{:02d}".format(*tuple(v))
+
+    # -------------------------------------------------------------------------
     def _secs(self):
         """
         [class td]
