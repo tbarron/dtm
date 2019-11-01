@@ -727,6 +727,38 @@ class td(object):
         return self.__add__(other)
 
     # -------------------------------------------------------------------------
+    def __sub__(self, other):
+        """
+        [class td]
+
+        Handle <td> - [other]
+        """
+        if isinstance(other, td):
+            return td(self._duration - other._duration)
+        elif isinstance(other, timedelta):
+            return td(self._duration - other.total_seconds())
+        elif isinstance(other, (int, float)):
+            return td(self._duration - int(other))
+        else:
+            return NotImplemented
+
+    # -------------------------------------------------------------------------
+    def __rsub__(self, other):
+        """
+        [class td]
+
+        Handle [other] - <td>
+        """
+        if isinstance(other, timedelta):
+            return td(other.total_seconds() - self._duration)
+        elif isinstance(other, (int, float)):
+            return td(int(other) - self._duration)
+        elif isinstance(other, datetime):
+            return dt(epoch=other.timestamp() - self._duration)
+        else:
+            return NotImplemented
+
+    # -------------------------------------------------------------------------
     def __eq__(self, other):
         """
         True if *self*._duration == *other*._duration, otherwise False.
