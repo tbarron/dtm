@@ -1,3 +1,48 @@
+## 1.4.0 ... 2019-11-01 17:39:31
+
+ * Write tests and payload for class td (time delta), which represents a
+   length of time.
+ * Write tests and payload for dt.__add__() so that
+    * <dt> + <int> => <dt>
+    * <dt> + <td> => <dt>
+    * <dt> + <timedelta> => <dt>
+    * <int> + <dt> => <dt>
+    * <td> + <dt> => <dt>
+    * <timedelta> + <dt> => <dt>
+    * <dt> + <dt> => TypeError
+    * <dt> + <datetime> => TypeError
+    * <datetime> + <dt> => TypeError
+ * Write tests and [payload] for dt.__sub__() so that
+    * <dt> - <dt> => <td>
+    * <dt> - <datetime> => <td>
+    * <datetime> - <dt> => <td>        (__rsub__)
+    * <dt> - <int> => <dt>
+    * <dt> - <td> => <dt>
+    * <dt> - <timedelta> => <dt>
+    * <int> - <dt> => TypeError        (__rsub__)
+    * <td> - <dt> => TypeError         (__rsub__)
+    * <timedelta> - <dt> => TypeError  (__rsub__)
+ * Write tests and payload for td.__add__() so that
+    * <td> + <td> => <td>
+    * <td> + <timedelta> => <td>
+    * <timedelta> + <td> => <td>
+    * <td> + <int> => <td>
+    * <int> + <td> => <td>
+    * <td> + <dt> [== <dt>.__radd__] => <dt>
+    * <td> + <datetime> => <dt>
+    * <datetime> + <td> (__radd__) => <dt>
+ * Write tests and payload for td.__sub__() so that
+    * <td> - <td> => <td>
+    * <td> - <timedelta> => <td>
+    * <timedelta> - <td> => <td> (td.__rsub__)
+    * <datetime> - <td> => <dt>  (td.__rsub__)
+    * <td> - <int> => <td>
+    * <int> - <td> => <td>
+    * <td> - <dt> => TypeError   (dt.__sub__)
+    * <td> - <datetime> => TypeError
+ * Write tests and payload for td.__str__()
+
+
 ## 1.3.1 ... 2019-10-30 06:26:38
 
  * Put common test utility items in importable file dtm_test_utils.py and
