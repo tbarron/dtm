@@ -1,5 +1,5 @@
-from datetime import timedelta
-from dtm import dt_error, td
+from datetime import datetime, timedelta
+from dtm import dt, dt_error, td
 import dtm_test_utils as dtu
 import pytest
 
@@ -72,6 +72,66 @@ def test_td_init(args, kw, exp):
         assert str(exp) in str(err.value)
     else:
         actual = td(*args, **kw)
+        assert actual == exp
+
+
+# -----------------------------------------------------------------------------
+# test_td_add()
+@pytest.mark.parametrize("left, right, exp", [
+    dtu.pp(td(300), td(7), td(307), id="td+01: <td> + <td> => <td>"),
+    dtu.pp(td(300), td(-25), td(275), id="td+02: <td> + (-)<td> => <td>"),
+    dtu.pp(td(-300), td(7), td(-293), id="td+03: (-)<td> + <td> => <td>"),
+    dtu.pp(td(-300), td(-25), td(-325), id="td+04: (-)<td> + (-)<td> => <td>"),
+
+    dtu.pp(td(300), timedelta(0, 15), td(315),
+           id="td+03: <td> + <timedelta> => <td>"),
+    dtu.pp(td(300), timedelta(0, -72), td(228),
+           id="td+04: <td> + (-)<timedelta> => <td>"),
+    dtu.pp(td(-300), timedelta(0, 15), td(-285),
+           id="td+03: (-)<td> + <timedelta> => <td>"),
+    dtu.pp(td(-300), timedelta(0, -72), td(-372),
+           id="td+04: (-)<td> + (-)<timedelta> => <td>"),
+
+    dtu.pp(timedelta(0, 35), td(75), td(110),
+           id="td+05: <timedelta> + <td> => <td>"),
+    dtu.pp(timedelta(0, 35), td(-75), td(-40),
+           id="td+06: <timedelta> + (-)<td> => <td>"),
+    dtu.pp(timedelta(0, -35), td(75), td(40),
+           id="td+07: (-)<timedelta> + <td> => <td>"),
+    dtu.pp(timedelta(0, -35), td(-75), td(-110),
+           id="td+08: (-)<timedelta> + (-)<td> => <td>"),
+
+    dtu.pp(td(400), 750, td(1150), id="td+09: <td> + <int> => <td>"),
+    dtu.pp(td(400), -75, td(325), id="td+10: <td> + <int> => <td>"),
+    dtu.pp(td(-430), 750, td(320), id="td+11: <td> + <int> => <td>"),
+    dtu.pp(td(-800), -750, td(-1550), id="td+12: <td> + <int> => <td>"),
+
+    dtu.pp(234, td(822), td(1056), id="td+13: <int> + <td> => <td>"),
+    dtu.pp(283, td(-876), td(-593), id="td+14: <int> + <td> => <td>"),
+    dtu.pp(-677, td(285), td(-392), id="td+15: <int> + <td> => <td>"),
+    dtu.pp(-848, td(-180), td(-1028), id="td+16: <int> + <td> => <td>"),
+
+    dtu.pp(td(17), datetime(2015, 1, 1, 8, 0, 0), dt("2015.0101 08:00:17"),
+           id="dt+17: <td> + <datetime> => <dt>"),
+    dtu.pp(td(-552), datetime(2009, 4, 5, 6, 7, 8), dt("2009.0405 05:57:56"),
+           id="dt+18: <td> + <datetime> => <dt>"),
+
+    dtu.pp(datetime(1986, 6, 2, 13, 42, 40), td(910), dt("1986.0602 02:28:50"),
+           id="dt+19: <datetime> + <td> => <dt>"),
+    dtu.pp(datetime(1977, 9, 14, 12, 17, 2), td(-2655),
+           dt("1977.0914 11:32:47"), id="dt+20: <datetime> + <td> => <dt>"),
+    ])
+def test_td_add(left, right, exp):
+    """
+    Test td.__add__()
+    """
+    pytest.dbgfunc()
+    if isinstance(exp, Exception):
+        with pytest.raises(type(exp)) as err:
+            actual = left + right
+        assert str(exp) in str(err.value)
+    else:
+        actual = left + right
         assert actual == exp
 
 
