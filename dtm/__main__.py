@@ -2,8 +2,8 @@
 Usage:
     dtm calendar [DTSPEC]
     dtm ltu [-d] [LOC_DTSPEC] [TIMEZONE]
-    dtm rdt [-d]
-    dtm rtd [-d]
+    dtm rdt [-d] [EPOCH]
+    dtm rtd [-d] [SECONDS]
     dtm splat [-d]
     dtm utl [-d] [UTC_DTSPEC] [TIMEZONE]
     dtm westeast [-d]
@@ -261,7 +261,9 @@ def dtm_rdt(**kw):
     """
     Generate a random date
     """
-    x = random.randint(0, int(time.time() * 1.25))
+    if kw['d']:
+        pdb.set_trace()
+    x = kw['EPOCH'] or random.randint(0, int(time.time() * 1.25))
     thunk = dt(epoch=x)
     print("{} (epoch = {})".format(thunk(), thunk._utc))
 
@@ -272,9 +274,12 @@ def dtm_rtd(**kw):
     """
     Generate a random td
     """
-    # x = random.randint(0, 24*3600)
-    thunk = td(random.randint(0, 24*3600))
-    print("{} (epoch = {})".format(hhmmss(thunk._duration), thunk._duration))
+    if kw['d']:
+        pdb.set_trace()
+    ssec = kw['SECONDS'] or random.randint(0, 5*24*3600)
+    sec = int(ssec)
+    obj = td(sec)
+    print("{} (epoch = {})".format(dhhmmss(obj._duration), obj._duration))
 
 
 # -----------------------------------------------------------------------------
@@ -288,14 +293,17 @@ def hhmm(secs):
 
 
 # -----------------------------------------------------------------------------
-def hhmmss(secs):
+def dhhmmss(secs):
     """
     Format a number of seconds in hours and minutes
     """
-    hr = int(secs // 3600)
-    mn = int((secs % 3600) // 60)
-    sc = secs % 60
-    return "{:02d}:{:02d}:{:02d}".format(hr, mn, sc)
+    r = secs
+    v = []
+    for div in [24*3600, 3600, 60]:
+        v.append(r // div)
+        r = r % div
+    v.append(r)
+    return "{}d{:02d}:{:02d}:{:02d}".format(*tuple(v))
 
 
 # -----------------------------------------------------------------------------
