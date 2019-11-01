@@ -444,6 +444,15 @@ class dt(object):
         return rval
 
     # -------------------------------------------------------------------------
+    def _secs(self):
+        """
+        [class dt]
+
+        Dump the raw seconds for the object
+        """
+        return self._utc
+
+    # -------------------------------------------------------------------------
     def last_weekday(self, trgs=None):
         """
         The argument can be a string or list of strings. Each string should be
@@ -739,6 +748,15 @@ class td(object):
         Show the representation of *self*.
         """
         return "<dtm.td({})>".format(self._duration)
+
+    # -------------------------------------------------------------------------
+    def _secs(self):
+        """
+        [class td]
+
+        Dump the raw seconds for the object
+        """
+        return self._duration
 
     # -------------------------------------------------------------------------
     @staticmethod
