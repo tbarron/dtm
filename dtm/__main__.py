@@ -2,6 +2,8 @@
 Usage:
     dtm calendar [DTSPEC]
     dtm ltu [-d] [LOC_DTSPEC] [TIMEZONE]
+    dtm rdt [-d]
+    dtm rtd [-d]
     dtm splat [-d]
     dtm utl [-d] [UTC_DTSPEC] [TIMEZONE]
     dtm westeast [-d]
@@ -28,9 +30,10 @@ The following sequences provide valid human-readable displays of UTC:
 """
 from docopt_dispatch import dispatch
 from datetime import datetime
-from dtm import dt
+from dtm import dt, td
 import pdb
 import pytz
+import random
 import time
 
 
@@ -253,6 +256,28 @@ def zdetails(**kw):
 
 
 # -----------------------------------------------------------------------------
+@dispatch.on('rdt')
+def dtm_rdt(**kw):
+    """
+    Generate a random date
+    """
+    x = random.randint(0, int(time.time() * 1.25))
+    thunk = dt(epoch=x)
+    print("{} (epoch = {})".format(thunk(), thunk._utc))
+
+
+# -----------------------------------------------------------------------------
+@dispatch.on('rtd')
+def dtm_rtd(**kw):
+    """
+    Generate a random td
+    """
+    # x = random.randint(0, 24*3600)
+    thunk = td(random.randint(0, 24*3600))
+    print("{} (epoch = {})".format(hhmmss(thunk._duration), thunk._duration))
+
+
+# -----------------------------------------------------------------------------
 def hhmm(secs):
     """
     Format a number of seconds in hours and minutes
@@ -260,6 +285,17 @@ def hhmm(secs):
     hr = int(secs // 3600)
     mn = int((secs % 3600) / 60)
     return "{:02d}:{:02d}".format(hr, mn)
+
+
+# -----------------------------------------------------------------------------
+def hhmmss(secs):
+    """
+    Format a number of seconds in hours and minutes
+    """
+    hr = int(secs // 3600)
+    mn = int((secs % 3600) // 60)
+    sc = secs % 60
+    return "{:02d}:{:02d}:{:02d}".format(hr, mn, sc)
 
 
 # -----------------------------------------------------------------------------
