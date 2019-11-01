@@ -116,7 +116,7 @@ def test_td_init(args, kw, exp):
     dtu.pp(td(-552), datetime(2009, 4, 5, 6, 7, 8), dt("2009.0405 05:57:56"),
            id="dt+18: <td> + <datetime> => <dt>"),
 
-    dtu.pp(datetime(1986, 6, 2, 13, 42, 40), td(910), dt("1986.0602 02:28:50"),
+    dtu.pp(datetime(1986, 6, 2, 13, 42, 40), td(910), dt("1986.0602 13:57:50"),
            id="dt+19: <datetime> + <td> => <dt>"),
     dtu.pp(datetime(1977, 9, 14, 12, 17, 2), td(-2655),
            dt("1977.0914 11:32:47"), id="dt+20: <datetime> + <td> => <dt>"),
