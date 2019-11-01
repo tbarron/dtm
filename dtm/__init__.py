@@ -67,6 +67,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __init__(self, *args, **kw):
         """
+        [class dt]
+
         Initialize this object. The time is stored internally as a UTC epoch
         value. If the user specifies an epoch value at construction, it will be
         stored as a UTC epoch value (I know that's somewhat redundant), without
@@ -106,6 +108,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __add__(self, other):
         """
+        [class dt]
+
         <dt> + [<int>, <td>, <timedelta>] => <dt>
         """
         if isinstance(other, td):
@@ -120,6 +124,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __radd__(self, other):
         """
+        [class dt]
+
         Handle <other> + <dt>
         """
         return self.__add__(other)
@@ -127,6 +133,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __sub__(self, other):
         """
+        [class dt]
+
         <dt> - [<dt>, <datetime>] => <td>
         <dt> - [<td>, <timedelta>, <int>] => <dt>
         """
@@ -146,6 +154,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __rsub__(self, other):
         """
+        [class dt]
+
         <datetime> - <dt> => <td>
         [<timedelta>, <td>, <int>] - <dt> => TypeError
         """
@@ -157,6 +167,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def _from_format(self, spec):
         """
+        [class dt]
+
         Initialize from a list of my favorite date/time formats. A nice future
         feature might be a way to easily add new formats to this list, perhapss
         through a configuration file.
@@ -180,6 +192,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def _from_ints(self, *args):
         """
+        [class dt]
+
         Initialize from a list of ints.
         """
         return self._norm_loc_ize(datetime(*args)).timestamp()
@@ -188,6 +202,8 @@ class dt(object):
     @staticmethod
     def _static_brew_tz(tz):
         """
+        [class dt]
+
         Resolve tz to a timezone: None -> local, str -> timezone object,
         timezone object -> timezone object. This is the static method, which
         can be called from anywhere as long as the dt class is available. It is
@@ -209,6 +225,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def _brew_tz(self, tz):
         """
+        [class dt]
+
         Resolve *tz* to a timezone object. *tz* can be 1) None, 2) a timezone
         name, or 3) a timezone. If it's None, we're going to return the current
         object's _tz member. Otherwise, we return whatever the static method
@@ -224,6 +242,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __call__(self, *args, tz=None):
         """
+        [class dt]
+
         Generate the date/time in format *args[0]* (default: '%F-%T'). If tz is
         provided, show the time for that timezone. Otherwise, use the object's
         internal timezone. We just pass along the tz argument and strftime
@@ -238,6 +258,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __eq__(self, other):
         """
+        [class dt]
+
         This object can be compared to another dt or a datetime obj. This
         object is equal to a datetime object if _utc is equal to the integer
         value of other.timestamp().
@@ -252,6 +274,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __ge__(self, other):
         """
+        [class dt]
+
         This object can be compared to another dt or a datetime obj.
         """
         if isinstance(other, datetime) and self._utc >= int(other.timestamp()):
@@ -264,6 +288,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __gt__(self, other):
         """
+        [class dt]
+
         This object can be compared to another dt or a datetime obj.
         """
         if isinstance(other, datetime) and self._utc > other.timestamp():
@@ -276,6 +302,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __le__(self, other):
         """
+        [class dt]
+
         This object can be compared to another dt or a datetime obj.
         """
         if isinstance(other, dt) and self._utc <= other._utc:
@@ -288,6 +316,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __lt__(self, other):
         """
+        [class dt]
+
         This object can be compared to another dt or a datetime obj.
         """
         if isinstance(other, dt) and self._utc < other._utc:
@@ -300,6 +330,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __str__(self):
         """
+        [class dt]
+
         Report the contents of the object. We return the internal epoch
         formatted for human readability.
         """
@@ -310,6 +342,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def __repr__(self):
         """
+        [class dt]
+
         Report the contents of the object in tuple format. The date/time
         numbers reflect the internal epoch value and we also show the object's
         internal timezone.
@@ -319,6 +353,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def _user_defined_formats(self):
         """
+        [class dt]
+
         Read and parse $DTM_FORMATS if set for user defined parsing formats
         """
         rval = os.getenv("DTM_FORMATS")
@@ -329,6 +365,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def datetime(self):
         """
+        [class dt]
+
         Return a datetime object containing the time ref and zone of *self*.
         """
         return datetime.fromtimestamp(self._utc).astimezone(self._tz)
@@ -337,6 +375,8 @@ class dt(object):
     @staticmethod
     def _fail(msg):
         """
+        [class dt]
+
         Raise dt_error with *msg*
         """
         raise dt_error(msg)
@@ -345,6 +385,8 @@ class dt(object):
     def _duration(self, *args, seconds=None, minutes=None, hours=None,
                   days=None):
         """
+        [class dt]
+
         Convert seconds, minutes, hours, days into a number of seconds and
         return that.
 
@@ -373,6 +415,8 @@ class dt(object):
     def decrement(self, *args, seconds=None, minutes=None, hours=None,
                   days=None):
         """
+        [class dt]
+
         Same as increment, but subtract the delta
         """
         delta = self._duration(*args, seconds=seconds, minutes=minutes,
@@ -383,6 +427,8 @@ class dt(object):
     def increment(self, *args, seconds=None, minutes=None, hours=None,
                   days=None):
         """
+        [class dt]
+
         If *args* is not empty, we expect one of the following:
 
             (seconds)
@@ -399,6 +445,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def next_day(self, count=1):
         """
+        [class dt]
+
         Return the dt that is *count* days after the current object
         """
         prev_ts = self._utc
@@ -417,6 +465,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def _delta(self, ahour, bhour):
         """
+        [class dt]
+
         Figure out the number of seconds to add to the timestamp to fix the dst
         offset
         """
@@ -427,6 +477,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def _askew(self, ahour, bhour):
         """
+        [class dt]
+
         If there is a dst mismatch, return True, else False
         """
         return ahour != bhour
@@ -434,6 +486,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def _norm_loc_ize(self, dtime):
         """
+        [class dt]
+
         Localize and normalize *dtime* into zone self._tz, returning the
         resulting datetime object
         """
@@ -455,6 +509,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def last_weekday(self, trgs=None):
         """
+        [class dt]
+
         The argument can be a string or list of strings. Each string should be
         the lowercase abbreviated name of a weekday. The date of the last one
         preceding the current object will be returned.
@@ -474,6 +530,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def next_weekday(self, trgs=None):
         """
+        [class dt]
+
         The argument can be a string or list of strings. Each string should be
         the lowercase abbreviated name of a weekday. The date of the next one
         following the current object will be returned.
@@ -493,6 +551,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def previous_day(self, count=1):
         """
+        [class dt]
+
         Return the dt that is *count* days before current object
         """
         pts = self._utc
@@ -510,6 +570,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def dt_range(self, last):
         """
+        [class dt]
+
         Yield each date from self to last, including last.
         """
         tmp = self
@@ -520,6 +582,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def strftime(self, *args, tz=None):
         """
+        [class dt]
+
         Pass strftime() calls down to datetime
         """
         tzobj = self._brew_tz(tz)
@@ -530,6 +594,8 @@ class dt(object):
     @staticmethod
     def strptime(*args, tz=None):
         """
+        [class dt]
+
         Here we've been called with a dtspec, a format, and possibly with a
         timezone. We want to parse the dtspec according to the format in the
         context of the timezone and wind up with a (UTC) epoch value suitable
@@ -545,6 +611,8 @@ class dt(object):
     @staticmethod
     def version(**args):
         """
+        [class dt]
+
         Return the current version of this class.
         """
         return version._v
@@ -552,6 +620,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def weekday(self, tz=None):
         """
+        [class dt]
+
         Return the lowercase abbreviated weekday name for the current object
         """
         return self.strftime("%a", tz=tz).lower()
@@ -559,6 +629,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def weekday_ceiling(self, wkday):
         """
+        [class dt]
+
         Return a dt containing the following *wkday* unless it's today. In that
         case, return self.
         """
@@ -579,6 +651,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def weekday_floor(self, wkday):
         """
+        [class dt]
+
         Return a dt containing the preceding *wkday* unless it's today. In that
         case, return self
         """
@@ -599,6 +673,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def weekday_list(self):
         """
+        [class dt]
+
         Return a list of abbreviated weekday names
         """
         return ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
@@ -606,6 +682,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def iso(self, tz=None):
         """
+        [class dt]
+
         Return the object time in ISO format with optional timezone adjustment
         """
         return self.strftime("%Y-%m-%d %H:%M:%S", tz=tz)
@@ -613,6 +691,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def ymd(self, tz=None):
         """
+        [class dt]
+
         Return the object time in YYYY.mmdd format with optional timezone
         adjustment
         """
@@ -621,6 +701,8 @@ class dt(object):
     # -------------------------------------------------------------------------
     def ymdw(self, tz=None):
         """
+        [class dt]
+
         Return the object time in YYYY.mmdd.www format with optional timezone
         adjustment
         """
@@ -653,6 +735,8 @@ class td(object):
     # -------------------------------------------------------------------------
     def __init__(self, *args, **kw):
         """
+        [class td]
+
         Argument formats:
             ([[[days,] hours,] minutes,] seconds)
             {'s': <int>,         # seconds
@@ -703,6 +787,8 @@ class td(object):
     # -------------------------------------------------------------------------
     def __add__(self, other):
         """
+        [class td]
+
         <td> + [<td>, <timedelta>, <int>] => <td>
         <td> + [<dt>, <datetime>] => <dt>
         """
@@ -722,6 +808,8 @@ class td(object):
     # -------------------------------------------------------------------------
     def __radd__(self, other):
         """
+        [class td]
+
         Handle <other> + <td>
         """
         return self.__add__(other)
@@ -761,6 +849,8 @@ class td(object):
     # -------------------------------------------------------------------------
     def __eq__(self, other):
         """
+        [class td]
+
         True if *self*._duration == *other*._duration, otherwise False.
         """
         if isinstance(other, timedelta):
@@ -777,6 +867,8 @@ class td(object):
     # -------------------------------------------------------------------------
     def __repr__(self):
         """
+        [class td]
+
         Show the representation of *self*.
         """
         return "<dtm.td({})>".format(self._duration)
@@ -794,6 +886,8 @@ class td(object):
     @staticmethod
     def _fail(msg):
         """
+        [class td]
+
         Raise dt_error with *msg*
         """
         raise dt_error(msg)
