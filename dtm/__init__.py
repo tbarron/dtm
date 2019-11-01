@@ -692,6 +692,32 @@ class td(object):
         self._duration = duration
 
     # -------------------------------------------------------------------------
+    def __add__(self, other):
+        """
+        <td> + [<td>, <timedelta>, <int>] => <td>
+        <td> + [<dt>, <datetime>] => <dt>
+        """
+        if isinstance(other, (int, float)):
+            return td(self._duration + int(other))
+        elif isinstance(other, timedelta):
+            return td(self._duration + other.total_seconds())
+        elif isinstance(other, td):
+            return td(self._duration + other._duration)
+        elif isinstance(other, datetime):
+            return dt(epoch=other.timestamp() + self._duration)
+        elif isinstance(other, dt):
+            return dt(epoch=other._utc + self._duration)
+        else:
+            return NotImplemented
+
+    # -------------------------------------------------------------------------
+    def __radd__(self, other):
+        """
+        Handle <other> + <td>
+        """
+        return self.__add__(other)
+
+    # -------------------------------------------------------------------------
     def __eq__(self, other):
         """
         True if *self*._duration == *other*._duration, otherwise False.
