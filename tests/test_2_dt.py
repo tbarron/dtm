@@ -19,7 +19,7 @@ def test_dt_attrs():
 
 # -----------------------------------------------------------------------------
 # test_dt_add()
-@pytest.mark.parametrize("left, right, result", [
+@pytest.mark.parametrize("left, right, exp", [
     dtu.pp(dt("2001.0102 10:00:00"), 365, dt("2001.0102 10:06:05"),
            id="dt+01: <dt> + <int> => <dt>"),
     dtu.pp(dt("2001.0102 10:00:00"), -365, dt("2001.0102 09:53:55"),
@@ -54,22 +54,22 @@ def test_dt_attrs():
     dtu.pp(datetime.now(), dt(), dtu.unsupp('+', 'datetime.datetime', 'dt'),
            id="dt+15: <datetime> + <dt> => error"),
     ])
-def test_dt_add(left, right, result):
+def test_dt_add(left, right, exp):
     """
     Test dt.__add__ for various cases
     """
     pytest.dbgfunc()
-    if isinstance(result, Exception):
-        with pytest.raises(type(result)) as err:
+    if isinstance(exp, Exception):
+        with pytest.raises(type(exp)) as err:
             left + right
-        assert str(result) in str(err.value)
+        assert str(exp) in str(err.value)
     else:
         assert left + right == result
 
 
 # -----------------------------------------------------------------------------
 # test_dt_sub()
-@pytest.mark.parametrize("left, right, result", [
+@pytest.mark.parametrize("left, right, exp", [
     dtu.pp(dt("2002.1231 10:00:00"), dt("2001.1231 10:00:00"), td(days=365),
            id="dt-01: <DT> - <dt> => <td>"),
     dtu.pp(dt("2001.1231 10:00:00"), dt("2002.1231 10:00:00"), td(days=-365),
@@ -106,15 +106,15 @@ def test_dt_add(left, right, result):
            dtu.unsupp("-", 'datetime.timedelta', 'dt'),
            id="dt-15: <td> - <dt> => TypeError"),
     ])
-def test_dt_sub(left, right, result):
+def test_dt_sub(left, right, exp):
     """
     Test dt.__sub__ for various cases
     """
     pytest.dbgfunc()
-    if isinstance(result, Exception):
-        with pytest.raises(type(result)) as err:
+    if isinstance(exp, Exception):
+        with pytest.raises(type(exp)) as err:
             left - right
-        assert str(result) in str(err.value)
+        assert str(exp) in str(err.value)
     else:
         assert left - right == result
 
