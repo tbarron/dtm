@@ -41,11 +41,11 @@ def test_dt_attrs():
     dtu.pp(td(366), dt("2001.0102 10:00:00"), dt("2001.0102 10:06:06"),
            id="dt+09: <td> + <dt> => <dt>"),
     dtu.pp(td(-432), dt("2001.0102 10:00:00"), dt("2001.0102 09:52:48"),
-           id="dt+10: (-<td>) + <td> => <dt>"),
+           id="dt+10: (-<td>) + <dt> => <dt>"),
     dtu.pp(timedelta(1), dt("2001.0102 10:00:00"), dt("2001.0103 10:00:00"),
            id="dt+11: <timedelta> + <dt> => <dt>"),
     dtu.pp(timedelta(-3), dt("2000.0102 10:00:00"), dt("1999.1230 10:00:00"),
-           id="dt+12: (-<timedelta>) + <td> => <dt>"),
+           id="dt+12: (-<timedelta>) + <dt> => <dt>"),
 
     dtu.pp(dt(), dt("2001.0901 17:00:00"), dtu.unsupp("+", 'dt', 'dt'),
            id="dt+13: <dt> + <dt> => error"),
