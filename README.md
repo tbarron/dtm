@@ -110,8 +110,9 @@ Convert between timezones:
 
 ## dt objects
 
-The main thing dtm exports is the 'dt' object. It contains an epoch time
-(which represents UTC by definition) and a timezone.
+The main thing dtm exports is the 'dt' class. Objects of this class contain
+an epoch time (which represents UTC by definition) and a timezone and
+represent a moment in time.
 
 The recommended method for importing the dt class is:
 
@@ -269,6 +270,13 @@ in YYYY.mmdd format.
 
 Return the stored time adjust to the stored timezone (or tz if provided) in
 YYYY.mmdd.www format.
+
+
+## td objects
+
+The dtm module also provides the 'td' class. Objects of this class
+represent a period of time with a specific length. td objects can be added
+to or subtracted from dt objects to find other dt objects.
 
 
 ## Project setup
