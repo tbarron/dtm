@@ -137,6 +137,51 @@ def test_td_add(left, right, exp):
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("left, right, exp", [
+    dtu.pp(td(1, 15, 0), td(450), td(h=1, m=7, s=30),
+           id="td-01: <td> - <td> => +<td>"),
+    dtu.pp(td(m=36, s=46), td(-12, -54), td(2980),
+           id="td-02: <td> - <td> => -<td>"),
+
+    dtu.pp(td(6735), timedelta(0, 804), td(h=1, m=38, s=51),
+           id="td-03: <td> - <timedelta> => +<td>"),
+    dtu.pp(td(6496), timedelta(0, -128), td(6624),
+           id="td-04: <td> - <timedelta> => -<td>"),
+
+    dtu.pp(timedelta(0, 2453), td(923), td(1530),
+           id="td-05: <timedelta> - <td> => +<td>"),
+    dtu.pp(timedelta(0, 6000), td(-851), td(6851),
+           id="td-06: <timedelta> - <td> => -<td>"),
+
+    dtu.pp(datetime(1972, 12, 16, 20, 16, 44), td(9, 33, 41),
+           dt("1972.1217 05:50:25"), id="td-07: <datetime> - <td> => <dt>"),
+    dtu.pp(datetime(2021, 4, 8, 1, 21, 14), td(-48311),
+           dt("2021.0407 11:56:03"), id="td-08: <datetime> - (-)<td> => <dt>"),
+
+    dtu.pp(td(32194), 18611, td(13583), id="td-09: <td> - <int> => <td>"),
+    dtu.pp(70684, td(-1401), td(72085), id="td-10: <int> - <td> => <td>"),
+
+    dtu.pp(td(77055), dt("1978.0120 17:54:38"), dtu.unsupp('-', 'td', 'dt'),
+           id="td-11: <td> - <dt> => TypeError"),
+    dtu.pp(td(56725), datetime(1997, 3, 3, 18, 49, 27),
+           dtu.unsupp('-', 'td', 'datetime.datetime'),
+           id="td-12: <td> - <datetime> => TypeError"),
+    ])
+def test_td_sub(left, right, exp):
+    """
+    Tests for td.__sub__()
+    """
+    pytest.dbgfunc()
+    if isinstance(exp, Exception):
+        with pytest.raises(type(exp)) as err:
+            actual = left - right
+        assert str(exp) in str(err.value)
+    else:
+        actual = left - right
+        assert actual == exp
+
+
+# -----------------------------------------------------------------------------
+@pytest.mark.parametrize("left, right, exp", [
     dtu.pp(td(0), td(0), True, id="      0 ==    00:00:00"),
     dtu.pp(td(120), td(2, 0), True, id="   120s ==    00:02:00"),
     dtu.pp(td(120), td(2, 1), False, id="   120s !=    00:02:01"),
