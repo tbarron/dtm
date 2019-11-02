@@ -1,7 +1,7 @@
 """
 Tests for code in dtm/__main__.py
 """
-from dtm import dt
+from dtm import dt, td
 import dtm.__main__ as dtmain
 import dtm_test_utils as dtu
 import pytest
@@ -151,6 +151,35 @@ def test_utl(dtspec, zone, expi, expf, expz, capsys):
     (out, err) = capsys.readouterr()
     assert re.search(exp, out), "'{}' not found in '{}'".format(
         exp, out)
+
+
+# -----------------------------------------------------------------------------
+# @pytest.mark.parametrize
+def test_rdt(capsys):
+    """
+    Test dtm_rdt
+    """
+    inp = 1947230258
+    kw = {'EPOCH': inp, 'd': False}
+    foo = dt(epoch=inp)
+    dtmain.dtm_rdt(**kw)
+    (out, err) = capsys.readouterr()
+    exp = "{} (epoch = {})".format(foo("%F-%T"), inp)
+    assert exp in out
+
+
+# -----------------------------------------------------------------------------
+def test_rtd(capsys):
+    """
+    Test dtm_rtd
+    """
+    inp = 28299
+    kw = {'SECONDS': inp, 'd': False}
+    nub = td(inp)
+    dtmain.dtm_rtd(**kw)
+    (out, err) = capsys.readouterr()
+    exp = "{} (seconds = {})".format(str(nub), nub._duration)
+    assert exp in out
 
 
 # -----------------------------------------------------------------------------
