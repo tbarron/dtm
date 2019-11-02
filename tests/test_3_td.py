@@ -453,3 +453,21 @@ def test_td_hours(inp, exp):
     """
     obj = td(inp)
     assert obj.hours() == exp
+
+
+# -----------------------------------------------------------------------------
+@pytest.mark.parametrize("inp, exp", [
+    dtu.pp(0, 0, id="0 seconds => 0 minutes"),
+    dtu.pp(1, 1/60, id="1 seconds => {} minutes".format(1/60)),
+    dtu.pp(63, 1.05, id="63 seconds => {} minutes".format(63/60)),
+    dtu.pp(3239, 3239/60, id="3239 seconds => {} minutes".format(3239/60)),
+    dtu.pp(17991, 17991/60, id="17991 seconds => {} minutes".format(17991/60)),
+    dtu.pp(42299, 42299/60, id="42299 seconds => {} minutes".format(42299/60)),
+    dtu.pp(56914, 56914/60, id="56914 seconds => {} minutes".format(56914/60)),
+    ])
+def test_td_minutes(inp, exp):
+    """
+    Test td.minutes()
+    """
+    obj = td(inp)
+    assert obj.minutes() == exp
