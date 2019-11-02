@@ -982,3 +982,12 @@ class td(object):
         Raise dt_error with *msg*
         """
         raise dt_error(msg)
+
+    # -------------------------------------------------------------------------
+    def days(self):
+        """
+        [class td]
+
+        Return the fractional number of days self represents
+        """
+        return self._duration / (24*3600)
