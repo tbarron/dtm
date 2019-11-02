@@ -103,16 +103,33 @@ Convert between timezones:
 
     The machine on which the software is running
 
+**timeref**
+
+    A reference to a moment in time. A timeref can be represented as a date
+    and time in UTC format, a date and time localized to a specific non-UTC
+    timezone, the number of seconds since the epoch (1970-01-01 00:00:00
+    UTC), etc. Note that timerefs represented by a number of seconds since
+    the epoch is always implicitly in the UTC frame of reference.
+
 **UTC**
 
     Universal Coordinated Time. The global reference time which is
     generally the same as local time in Greenwich, England.
 
+## Exports
+
+The main things the dtm module exports are the 'dt' class and the 'td'
+class. 'dt' objects represent moments in time. A 'dt' object's moment is
+stored internally as a UTC time reference. 'td' objects represent a span or
+period of time, stored internally as a number of seconds. Each object
+includes the methods needed to reformat the internal information for ease
+of use and understanding.
+
 ## dt objects
 
-The main thing dtm exports is the 'dt' class. Objects of this class contain
-an epoch time (which represents UTC by definition) and a timezone and
-represent a moment in time.
+Objects of this class represent a moment in time, stored as an epoch time
+(which represents UTC by definition). They also contain a timezone so they
+can be localized to specific locations on the globe.
 
 The recommended method for importing the dt class is:
 
@@ -189,20 +206,52 @@ local timezone (DLTZ) for the local machine (LM).
 ### Comparison
 
 dt objects can be compared for ==, <, <=, >, or >= to other dt objects and
-to datetime objects. The comparisons operators won't work if datetime is on
-the left side because datetime objects don't know how to compare themselves
-to dt objects.
+to datetime objects.
 
-### __call__([fmt,] tz=None) (Format default output time)
+### __add__(), __sub__()
 
-Adjust the stored time reference per tz (if given) and format it per fmt
-(if provided). If tz is not provided, use the dt object's internal tz
-value. If format is not provided, the default format is used ('%F-%T').
+The dt object supports arithmetic with other dt objects, datetime objects,
+td and timedelta objects, and simple numbers (ints or floats). The
+following list summarizes which operations are supported and which are not.
+That is, the operations producing TypeError are not supported.
+
+  * [dt] + [dt] -> TypeError
+  * [dt] - [dt] -> [td]
+
+  * [dt] + [td] -> [dt]
+  * [dt] - [td] -> [dt]
+  * [td] + [dt] -> [dt]
+  * [td] - [dt] -> TypeError
+
+  * [dt] + [datetime] -> TypeError
+  * [dt] - [datetime] -> [td]
+  * [datetime] + [dt] -> TypeError
+  * [datetime] - [dt] -> [td]
+
+  * [dt] + [timedelta] -> [dt]
+  * [dt] - [timedelta] -> [dt]
+  * [timedelta] + [dt] -> [dt]
+  * [timedelta] - [dt] -> TypeError
+
+  * [dt] + [int,float] -> [dt]
+  * [dt] - [int,float] -> [dt]
+  * [int,float] + [dt] -> [dt]
+  * [int,float] - [dt] -> TypeError
+
+### __eq__(), __gt__(), __ge__(), __lt__(), __le__()
+
+dt objects can be compared 
+
+### __call__(fmt='%F-%T', tz=None) (Format default output time)
+
+The __call__() method adjusts the object's internal time to the indicated
+output timezone and formats it for output according to the provided format
+(if any).
 
 ### dt.dt_range() (Iteration by day)
 
     >>> for day in dt(2011, 10, 1).dt_range(dt(2011, 10, 31)):
-    >>>        # do whatever
+    >>>     # do whatever
 
 Unlike other Python range functions, the dt_range() function is inclusive.
 That is, the above loop will process 2011-10-31 as well as the rest of the
@@ -211,13 +260,13 @@ value.
 
 ### dt.next_day(count=1) (Increment by day)
 
-Return a dt object containing a time reference 24 hours later than the
-value in the object on which the method is called.
+Return a dt object containing a timeref 24 hours later than the value in
+the object on which the method is called.
 
 ### dt.previous_day(count=1) (Decrement by day)
 
-Return a dt object containing a time reference 24 hours earlier than the
-value in the object on which the method is called.
+Return a dt object containing a timeref 24 hours earlier than the value in
+the object on which the method is called.
 
 ### dt.next_weekday(trgs=None) (Find the subsequent occurence of a target after today)
 
@@ -277,6 +326,30 @@ YYYY.mmdd.www format.
 The dtm module also provides the 'td' class. Objects of this class
 represent a period of time with a specific length. td objects can be added
 to or subtracted from dt objects to find other dt objects.
+
+### __add__(), __sub__()
+
+The td object supports arithmetic with td objects, dt and datetime objects,
+timedelta objects, and ints or floats. Here's a summary of supported and
+unsupported operations.
+
+  * [td] + [td] -> [td]
+  * [td] - [td] -> [td]
+
+  * [td] + [datetime] -> [dt]
+  * [td] - [datetime] -> TypeError
+  * [datetime] + [td] -> [dt]
+  * [datetime] - [td] -> [dt]
+
+  * [td] + [timedelta] -> [td]
+  * [td] - [timedelta] -> [td]
+  * [timedelta] + [td] -> [td]
+  * [timedelta] - [td] -> [td]
+
+  * [td] + [int,float] -> [td]
+  * [td] - [int,float] -> [td]
+  * [int,float] + [td] -> [td]
+  * [int,float] - [td] -> [td]
 
 
 ## Project setup
