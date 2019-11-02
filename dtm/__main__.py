@@ -261,7 +261,7 @@ def dtm_rdt(**kw):
     """
     Generate a random date
     """
-    if kw['d']:
+    if kw['d']:                                              # pragma: no cover
         pdb.set_trace()
     x = kw['EPOCH'] or random.randint(0, int(time.time() * 1.25))
     thunk = dt(epoch=x)
@@ -274,12 +274,12 @@ def dtm_rtd(**kw):
     """
     Generate a random td
     """
-    if kw['d']:
+    if kw['d']:                                              # pragma: no cover
         pdb.set_trace()
     ssec = kw['SECONDS'] or random.randint(0, 5*24*3600)
     sec = int(ssec)
     obj = td(sec)
-    print("{} (epoch = {})".format(dhhmmss(obj._duration), obj._duration))
+    print("{} (seconds = {})".format(dhhmmss(obj._duration), obj._duration))
 
 
 # -----------------------------------------------------------------------------

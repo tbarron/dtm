@@ -504,7 +504,7 @@ class dt(object):
 
         Dump the raw seconds for the object
         """
-        return self._utc
+        return self._utc                                     # pragma: no cover
 
     # -------------------------------------------------------------------------
     def last_weekday(self, trgs=None):
@@ -844,7 +844,7 @@ class td(object):
         elif isinstance(other, datetime):
             return dt(epoch=other.timestamp() - self._duration)
         else:
-            return NotImplemented
+            return NotImplemented                            # pragma: no cover
 
     # -------------------------------------------------------------------------
     def __eq__(self, other):
@@ -895,7 +895,7 @@ class td(object):
 
         Dump the raw seconds for the object
         """
-        return self._duration
+        return self._duration                                # pragma: no cover
 
     # -------------------------------------------------------------------------
     @staticmethod
