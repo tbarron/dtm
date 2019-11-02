@@ -1011,3 +1011,13 @@ class td(object):
         Return the fractional number of minutes self represents
         """
         return self._duration / 60
+
+
+    # -------------------------------------------------------------------------
+    def seconds(self):
+        """
+        [class td]
+
+        Return the number of seconds self represents
+        """
+        return self._duration
