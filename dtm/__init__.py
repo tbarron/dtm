@@ -782,7 +782,7 @@ class td(object):
             duration = largs.pop()
             while largs:
                 duration = duration + mult.pop() * largs.pop()
-        self._duration = duration
+        self._duration = int(duration)
 
     # -------------------------------------------------------------------------
     def __add__(self, other):
