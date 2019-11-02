@@ -121,6 +121,11 @@ def test_td_init(args, kw, exp):
            id="dt+19: <datetime> + <td> => <dt>"),
     dtu.pp(datetime(1977, 9, 14, 12, 17, 2), td(-2655),
            dt("1977.0914 11:32:47"), id="dt+20: <datetime> + <td> => <dt>"),
+
+    dtu.pp(td(), [1, 2, 3], dtu.unsupp('+', 'td', 'list'),
+           id="dt+21: <td> + <list> => TypeError"),
+    dtu.pp({}, td(), dtu.unsupp('+', 'dict', 'td'),
+           id="dt+22: <dict> + <td> => TypeError"),
     ])
 def test_td_add(left, right, exp):
     """
