@@ -285,6 +285,40 @@ def test_td_ge(left, right, exp):
 
 
 # -----------------------------------------------------------------------------
+@pytest.mark.parametrize("left, right, exp", [
+    dtu.pp(td(0), td(0), False,               id="      0 !>    00:00:00"),
+    dtu.pp(td(120), td(2, 0), False,          id="   120s !>    00:02:00"),
+    dtu.pp(td(120), td(2, 1), False,          id="   120s  >    00:02:01"),
+    dtu.pp(td(2, 1), td(120), True,           id="00:02:01 >        120s"),
+    dtu.pp(td(10921), td(3, 2, 1), False,     id=" 10921s !>    03:02:01"),
+    dtu.pp(td(10921), td(3, 2, 2), False,     id=" 10921s !>    03:02:02"),
+    dtu.pp(td(356521), td(4, 3, 2, 1), False, id="356521s !> 4d+03:02:01"),
+    dtu.pp(td(356500), td(4, 3, 2, 1), False, id="356500s !> 4d+03:02:01"),
+    dtu.pp(td(25), timedelta(0, 25), False,   id="td(25) !> timedelta(0, 25)"),
+    dtu.pp(td(59), timedelta(0, 25), True,    id="td(59)  > timedelta(0, 25)"),
+    dtu.pp(timedelta(0, 25), td(25), False,   id="timedelta(0, 25) !> td(25)"),
+    dtu.pp(timedelta(0, 14), td(25), False,   id="timedelta(0, 14) !> td(25)"),
+    dtu.pp(td(17), 17, False,                 id="number           !> td()"),
+    dtu.pp(td(55), 17, True,                  id="number            > td()"),
+    dtu.pp(td(55), "17", dtu.unsupp_a(">", 'td', "class 'str'"),
+           id="td() =/= str"),
+    dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_a(">", 'td', "class 'list'"),
+           id="td() =/= list"),
+    ])
+def test_td_gt(left, right, exp):
+    """
+    Test td.__eq__()
+    """
+    pytest.dbgfunc()
+    if isinstance(exp, Exception):
+        with pytest.raises(type(exp)) as err:
+            assert (left > right) is exp
+        assert str(exp) in str(err.value)
+    else:
+        assert (left > right) is exp
+
+
+# -----------------------------------------------------------------------------
 @pytest.mark.parametrize("obj, exp", [
     dtu.pp(td(27), "<dtm.td(27)>", id="27"),
     dtu.pp(td(7, 13), "<dtm.td(433)>", id="433"),
