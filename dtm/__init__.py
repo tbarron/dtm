@@ -860,9 +860,10 @@ class td(object):
         elif isinstance(other, (int, float)):
             return self._duration == other
         else:
-            msg = ("td can be compared to number, td, or timedelta,"
-                   " but not to {}".format(type(other)))
-            raise ValueError(msg)
+            msg = ("unsupported operand type(s) for ==: <td> and {}"
+                   .format(other.__class__))
+            raise TypeError(msg)
+
 
     # -------------------------------------------------------------------------
     def __repr__(self):
