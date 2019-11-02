@@ -247,6 +247,8 @@ def test_td_repr(obj, exp):
     dtu.pp(td(143), "0d00:02:23", id="< hour"),
     dtu.pp(td(72015), "0d20:00:15", id="< day"),
     dtu.pp(td(937231), "10d20:20:31", id="day <"),
+    dtu.pp(dt("2010.1231 11:59:59") - dt("2010.0101"), "364d11:59:59",
+           id="str(dt() - dt())"),
     ])
 def test_td_str(obj, exp):
     """
