@@ -222,6 +222,34 @@ def test_td_eq(left, right, exp):
 
 
 # -----------------------------------------------------------------------------
+@pytest.mark.parametrize("left, right, exp", [
+    dtu.pp(td(1, 1), td(60), True, id="td(61) != td(60)"),
+    dtu.pp(td(1, 1), td(61), False, id="td(61) == td(61)"),
+
+    dtu.pp(td(1, 1), timedelta(0, 60), True, id="td(61) != timedelta(60)"),
+    dtu.pp(td(1, 1), timedelta(0, 61), False, id="td(61) == timedelta(61)"),
+    dtu.pp(timedelta(0, 60), td(1, 1), True, id="timedelta(60) != td(61)"),
+    dtu.pp(timedelta(0, 61), td(1, 1), False, id="timedelta(61) == td(61)"),
+
+    dtu.pp(td(1, 1), 60, True, id="td(61) != number 60"),
+    dtu.pp(td(1, 1), 61, False, id="td(61) == number 61"),
+    dtu.pp(58, td(1, 1), True, id="number 60 != td(61)"),
+    dtu.pp(31 + 30, td(1, 1), False, id="number 61 == td(61)"),
+    ])
+def test_td_ne(left, right, exp):
+    """
+    Test td != something else
+    """
+    pytest.dbgfunc()
+    if isinstance(exp, Exception):
+        with pytest.raises(type(exp)) as err:
+            assert (left != right) is exp
+        assert str(exp) in str(err.value)
+    else:
+        assert (left != right) is exp
+
+
+# -----------------------------------------------------------------------------
 @pytest.mark.parametrize("obj, exp", [
     dtu.pp(td(27), "<dtm.td(27)>", id="27"),
     dtu.pp(td(7, 13), "<dtm.td(433)>", id="433"),
