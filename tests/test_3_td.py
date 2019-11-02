@@ -435,3 +435,21 @@ def test_td_days(inp, exp):
     """
     obj = td(inp)
     assert obj.days() == exp
+
+
+# -----------------------------------------------------------------------------
+@pytest.mark.parametrize("inp, exp", [
+    dtu.pp(0, 0, id="0 seconds => 0 hours"),
+    dtu.pp(1, 1/3600, id="1 seconds => {} hours".format(1/3600)),
+    dtu.pp(60, 1/60, id="60 seconds => {} hours".format(1/(60))),
+    dtu.pp(3600, 1, id="3600 seconds => 1 hours"),
+    dtu.pp(6*3600, 6, id="21600 seconds => 6 hours"),
+    dtu.pp(12*3600, 12, id="43200 seconds => 12 hours"),
+    dtu.pp(24*3600, 24, id="86400 seconds => 24 hours"),
+    ])
+def test_td_hours(inp, exp):
+    """
+    Test td.hours()
+    """
+    obj = td(inp)
+    assert obj.hours() == exp
