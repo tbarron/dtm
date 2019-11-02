@@ -422,9 +422,9 @@ def test_td_str(obj, exp):
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("inp, exp", [
     dtu.pp(0, 0, id="0 seconds => 0 days"),
-    dtu.pp(1, 1/(24*3600), id="1 seconds => 0.0000115741 days"),
-    dtu.pp(60, 1/(24*60), id="60 seconds => 0.000694444 days"),
-    dtu.pp(3600, 1/24, id="3600 seconds => 0.0416667 days"),
+    dtu.pp(1, 1/(24*3600), id="1 seconds => {} days".format(1/(24*3600))),
+    dtu.pp(60, 1/(24*60), id="60 seconds => {} days".format(1/(24*60))),
+    dtu.pp(3600, 1/24, id="3600 seconds => {} days".format(1/24)),
     dtu.pp(6*3600, 0.25, id="21600 seconds => 0.25 days"),
     dtu.pp(12*3600, 0.50, id="43200 seconds => 0.5 days"),
     dtu.pp(24*3600, 1, id="86400 seconds => 1 days"),
