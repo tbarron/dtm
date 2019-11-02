@@ -17,3 +17,12 @@ def unsupp(opd, left, right):
     """
     msg = "unsupported operand type(s) for {}: '{}' and '{}'"
     return TypeError(msg.format(opd, left, right))
+
+
+# -----------------------------------------------------------------------------
+def unsupp_a(opd, left, right):
+    """
+    Format an unsupported operand type message wrapped in a TypeError exception
+    """
+    msg = "unsupported operand type(s) for {}: <{}> and <{}>"
+    return TypeError(msg.format(opd, left, right))
