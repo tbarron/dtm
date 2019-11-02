@@ -107,6 +107,8 @@ def test_dt_add(left, right, exp):
     dtu.pp(timedelta(0, 577), dt(),
            dtu.unsupp("-", 'datetime.timedelta', 'dt'),
            id="dt-15: <td> - <dt> => TypeError"),
+    dtu.pp(dt(), [1, 2, 3], dtu.unsupp('-', 'dt', 'list'),
+           id="dt-16: <dt> - <list> => TypeError"),
     ])
 def test_dt_sub(left, right, exp):
     """
