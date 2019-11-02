@@ -1,4 +1,4 @@
-## 1.4.0 ... 2019-11-01 17:39:31
+## 1.4.0 ... 2019-11-01 20:25:32
 
  * Write tests and payload for class td (time delta), which represents a
    length of time.
@@ -41,6 +41,7 @@
     * <td> - <dt> => TypeError   (dt.__sub__)
     * <td> - <datetime> => TypeError
  * Write tests and payload for td.__str__()
+ * Complete test coverage
 
 
 ## 1.3.1 ... 2019-10-30 06:26:38
