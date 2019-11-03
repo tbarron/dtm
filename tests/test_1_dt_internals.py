@@ -33,7 +33,7 @@ import tzlocal
            "2019-03-10 01:00:00 CST", id="02:00:00"),
     dtu.pp("2019.0310 03:59:59", 'est5edt', 'cst6cdt',
            "2019-03-10 01:59:59 CST", id="02:59:59"),
-    ])
+])
 def test_from_format(dtspec, itz, otz, exp):
     """
     Exercise each of the supported formats and fail on at least one unsupported
@@ -77,7 +77,7 @@ def test_from_format(dtspec, itz, otz, exp):
            "2019-03-10 01:00:00 CST", id="3 est == 1 cdt"),
     dtu.pp((2019, 3, 10, 3, 59, 59), 'est5edt', 'cst6cdt',
            "2019-03-10 01:59:59 CST", id="02:59:59"),
-    ])
+])
 def test_from_ints(tup, itz, otz, exp):
     """
     Exercise each of the supported formats and fail on at least one unsupported
@@ -102,7 +102,7 @@ def test_from_ints(tup, itz, otz, exp):
     dtu.pp(17,
            dt_error("tz must be timezone, timezone name, or None"),
            id="invalid timezone")
-    ])
+])
 def test_static_brew_tz(inp, exp):
     """
     This function can take a pytz.BaseTzInfo object, a string containing
@@ -136,7 +136,7 @@ def test_static_brew_tz(inp, exp):
     dtu.pp(dt(), 17,
            dt_error("tz must be timezone, timezone name, or None"),
            id="invalid timezone")
-    ])
+])
 def test_brew_tz(obj, itz, exp):
     """
     This function can take a pytz.BaseTzInfo object, a string containing
@@ -160,7 +160,7 @@ def test_brew_tz(obj, itz, exp):
     dtu.pp(9, 10, -3600, id="negative ordered"),
     dtu.pp(0, 23, 3600, id="positive reversed"),
     dtu.pp(23, 0, -3600, id="negative reversed"),
-    ])
+])
 def test_delta(left, right, exp):
     """
     Tests for _delta
@@ -185,7 +185,7 @@ def test_delta(left, right, exp):
     dtu.pp(datetime(2019, 3, 10, 2, 0, 0, tzinfo=dtu.tz_esdt), None,
            datetime(2019, 3, 10, 2, 0, 0, tzinfo=dtu.tz_esdt),
            id="local after"),
-    ])
+])
 def test_norm_loc(input, itz, exp):
     """
     input: dtspec

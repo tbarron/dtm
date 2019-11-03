@@ -53,7 +53,7 @@ def test_dt_attrs():
            id="dt+14: <dt> + <datetime> => error"),
     dtu.pp(datetime.now(), dt(), dtu.unsupp('+', 'datetime.datetime', 'dt'),
            id="dt+15: <datetime> + <dt> => error"),
-    ])
+])
 def test_dt_add(left, right, exp):
     """
     Test dt.__add__ for various cases
@@ -109,7 +109,7 @@ def test_dt_add(left, right, exp):
            id="dt-15: <td> - <dt> => TypeError"),
     dtu.pp(dt(), [1, 2, 3], dtu.unsupp('-', 'dt', 'list'),
            id="dt-16: <dt> - <list> => TypeError"),
-    ])
+])
 def test_dt_sub(left, right, exp):
     """
     Test dt.__sub__ for various cases
@@ -178,7 +178,7 @@ def test_dt_sub(left, right, exp):
            id="00:59:59 est == 05:59:59 utc"),
     dtu.pp("2019.1103 01:00:00", 'est5edt', "%F %T", 'utc',
            "2019-11-03 06:00:00", id="01:00:00 est == 06:00:00 utc"),
-    ])
+])
 def test_call(spec, itz, fmt, otz, exp):
     """
     A dt object initialized with *spec* and *itz* should produce *exp* when
@@ -200,7 +200,7 @@ def test_call(spec, itz, fmt, otz, exp):
            datetime(2005, 10, 7, tzinfo=dtu.tz_local), id="local"),
     dtu.pp(dt(2009, 12, 31, tz='cst6cdt'),
            datetime(2009, 12, 31, tzinfo=dtu.tz_csdt), id="central"),
-    ])
+])
 def test_datetime_x(nub, exp):
     """
     Given a dt object, x, we should be able to ask for x.datetime() and get a
@@ -228,7 +228,7 @@ def test_datetime_x(nub, exp):
     dtu.pp(dt("2004.0228 23:59:58"),
            {'hours': 7, 'minutes': 17, 'seconds': 42},
            None, dt("2004.0228 16:42:16"), id="- 07:17:42 kw"),
-    ])
+])
 def test_decr(start, kw, argl, exp):
     """
     Add or subtract time segments against a dt object
@@ -268,7 +268,7 @@ def century():
     dtu.pp(None,
            "12/3/2025 17:32:19", "{}25-12-03-17:32:19".format(century()),
            id="mm/dd/yyyy hh:mm:ss"),
-    ])
+])
 def test_env_dtm_formats(fmts, inp, exp):
     """
     If $DTM_FORMATS is set, its value should be added at the beginning of the
@@ -290,7 +290,7 @@ def test_env_dtm_formats(fmts, inp, exp):
            id="no strftime formatters"),
     dtu.pp("2001.1002 11:22:33", 'est5edt', None, "2001-10-02 11:22:33 EDT",
            id="default format"),
-    ])
+])
 def test_env_dtm_str(inp, itz, fmt, exp):
     """
     If $DTM_STR is set, its value should be used as the output format for
@@ -332,7 +332,7 @@ def test_env_dtm_str(inp, itz, fmt, exp):
     dtu.pp(dt("2004.0228 23:32:55"), {'minutes': 900}, (17,),
            dt_error("dt.increment expects either *args or **kw, not both"),
            id="bad args"),
-    ])
+])
 def test_incr(start, kw, argl, exp):
     """
     Add or subtract time segments against a dt object
@@ -381,7 +381,7 @@ def test_incr(start, kw, argl, exp):
            id="dterr multi"),
     dtu.pp("2018.0731 17", dt_error("None of the formats matched"),
            id="dterr format"),
-    ])
+])
 def test_init(inp, exp):
     """
     test dt() with no args -- should be now
@@ -438,7 +438,7 @@ def test_init(inp, exp):
 
     dtu.pp(-305319600, pytz.timezone('cst6cdt'), 'est5edt',
            "1960-04-29 00:00:00 EST-0500", id="tzobj constructor input"),
-    ])
+])
 def test_init_epoch(inp, itz, otz, exp):
     """
     Initializing from an epoch value will always produce the same UTC time
@@ -507,7 +507,7 @@ def test_init_epoch(inp, itz, otz, exp):
            id="08:00:00 NZ             +1300 == 1516215600"),
     dtu.pp("2018.0118 09:00:00", 'Pacific/Apia',
            id="09:00:00 Pacific/Apia   +1400 == 1516215600"),
-    ])
+])
 def test_init_tz_explicit(inp, itz):
     """
     Specifying an explicit timezone and dtspec should always produce the same
@@ -522,7 +522,7 @@ def test_init_tz_explicit(inp, itz):
 @pytest.mark.parametrize("locspec, expdt", [
     dtu.pp("2018.0117 10:00:00", datetime(2018, 1, 17, 10, 0, 0)),
     dtu.pp("2007.0528 07:00:00", datetime(2007, 5, 28, 7, 0, 0)),
-    ])
+])
 def test_init_tz_local(locspec, expdt):
     """
     In timezone EST5EDT, the test dtspec corresponds to UTC epoch value
@@ -564,7 +564,7 @@ def test_init_tz_local(locspec, expdt):
            id="00:59:59 EST == 1572760799"),
     dtu.pp("2019.1103 01:00:00", 'est', 1572760800,
            id="01:00:00 EST == 1572760800"),
-    ])
+])
 def test_init_tz_utc(spec, itz, epoch):
     """
     In UTC, the test dtspec corresponds to the indicated epoch value.
@@ -627,7 +627,7 @@ def test_init_bad_tz():
            id="00:59:59 est == 05:59:59 utc"),
     dtu.pp(dt("2019.1103 01:00:00", tz='est5edt'), 'utc',
            "2019-11-03 06:00:00", id="01:00:00 est == 06:00:00 utc"),
-    ])
+])
 def test_iso(obj, otz, exp):
     """
     Testing
@@ -648,7 +648,7 @@ def test_iso(obj, otz, exp):
     dtu.pp(dt(2018, 1, 17, 6, 30), dt("2018.0117"), False,
            id="dt(ints) ne dt(str)"),
     dtu.pp(dt(2018, 1, 17), 17, False, id="dt ne number"),
-    ])
+])
 def test_equal(left, right, exp):
     """
     Test the equality operator for dt()
@@ -670,7 +670,7 @@ def test_equal(left, right, exp):
     dtu.pp("2012.0102", datetime(2012, 1, 1), True, id="ge-d-s-i-t"),
     dtu.pp("2012.0102", datetime(2011, 12, 31), True, id="ge-d-s-y-t"),
     dtu.pp("2012.0102", datetime(2012, 1, 2), True, id="ge-d-e-i-t"),
-    ])
+])
 def test_ge(inp, bench, exp):
     """
     dt(*foo) is le datetime(*bar) if dt(*foo)._dtobj >= datetime(*bar)
@@ -693,7 +693,7 @@ def test_ge(inp, bench, exp):
     dtu.pp("2012.0102", datetime(2012, 1, 1), True, id="gt-d-s-i-t"),
     dtu.pp("2012.0102", datetime(2011, 12, 31), True, id="gt-d-s-y-t"),
     dtu.pp("2012.0102", datetime(2012, 1, 2), False, id="gt-d-e-i-f"),
-    ])
+])
 def test_gt(inp, bench, exp):
     """
     dt(*foo) is le datetime(*bar) if dt(*foo)._dtobj <= datetime(*bar)
@@ -716,7 +716,7 @@ def test_gt(inp, bench, exp):
     dtu.pp("2012.0102", datetime(2012, 1, 1), False, id="le-d-s-i-f"),
     dtu.pp("2012.0102", datetime(2011, 12, 31), False, id="le-d-s-y-f"),
     dtu.pp("2012.0102", datetime(2012, 1, 2), True, id="le-d-e-i-t"),
-    ])
+])
 def test_le(inp, bench, exp):
     """
     dt(*foo) is le datetime(*bar) if dt(*foo)._dtobj <= datetime(*bar)
@@ -739,7 +739,7 @@ def test_le(inp, bench, exp):
     dtu.pp("2012.0102", datetime(2012, 1, 1), False, id="lt-d-s-i-f"),
     dtu.pp("2012.0102", datetime(2011, 12, 31), False, id="lt-d-s-y-f"),
     dtu.pp("2012.0102", datetime(2012, 1, 2), False, id="lt-d-e-i-f"),
-    ])
+])
 def test_lt(inp, bench, exp):
     """
     dt(*foo) is less than datetime(*bar) if dt(*foo)._dtobj < datetime(*bar)
@@ -774,7 +774,7 @@ def test_dt_range():
     dtu.pp(dt(1800, 2, 28), (), dt(1800, 3, 1), id="century non-leap year"),
     dtu.pp(dt(2000, 2, 28), (), dt(2000, 2, 29), id="quad century leap year"),
     dtu.pp(dt(2000, 3, 1), (0, ), dt(2000, 3, 1), id="0 day offset"),
-    ])
+])
 def test_next_day(nub, ndargs, exp):
     """
     Test dt().next_day()
@@ -806,7 +806,7 @@ def test_next_day(nub, ndargs, exp):
     dtu.pp(dt(2001, 4, 10), 'january',
            dt_error("one of the targets is not a valid weekday"),
            id="non weekday arg"),
-    ])
+])
 def test_next_weekday(when, target, exp):
     """
     Test dt().next_weekday(). If today is Monday, dt().next_weekday('mon')
@@ -844,7 +844,7 @@ def test_next_weekday(when, target, exp):
     dtu.pp(dt(2001, 4, 10), 'january',
            dt_error("one of the targets is not a valid weekday"),
            id="non weekday arg"),
-    ])
+])
 def test_last_weekday(when, target, exp):
     """
     Test dt().last_weekday(). If today is Monday, dt().last_weekday('mon')
@@ -870,7 +870,7 @@ def test_last_weekday(when, target, exp):
     dtu.pp(dt(1900, 3, 1), (), dt(1900, 2, 28), id="century year"),
     dtu.pp(dt(2000, 3, 1), (), dt(2000, 2, 29), id="quad century year"),
     dtu.pp(dt(2000, 3, 1), (0, ), dt(2000, 3, 1), id="0 day offset"),
-    ])
+])
 def test_previous_day_pp(nub, pvargs, exp):
     """
     Tests for previous_day()
@@ -885,7 +885,7 @@ def test_previous_day_pp(nub, pvargs, exp):
            "dt(1356933723, tz='EST5EDT')", id="EST5EDT"),
     dtu.pp(dt(2012, 12, 31, 1, 2, 3, tz="UTC"),
            "dt(1356915723, tz='UTC')", id="UTC"),
-    ])
+])
 def test_repr(when, exp):
     """
     repr(dt()) should produce a predictable string
@@ -900,7 +900,7 @@ def test_repr(when, exp):
            "2012-12-31 01:02:03 EST", id="est"),
     dtu.pp(dt(2012, 12, 31, 1, 2, 3, tz='America/Boise'),
            "2012-12-31 01:02:03 MST", id="mst"),
-    ])
+])
 def test_str(inp, exp):
     """
     str(dt()) should produce a predictable string. It should generate the time
@@ -935,7 +935,7 @@ def test_str(inp, exp):
            id="12 hour"),
     dtu.pp(dt(2015, 3, 20, 14, 45, 0, tz='cst6cdt'), "%Y.%m%d %H:%M:%S", None,
            "2015.0320 14:45:00", id="output localized to timezone")
-    ])
+])
 def test_strftime(when, fmt, tzone, exp):
     """
     Test strftime
@@ -988,7 +988,7 @@ def test_version():
 
     dtu.pp('2013.0310 08:00:00', "%Y.%m%d %H:%M:%S", 'utc',
            dt("2013.0310 04:00:00", tz='est5edt'), id="utc 8 -> est 4am"),
-    ])
+])
 def test_strptime(when, fmt, tzone, exp):
     """
     Test strptime
@@ -1003,7 +1003,7 @@ def test_strptime(when, fmt, tzone, exp):
     dtu.pp(dt("2012.0704"), 'Pacific/Midway', "tue", id="wed -> tue"),
     dtu.pp(dt("2012.0704 16:00:00", tz='Pacific/Midway'), 'Pacific/Auckland',
            'thu', id="wed -> thu"),
-    ])
+])
 def test_weekday(obj, otz, exp):
     """
     Test dt.weekday()
@@ -1039,7 +1039,7 @@ def test_weekday(obj, otz, exp):
            id="wed.ceil(sat, wed)"),
     dtu.pp(dt(2003, 7, 10), ['sat', 'wed'], dt(2003, 7, 12),
            id="thu.ceil(sat, wed)"),
-    ])
+])
 def test_weekday_ceiling(when, wkday, exp):
     """
     Test dt().weekday_ceiling(). If today is Monday,
@@ -1082,7 +1082,7 @@ def test_weekday_ceiling(when, wkday, exp):
            id="wed.floor(sat, wed)"),
     dtu.pp(dt(2003, 7, 10), ['sat', 'wed'], dt(2003, 7, 9),
            id="thu.floor(sat, wed)"),
-    ])
+])
 def test_weekday_floor(when, wkday, exp):
     """
     Test dt().weekday_floor(). If today is Monday, dt().weekday_floor('mon') is
@@ -1103,7 +1103,7 @@ def test_weekday_floor(when, wkday, exp):
     ("2001.0719"),
     ("2007.0917"),
     ("2005.0313"),
-    ])
+])
 def test_ymd(when):
     """
     Test dt().ymd().
@@ -1117,7 +1117,7 @@ def test_ymd(when):
     ("2001.0719", "2001.0719.thu"),
     ("2007.0917", "2007.0917.mon"),
     ("2005.0313", "2005.0313.sun"),
-    ])
+])
 def test_ymdw(when, exp):
     """
     Test dt().ymd().

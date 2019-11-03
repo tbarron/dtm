@@ -60,7 +60,7 @@ def test_td_attrs():
     dtu.pp((1, 2, 3), {'h': 1, 'm': 2, 's': 3},
            dt_error("Expected either *args or *kw, not both"),
            id="fail: not both"),
-    ])
+])
 def test_td_init(args, kw, exp):
     """
     Tests for td.__init__()
@@ -126,7 +126,7 @@ def test_td_init(args, kw, exp):
            id="dt+21: <td> + <list> => TypeError"),
     dtu.pp({}, td(), dtu.unsupp('+', 'dict', 'td'),
            id="dt+22: <dict> + <td> => TypeError"),
-    ])
+])
 def test_td_add(left, right, exp):
     """
     Test td.__add__()
@@ -172,7 +172,7 @@ def test_td_add(left, right, exp):
     dtu.pp(td(56725), datetime(1997, 3, 3, 18, 49, 27),
            dtu.unsupp('-', 'td', 'datetime.datetime'),
            id="td-12: <td> - <datetime> => TypeError"),
-    ])
+])
 def test_td_sub(left, right, exp):
     """
     Tests for td.__sub__()
@@ -207,7 +207,7 @@ def test_td_sub(left, right, exp):
            id="td() =/= number"),
     dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_a("==", 'td', "class 'list'"),
            id="td() =/= list"),
-    ])
+])
 def test_td_eq(left, right, exp):
     """
     Test td.__eq__()
@@ -235,7 +235,7 @@ def test_td_eq(left, right, exp):
     dtu.pp(td(1, 1), 61, False, id="td(61) == number 61"),
     dtu.pp(58, td(1, 1), True, id="number 60 != td(61)"),
     dtu.pp(31 + 30, td(1, 1), False, id="number 61 == td(61)"),
-    ])
+])
 def test_td_ne(left, right, exp):
     """
     Test td != something else
@@ -270,7 +270,7 @@ def test_td_ne(left, right, exp):
            id="td() =/= str"),
     dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_a(">=", 'td', "class 'list'"),
            id="td() =/= list"),
-    ])
+])
 def test_td_ge(left, right, exp):
     """
     Test td.__eq__()
@@ -304,7 +304,7 @@ def test_td_ge(left, right, exp):
            id="td() =/= str"),
     dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_a(">", 'td', "class 'list'"),
            id="td() =/= list"),
-    ])
+])
 def test_td_gt(left, right, exp):
     """
     Test td.__eq__()
@@ -339,7 +339,7 @@ def test_td_gt(left, right, exp):
            id="td() =/= str"),
     dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_a("<", 'td', "class 'list'"),
            id="td() =/= list"),
-    ])
+])
 def test_td_lt(left, right, exp):
     """
     Test td.__eq__()
@@ -374,7 +374,7 @@ def test_td_lt(left, right, exp):
            id="td() =/= str"),
     dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_a("<=", 'td', "class 'list'"),
            id="td() =/= list"),
-    ])
+])
 def test_td_le(left, right, exp):
     """
     Test td.__eq__()
@@ -395,7 +395,7 @@ def test_td_le(left, right, exp):
     dtu.pp(td(1, 0, 0), "<dtm.td(3600)>", id="3600"),
     dtu.pp(td(1, -1, 0), "<dtm.td(3540)>", id="3540"),
     dtu.pp(td(1, 0, -1), "<dtm.td(3599)>", id="3599"),
-    ])
+])
 def test_td_repr(obj, exp):
     """
     Test td.__repr__()
@@ -411,7 +411,7 @@ def test_td_repr(obj, exp):
     dtu.pp(td(937231), "10d20:20:31", id="day <"),
     dtu.pp(dt("2010.1231 11:59:59") - dt("2010.0101"), "364d11:59:59",
            id="str(dt() - dt())"),
-    ])
+])
 def test_td_str(obj, exp):
     """
     Test td.__str__()
@@ -428,7 +428,7 @@ def test_td_str(obj, exp):
     dtu.pp(6*3600, 0.25, id="21600 seconds => 0.25 days"),
     dtu.pp(12*3600, 0.50, id="43200 seconds => 0.5 days"),
     dtu.pp(24*3600, 1, id="86400 seconds => 1 days"),
-    ])
+])
 def test_td_days(inp, exp):
     """
     Test td.days()
@@ -446,7 +446,7 @@ def test_td_days(inp, exp):
     dtu.pp(6*3600, 6, id="21600 seconds => 6 hours"),
     dtu.pp(12*3600, 12, id="43200 seconds => 12 hours"),
     dtu.pp(24*3600, 24, id="86400 seconds => 24 hours"),
-    ])
+])
 def test_td_hours(inp, exp):
     """
     Test td.hours()
@@ -464,7 +464,7 @@ def test_td_hours(inp, exp):
     dtu.pp(17991, 17991/60, id="17991 seconds => {} minutes".format(17991/60)),
     dtu.pp(42299, 42299/60, id="42299 seconds => {} minutes".format(42299/60)),
     dtu.pp(56914, 56914/60, id="56914 seconds => {} minutes".format(56914/60)),
-    ])
+])
 def test_td_minutes(inp, exp):
     """
     Test td.minutes()
@@ -482,7 +482,7 @@ def test_td_minutes(inp, exp):
     dtu.pp((4, 3, 2, 1), 356521, id="(4, 3, 2, 1) => {}".format(356521)),
     dtu.pp((10, 17), 617, id="(10, 17) => 617 seconds"),
     dtu.pp((16, 3), 963, id="(16, 3) => 963"),
-    ])
+])
 def test_td_seconds(inp, exp):
     """
     Test td.minutes()

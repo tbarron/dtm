@@ -17,7 +17,7 @@ import pytz
     dtu.pp("2017-12-17 12:00:00", 'cst6cdt', 1513533600, id="cst 2017"),
     dtu.pp("2017-12-17 11:00:00", 'mst7mdt', 1513533600, id="mst 2017"),
     dtu.pp("2017-12-17 10:00:00", 'pst8pdt', 1513533600, id="pst 2017"),
-    ])
+])
 def test_epoch_fr_dtspec_tz(isospec, tz, exp):
     """
     Given a dtspec and timezone, compute the corresponding epoch value (which
@@ -38,7 +38,7 @@ def test_epoch_fr_dtspec_tz(isospec, tz, exp):
     dtu.pp(1571331600, 'cst6cdt', "2019-10-17 12:00:00", id="e + t -> cst"),
     dtu.pp(1571331600, 'mst7mdt', "2019-10-17 11:00:00", id="e + t -> mst"),
     dtu.pp(1571331600, 'pst8pdt', "2019-10-17 10:00:00", id="e + t -> pst"),
-    ])
+])
 def test_dtspec_fr_epoch_tz(epoch, tz, isospec):
     """
     Given an epoch value and timezone, compute the isoformat dtspec reflecting

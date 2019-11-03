@@ -45,7 +45,7 @@ import re
     dtu.pp("2017.1212", "fr", 31),
     dtu.pp("2018.1219", "sa", 31),
     dtu.pp("2018.0704", "su", 31),
-    ])
+])
 def test_calendar(inp, wkday, length, capsys):
     """
     Test for 'dtm calendar DTSPEC', which should produce the calendar for the
@@ -114,7 +114,7 @@ def month_ref(wkday, length):
            id="ltu 2019.1003 edt"),
     dtu.pp("2019.0101 02:00:00", "cet", ("2019.0101 01:00:00",), "%F %T %Z",
            'utc', id="ltu 2019.0101 cet"),
-    ])
+])
 def test_ltu(dtspec, zone, expi, expf, expz, capsys):
     """
     Test function to convert local time to UTC
@@ -138,7 +138,7 @@ def test_ltu(dtspec, zone, expi, expf, expz, capsys):
            "%F %T %Z", 'est5edt', id="utl 2019.1003 edt"),
     dtu.pp("2019.0101 01:00:00", "cet", ("2019.0101 02:00:00",), "%F %T %Z",
            'cet', id="utl 2019.0101 cet"),
-    ])
+])
 def test_utl(dtspec, zone, expi, expf, expz, capsys):
     """
     Test function to convert UTC time to another timezone
@@ -207,7 +207,7 @@ def test_splat(capsys):
 @pytest.mark.parametrize("tzname, exp", [
     dtu.pp("EET", ["tzname: EET", "utcoffset: 02:00"]),
     dtu.pp("America/Port_of_Spain", ["utcoffset: -4:00", "tzname: AST"]),
-    ])
+])
 def test_zdetails(tzname, exp, capsys):
     """
     """
@@ -233,7 +233,7 @@ def test_zdetails(tzname, exp, capsys):
                    "Pacific/Johnston",
                    "Pacific/Rarotonga"],
            id="match 'ton'")
-    ])
+])
 def test_zones_search(inp, exp, capsys):
     """
     Testing for 'dtm zones SEARCH'
