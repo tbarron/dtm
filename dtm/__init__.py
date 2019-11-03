@@ -1018,3 +1018,19 @@ class td(object):
         Return the number of seconds self represents
         """
         return self._duration
+
+    # -------------------------------------------------------------------------
+    def dhhmmss(self):
+        """
+        [class td]
+
+        Format self._duration for human legibility
+        """
+        pfx = '-' if self._duration < 0 else ''
+        secs = abs(self._duration)
+        vals = []
+        for div in [24 * 60 * 60, 60 * 60, 60]:
+            vals.append(secs // div)
+            secs = secs % div
+        vals.append(secs)
+        return "{}{}d{:02d}:{:02d}:{:02d}".format(pfx, *tuple(vals))
