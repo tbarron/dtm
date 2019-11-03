@@ -9,12 +9,25 @@ from importlib import import_module
 def test_flake():
     """
     Check code quality
+
+    Without --ignore, flake8 is happy. When we tell it to --ignore E201, it
+    starts calling out the following:
+
+        E123: closing bracket does not match indentation of opening bracket
+        E226: missing whitespace around arithmetic operator
+        E241: multiple spaces after ','
+
+    I chose to add E226 and E241 to the ignore list but to adjust the trailing
+    brackets to clean up the E123 occurrences.
+
+    $FLAKE_IGNORE is defined in $DTM/.env so it's easy to adjust the ignored
+    flake errors without changing the test code.
     """
     pytest.dbgfunc()
     globble = sorted(glob.glob("dtm/*.py"))
     globble.extend(sorted(glob.glob("tests/*.py")))
-    cmd = "flake8 {}".format(" ".join(globble))
-    result = tbx.run(cmd)
+    cmd = "flake8 --ignore $FLAKE_IGNORE {}".format(" ".join(globble))
+    result = tbx.run(tbx.expand(cmd))
     assert result == ""
 
 
