@@ -992,7 +992,6 @@ class td(object):
         """
         return self._duration / (24*3600)
 
-
     # -------------------------------------------------------------------------
     def hours(self):
         """
@@ -1002,7 +1001,6 @@ class td(object):
         """
         return self._duration / 3600
 
-
     # -------------------------------------------------------------------------
     def minutes(self):
         """
@@ -1011,7 +1009,6 @@ class td(object):
         Return the fractional number of minutes self represents
         """
         return self._duration / 60
-
 
     # -------------------------------------------------------------------------
     def seconds(self):
