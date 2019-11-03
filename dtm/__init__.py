@@ -45,6 +45,14 @@ The following call sequences produce human-readable displays of current UTC:
 
 
 # -----------------------------------------------------------------------------
+def signum(x):
+    """
+    Return -1 if x < 0, 1 if 0 < x, or 0 if x == 0
+    """
+    return (x > 0) - (x < 0)
+
+
+# -----------------------------------------------------------------------------
 class dt(object):
     """
     This object wraps an epoch (UTC) time and a timezone with various goodies,
