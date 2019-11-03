@@ -966,10 +966,9 @@ class td(object):
         """
         r = self._duration
         v = []
-        for div in [24*3600, 3600, 60]:
-            v.append(r // div)
-            r = r % div
-        v.append(r)
+        for div in [24*3600, 3600, 60, 1]:
+            (quo, r) = divmod(r, div)
+            v.append(quo)
         return "{}d{:02d}:{:02d}:{:02d}".format(*tuple(v))
 
     # -------------------------------------------------------------------------
@@ -1037,8 +1036,7 @@ class td(object):
         pfx = '-' if self._duration < 0 else ''
         secs = abs(self._duration)
         vals = []
-        for div in [24 * 60 * 60, 60 * 60, 60]:
-            vals.append(secs // div)
-            secs = secs % div
-        vals.append(secs)
+        for div in [24 * 60 * 60, 60 * 60, 60, 1]:
+            (quo, secs) = divmod(secs, div)
+            vals.append(quo)
         return "{}{}d{:02d}:{:02d}:{:02d}".format(pfx, *tuple(vals))
