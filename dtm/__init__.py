@@ -1040,3 +1040,19 @@ class td(object):
             (quo, secs) = divmod(secs, div)
             vals.append(quo)
         return "{}{}d{:02d}:{:02d}:{:02d}".format(pfx, *tuple(vals))
+
+    # -------------------------------------------------------------------------
+    def dhms(self):
+        """
+        [class td]
+
+        Break self._duration down into a tuple of (days, hours, minutes,
+        seconds)
+        """
+        mult = signum(self._duration)
+        secs = abs(self._duration)
+        vals = []
+        for div in [24*60*60, 60*60, 60, 1]:
+            (quo, secs) = divmod(secs, div)
+            vals.append(quo)
+        return tuple([mult*_ for _ in vals])
