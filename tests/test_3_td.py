@@ -489,3 +489,25 @@ def test_td_seconds(inp, exp):
     """
     obj = td(*inp)
     assert obj.seconds() == exp
+
+
+# -----------------------------------------------------------------------------
+@pytest.mark.parametrize("ign, inp, exp", [
+    dtu.pp("x", -928385,   "-10d17:53:05", id="-10d17:53:05"),
+    dtu.pp("x", -756914,    "-8d18:15:14", id=" -8d18:15:14"),
+    dtu.pp("x",  -17991,    "-0d04:59:51", id=" -0d04:59:51"),
+    dtu.pp("x",       0,     "0d00:00:00", id="  0d00:00:00"),
+    dtu.pp("x",       1,     "0d00:00:01", id="  0d00:00:01"),
+    dtu.pp("x",      63,     "0d00:01:03", id="  0d00:01:03"),
+    dtu.pp("x",    3239,     "0d00:53:59", id="  0d00:53:59"),
+    dtu.pp("x",   17991,     "0d04:59:51", id="  0d04:59:51"),
+    dtu.pp("x",   42299,     "0d11:44:59", id="  0d11:44:59"),
+    dtu.pp("x",  756914,     "8d18:15:14", id="  8d18:15:14"),
+])
+def test_td_dhhmmss(ign, inp, exp):
+    """
+    test td.dhhmmss()
+    """
+    pytest.dbgfunc()
+    obj = td(inp)
+    assert obj.dhhmmss() == exp
