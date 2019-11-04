@@ -642,19 +642,36 @@ def test_iso(obj, otz, exp):
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("left, right, exp", [
     dtu.pp(dt(), datetime.now(), True, id="dt eq datetime"),
+    dtu.pp(dt(epoch=1571315783), datetime.fromtimestamp(1571315783), True,
+           id="dt-timestamp eq datetime-timestamp"),
     dtu.pp(dt(epoch=1571315783), datetime.fromtimestamp(1571315784), False,
            id="dt ne datetime"),
     dtu.pp(dt(2018, 1, 17), dt("2018.0117"), True, id="dt(ints) eq dt(str)"),
     dtu.pp(dt(2018, 1, 17, 6, 30), dt("2018.0117"), False,
            id="dt(ints) ne dt(str)"),
-    dtu.pp(dt(2018, 1, 17), 17, False, id="dt ne number"),
+    dtu.pp(dt(2018, 1, 17), 17,
+           dtu.unsupp_a("==", 'dt', "class 'int'"),
+           id="dt == number -> TypeErr"),
+    dtu.pp(dt(2018, 1, 17), 'this is a str',
+           dtu.unsupp_a("==", 'dt', "class 'str'"),
+           id="dt == str -> TypeErr"),
+    dtu.pp(dt(2018, 1, 17), [15, 17, 25],
+           dtu.unsupp_a("==", 'dt', "class 'list'"),
+           id="dt == list -> TypeErr"),
+    dtu.pp(dt(2018, 1, 17), td(93), dtu.unsupp_a("==", 'dt', "class 'dtm.td'"),
+           id="dt == td -> TypeErr"),
 ])
-def test_equal(left, right, exp):
+def test_dt_eq(left, right, exp):
     """
     Test the equality operator for dt()
     """
     pytest.dbgfunc()
-    assert (left == right) is exp
+    if isinstance(exp, Exception):
+        with pytest.raises(type(exp)) as err:
+            assert (left == right) is exp
+        assert str(exp) in str(err.value)
+    else:
+        assert (left == right) is exp
 
 
 # -----------------------------------------------------------------------------
