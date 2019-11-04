@@ -135,7 +135,7 @@ The recommended method for importing the dt class is:
 
     >>> from dtm import dt
 
-### constructor
+### Constructor: __init__()
 
 The dt object constructor will accept several argument schemes
 
@@ -203,12 +203,14 @@ internal UTC value to the specified output timezone. If no tz argument is
 specified on output, the internal UTC value is converted to the default
 local timezone (DLTZ) for the local machine (LM).
 
-### Comparison
+### Comparison: __eq__(), __gt__(), __ge__(), __lt__(), __le__()
 
-dt objects can be compared for ==, <, <=, >, or >= to other dt objects and
-to datetime objects.
+The standard comparison operators (==, !=, <, >, <=, >=) are supported for
+dt objects, which can be compared to other dt objects and datetime objects.
+A dt object, A, is less than another dt object, B, if A's UTC timeref falls
+earlier in time than B's UTC timeref.
 
-### __add__(), __sub__()
+### Arithmetic: __add__(), __sub__()
 
 The dt object supports arithmetic with other dt objects, datetime objects,
 td and timedelta objects, and simple numbers (ints or floats). The
@@ -238,17 +240,13 @@ That is, the operations producing TypeError are not supported.
   * [int,float] + [dt] -> [dt]
   * [int,float] - [dt] -> TypeError
 
-### __eq__(), __gt__(), __ge__(), __lt__(), __le__()
-
-dt objects can be compared 
-
 ### __call__(fmt='%F-%T', tz=None) (Format default output time)
 
 The __call__() method adjusts the object's internal time to the indicated
 output timezone and formats it for output according to the provided format
 (if any).
 
-### dt.dt_range() (Iteration by day)
+### dt_range() (Iteration by day)
 
     >>> for day in dt(2011, 10, 1).dt_range(dt(2011, 10, 31)):
     >>>     # do whatever
@@ -258,64 +256,64 @@ That is, the above loop will process 2011-10-31 as well as the rest of the
 month. Most Python range functions terminate before processing the end
 value.
 
-### dt.next_day(count=1) (Increment by day)
+### next_day(count=1) (Increment by day)
 
 Return a dt object containing a timeref 24 hours later than the value in
 the object on which the method is called.
 
-### dt.previous_day(count=1) (Decrement by day)
+### previous_day(count=1) (Decrement by day)
 
 Return a dt object containing a timeref 24 hours earlier than the value in
 the object on which the method is called.
 
-### dt.next_weekday(trgs=None) (Find the subsequent occurence of a target after today)
+### next_weekday(trgs=None) (Find the subsequent occurence of a target after today)
 
 The argument, trgs, is one or more weekday names, either a string or a list
 of strings. The method searches forward in time to find the next occurrence
 of one of the entries in the list. If the target matches the weekday of the
 stored time ref, the result is a week later.
 
-### dt.strftime(fmt, tz=None) (Format output time)
+### strftime(fmt, tz=None) (Format output time)
 
 The time reference in the object is adjusted based on tz (if specified) and
 formatted according to fmt. If tz is not provided (or is None), the
 timezone value in the object is used to determine the timezone adjustment.
 
-### dt.strptime(spec, fmt, tz=None) [static] (Parse input time)
+### strptime(spec, fmt, tz=None) [static] (Parse input time)
 
 The string spec is parsed according to format fmt and interpreted in terms
 of the timezone indicated by the tz argument. If tz is not specified,
 
-### dt.version() [static] (Get the package version)
+### version() [static] (Get the package version)
 
 Return the version of the dtm package.
 
-### dt.weekday(tz=None) (Determine the weekday of the stored time ref)
+### weekday(tz=None) (Determine the weekday of the stored time ref)
 
 Return the weekday name of the stored time ref.
 
-### dt.weekday_floor(wkdays) (Determine latest preceding occurrence of a weekday)
+### weekday_floor(wkdays) (Determine latest preceding occurrence of a weekday)
 
 Search backward in time from the stored time ref to the most recent day
 matching a day in the weekday list, wkdays (may be a single string or a
 list of strings). If an entry in the list matches the weekday of the stored
 time ref, return self.
 
-### dt.weekday_list() (Get a list of weekday name abbreviations)
+### weekday_list() (Get a list of weekday name abbreviations)
 
 Return a list of abbreviated, lowercase weekday names.
 
-### dt.iso(tz=None) (Return the stored time in ISO format)
+### iso(tz=None) (Return the stored time in ISO format)
 
 Return the stored time adjusted to the stored timezone (or tz if provided)
 in ISO format (YYYY-mm-dd-HH:MM:SS).
 
-### dt.ymd(tz=None) (Return the stored time in YYYY.mmdd format)
+### ymd(tz=None) (Return the stored time in YYYY.mmdd format)
 
 Return the stored time adjusted to the stored timezone (or tz if provided)
 in YYYY.mmdd format.
 
-### dt.ymdw(tz=None) (Return stored time in YYYY.mmdd.www format)
+### ymdw(tz=None) (Return stored time in YYYY.mmdd.www format)
 
 Return the stored time adjust to the stored timezone (or tz if provided) in
 YYYY.mmdd.www format.
@@ -324,10 +322,78 @@ YYYY.mmdd.www format.
 ## td objects
 
 The dtm module also provides the 'td' class. Objects of this class
-represent a period of time with a specific length. td objects can be added
-to or subtracted from dt objects to find other dt objects.
+represent a period of time with a specific length. td objects can be
+compared to other td objects, timedelta objects, and int or float values.
+td objects can be added to or subtracted from dt objects to arrive at other
+dt objects. They can be added to or subtracted from other time intervals
+(td or timedelta objects).
 
-### __add__(), __sub__()
+The recommended import statement for obtaining the td class is:
+
+    >>> from dtm import td
+
+### Constructor: __init__()
+
+td objects can be initialized from the following:
+
+  * an int or float value,
+  * another td object, or
+  * a timedelta object
+
+#### no arguments
+
+    >>> myobj = td()
+
+This initializes a time period of 0 length.
+
+#### one or more int values
+
+Int arguments are interpreted as days, hours, minutes, and seconds, in that
+order. To specify minutes in this format, a seconds value must also be
+provided. To specify hours, both minutes and seconds must be specified.
+
+    >>> period = td([[[days,] hours,] minutes,] seconds)
+
+So, for example, the following object represents 5 seconds:
+
+    >>> short = td(5)
+
+The following object represents 2 minutes, 5 seconds:
+
+    >>> not_long = td(2, 5)
+
+The following object represents 5 hours, 10 minutes, 20 seconds:
+
+    >>> a_while = td(5, 10, 20)
+
+Finally, the following object represents 2 days, 3 hours, 15 minutes, and
+32 seconds:
+
+    >>> longer = td(2, 3, 15, 32)
+
+#### named arguments
+
+The following named arguments are supported:
+
+  * 's', 'secs', 'seconds',
+  * 'm', 'mins', 'minutes',
+  * 'h', 'hrs', 'hours',
+  * 'd', 'days'
+
+Examples:
+
+    >>> ten_sec = td(seconds=10)
+    >>> two_min = td(mins=2, secs=2)
+    >>> six_hour = td(h=6, m=17, s=3)
+    >>> week = td(d=7)
+
+### Comparison: __eq__(), __gt__(), __ge__(), __lt__(), __le__()
+
+The standard comparison operators (==, !=, <, >, <=, >=) are supported for
+td objects. td objects can be compared to other td objects and timedelta
+objects.
+
+### Arithmetic: __add__(), __sub__()
 
 The td object supports arithmetic with td objects, dt and datetime objects,
 timedelta objects, and ints or floats. Here's a summary of supported and
@@ -351,6 +417,53 @@ unsupported operations.
   * [int,float] + [td] -> [td]
   * [int,float] - [td] -> [td]
 
+### days()
+
+Returns the length of the period in fractional days
+
+    >>> a = td(h=6)
+    >>> a.days()
+    0.25
+
+### hours()
+
+Returns the length of the period in fractional hours
+
+    >>> b = td(m=105)
+    >>> b.hours()
+    1.75
+
+### minutes()
+
+Returns the length of the period in fractional minutes
+
+    >>> c = td(s=75)
+    >>> c.minutes()
+    1.25
+
+### seconds()
+
+Returns the length of the period in int seconds
+
+    >>> d = td(m=3)
+    >>> d.seconds()
+    180
+
+### dhhmmss()
+
+Formats the time period in the td object into a string showing days, hours,
+minutes, and seconds: NdHH:MM:SS.
+
+    >>> e = td(238796)
+    >>> e.dhhmmss()
+    '2d18:19:56'
+
+### dhms()
+
+Returns days, hours, minutes, and seconds as a tuple of ints.
+
+    >>> e.dhms()
+    (2, 18, 19, 56)
 
 ## Project setup
 
