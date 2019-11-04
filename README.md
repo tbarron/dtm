@@ -203,14 +203,14 @@ internal UTC value to the specified output timezone. If no tz argument is
 specified on output, the internal UTC value is converted to the default
 local timezone (DLTZ) for the local machine (LM).
 
-### Comparison: __eq__(), __gt__(), __ge__(), __lt__(), __le__()
+### Comparison: \_\_eq\_\_(), \_\_gt\_\_(), \_\_ge\_\_(), \_\_lt\_\_(), \_\_le\_\_()
 
 The standard comparison operators (==, !=, <, >, <=, >=) are supported for
 dt objects, which can be compared to other dt objects and datetime objects.
 A dt object, A, is less than another dt object, B, if A's UTC timeref falls
 earlier in time than B's UTC timeref.
 
-### Arithmetic: __add__(), __sub__()
+### Arithmetic: \_\_add\_\_(), \_\_sub\_\_()
 
 The dt object supports arithmetic with other dt objects, datetime objects,
 td and timedelta objects, and simple numbers (ints or floats). The
@@ -240,9 +240,9 @@ That is, the operations producing TypeError are not supported.
   * [int,float] + [dt] -> [dt]
   * [int,float] - [dt] -> TypeError
 
-### __call__(fmt='%F-%T', tz=None) (Format default output time)
+### \_\_call\_\_(fmt='%F-%T', tz=None) (Format default output time)
 
-The __call__() method adjusts the object's internal time to the indicated
+The \_\_call\_\_() method adjusts the object's internal time to the indicated
 output timezone and formats it for output according to the provided format
 (if any).
 
@@ -332,7 +332,7 @@ The recommended import statement for obtaining the td class is:
 
     >>> from dtm import td
 
-### Constructor: __init__()
+### Constructor: \_\_init\_\_()
 
 td objects can be initialized from the following:
 
@@ -387,13 +387,13 @@ Examples:
     >>> six_hour = td(h=6, m=17, s=3)
     >>> week = td(d=7)
 
-### Comparison: __eq__(), __gt__(), __ge__(), __lt__(), __le__()
+### Comparison: \_\_eq\_\_(), \_\_gt\_\_(), \_\_ge\_\_(), \_\_lt\_\_(), \_\_le\_\_()
 
 The standard comparison operators (==, !=, <, >, <=, >=) are supported for
 td objects. td objects can be compared to other td objects and timedelta
 objects.
 
-### Arithmetic: __add__(), __sub__()
+### Arithmetic: \_\_add\_\_(), \_\_sub\_\_()
 
 The td object supports arithmetic with td objects, dt and datetime objects,
 timedelta objects, and ints or floats. Here's a summary of supported and
