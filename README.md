@@ -135,7 +135,7 @@ The recommended method for importing the dt class is:
 
     >>> from dtm import dt
 
-### Constructor: __init__()
+### Constructor: \_\_init\_\_()
 
 The dt object constructor will accept several argument schemes
 
