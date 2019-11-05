@@ -285,7 +285,7 @@ class dt(object):
         elif isinstance(other, dt):
             return self._utc == other._utc
         else:
-            return False
+            raise TypeError(badop_msg('==/!=', '<dt>', type(other)))
 
     # -------------------------------------------------------------------------
     def __ge__(self, other):
@@ -294,12 +294,12 @@ class dt(object):
 
         This object can be compared to another dt or a datetime obj.
         """
-        if isinstance(other, datetime) and self._utc >= int(other.timestamp()):
-            return True
-        elif isinstance(other, dt) and self._utc >= other._utc:
-            return True
+        if isinstance(other, datetime):
+            return self._utc >= int(other.timestamp())
+        elif isinstance(other, type(self)):
+            return self._utc >= other._utc
         else:
-            return False
+            raise TypeError(badop_msg('>=', '<dt>', type(other)))
 
     # -------------------------------------------------------------------------
     def __gt__(self, other):
@@ -308,12 +308,12 @@ class dt(object):
 
         This object can be compared to another dt or a datetime obj.
         """
-        if isinstance(other, datetime) and self._utc > other.timestamp():
-            return True
-        elif isinstance(other, dt) and self._utc > other._utc:
-            return True
+        if isinstance(other, datetime):
+            return self._utc > other.timestamp()
+        elif isinstance(other, dt):
+            return self._utc > other._utc
         else:
-            return False
+            raise TypeError(badop_msg('>', '<dt>', type(other)))
 
     # -------------------------------------------------------------------------
     def __le__(self, other):
@@ -322,12 +322,12 @@ class dt(object):
 
         This object can be compared to another dt or a datetime obj.
         """
-        if isinstance(other, dt) and self._utc <= other._utc:
-            return True
-        elif isinstance(other, datetime) and self._utc <= other.timestamp():
-            return True
+        if isinstance(other, dt):
+            return self._utc <= other._utc
+        elif isinstance(other, datetime):
+            return self._utc <= other.timestamp()
         else:
-            return False
+            raise TypeError(badop_msg('<=', '<dt>', type(other)))
 
     # -------------------------------------------------------------------------
     def __lt__(self, other):
@@ -336,12 +336,12 @@ class dt(object):
 
         This object can be compared to another dt or a datetime obj.
         """
-        if isinstance(other, dt) and self._utc < other._utc:
-            return True
-        elif isinstance(other, datetime) and self._utc < other.timestamp():
-            return True
+        if isinstance(other, dt):
+            return self._utc < other._utc
+        elif isinstance(other, datetime):
+            return self._utc < other.timestamp()
         else:
-            return False
+            raise TypeError(badop_msg("<", "<dt>", type(other)))
 
     # -------------------------------------------------------------------------
     def __str__(self):
