@@ -53,6 +53,14 @@ def signum(x):
 
 
 # -----------------------------------------------------------------------------
+def badop_msg(op, left, right):
+    """
+    """
+    return ("unsupported operand type(s) for {}:  {} and {}"
+            .format(op, left, right))
+
+
+# -----------------------------------------------------------------------------
 class dt(object):
     """
     This object wraps an epoch (UTC) time and a timezone with various goodies,
