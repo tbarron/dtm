@@ -712,6 +712,16 @@ def test_dt_cmp_ne(left, right, exp):
     dtu.pp("2012.0102", datetime(2012, 1, 1), True, id="ge-d-s-i-t"),
     dtu.pp("2012.0102", datetime(2011, 12, 31), True, id="ge-d-s-y-t"),
     dtu.pp("2012.0102", datetime(2012, 1, 2), True, id="ge-d-e-i-t"),
+
+    dtu.pp("2012.0101", 17, dtu.unsupp_a(">=", 'dt', "class 'int'"),
+           id="dt >= int -> TypeErr"),
+    dtu.pp("2012.0101", "this is a string",
+           dtu.unsupp_a(">=", 'dt', "class 'str'"),
+           id="dt >= str -> TypeErr"),
+    dtu.pp("2012.0101", [1, 2, 3], dtu.unsupp_a(">=", 'dt', "class 'list'"),
+           id="dt >= list -> TypeErr"),
+    dtu.pp("2012.0101", td(17), dtu.unsupp_a(">=", 'dt', "class 'dtm.td'"),
+           id="dt >= td -> TypeErr"),
 ])
 def test_dt_cmp_ge(inp, bench, exp):
     """
@@ -735,6 +745,16 @@ def test_dt_cmp_ge(inp, bench, exp):
     dtu.pp("2012.0102", datetime(2012, 1, 1), True, id="gt-d-s-i-t"),
     dtu.pp("2012.0102", datetime(2011, 12, 31), True, id="gt-d-s-y-t"),
     dtu.pp("2012.0102", datetime(2012, 1, 2), False, id="gt-d-e-i-f"),
+
+    dtu.pp("2012.0101", 17, dtu.unsupp_a(">", 'dt', "class 'int'"),
+           id="dt > int -> TypeErr"),
+    dtu.pp("2012.0101", "this is a string",
+           dtu.unsupp_a(">", 'dt', "class 'str'"),
+           id="dt > str -> TypeErr"),
+    dtu.pp("2012.0101", [1, 2, 3], dtu.unsupp_a(">", 'dt', "class 'list'"),
+           id="dt > list -> TypeErr"),
+    dtu.pp("2012.0101", td(17), dtu.unsupp_a(">", 'dt', "class 'dtm.td'"),
+           id="dt > td -> TypeErr"),
 ])
 def test_dt_cmp_gt(inp, bench, exp):
     """
@@ -758,6 +778,16 @@ def test_dt_cmp_gt(inp, bench, exp):
     dtu.pp("2012.0102", datetime(2012, 1, 1), False, id="le-d-s-i-f"),
     dtu.pp("2012.0102", datetime(2011, 12, 31), False, id="le-d-s-y-f"),
     dtu.pp("2012.0102", datetime(2012, 1, 2), True, id="le-d-e-i-t"),
+
+    dtu.pp("2012.0101", 17, dtu.unsupp_a("<=", 'dt', "class 'int'"),
+           id="dt <= int -> TypeErr"),
+    dtu.pp("2012.0101", "this is a string",
+           dtu.unsupp_a("<=", 'dt', "class 'str'"),
+           id="dt <= str -> TypeErr"),
+    dtu.pp("2012.0101", [1, 2, 3], dtu.unsupp_a("<=", 'dt', "class 'list'"),
+           id="dt <= list -> TypeErr"),
+    dtu.pp("2012.0101", td(17), dtu.unsupp_a("<=", 'dt', "class 'dtm.td'"),
+           id="dt <= td -> TypeErr"),
 ])
 def test_dt_cmp_le(inp, bench, exp):
     """
@@ -781,6 +811,16 @@ def test_dt_cmp_le(inp, bench, exp):
     dtu.pp("2012.0102", datetime(2012, 1, 1), False, id="lt-d-s-i-f"),
     dtu.pp("2012.0102", datetime(2011, 12, 31), False, id="lt-d-s-y-f"),
     dtu.pp("2012.0102", datetime(2012, 1, 2), False, id="lt-d-e-i-f"),
+
+    dtu.pp("2012.0101", 17, dtu.unsupp_a("<", 'dt', "class 'int'"),
+           id="dt < int -> TypeErr"),
+    dtu.pp("2012.0101", "this is a string",
+           dtu.unsupp_a("<", 'dt', "class 'str'"),
+           id="dt < str -> TypeErr"),
+    dtu.pp("2012.0101", [1, 2, 3], dtu.unsupp_a("<", 'dt', "class 'list'"),
+           id="dt < list -> TypeErr"),
+    dtu.pp("2012.0101", td(17), dtu.unsupp_a("<", 'dt', "class 'dtm.td'"),
+           id="dt < td -> TypeErr"),
 ])
 def test_dt_cmp_lt(inp, bench, exp):
     """
