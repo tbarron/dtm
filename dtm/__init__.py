@@ -1054,3 +1054,8 @@ class td(object):
             (quo, secs) = divmod(secs, div)
             vals.append(quo)
         return tuple([mult*_ for _ in vals])
+
+
+"""
+==TAGGABLE==
+"""

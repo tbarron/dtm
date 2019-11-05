@@ -199,3 +199,8 @@ def test_norm_loc(input, itz, exp):
 
     actual = nub._norm_loc_ize(input)
     assert actual == exp
+
+
+"""
+==TAGGABLE==
+"""
