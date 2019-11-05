@@ -4,6 +4,7 @@ DODO
 __pycache__/
 *.py[cod]
 *$py.class
+TAGS
 
 # C extensions
 *.so
