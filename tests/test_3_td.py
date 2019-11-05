@@ -203,10 +203,13 @@ def test_td_sub(left, right, exp):
     dtu.pp(timedelta(0, 14), td(25), False, id="timedelta(0, 25) != td(25)"),
     dtu.pp(td(17), 17, True, id="number == td()"),
     dtu.pp(td(55), 17, False, id="number != td()"),
-    dtu.pp(td(55), "17", dtu.unsupp_a('==', 'td', "class 'str'"),
-           id="td() =/= number"),
-    dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_a("==", 'td', "class 'list'"),
+
+    dtu.pp(td(55), "17", dtu.unsupp_a('==/!=', 'td', "class 'str'"),
+           id="td() =/= str"),
+    dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_a("==/!=", 'td', "class 'list'"),
            id="td() =/= list"),
+    dtu.pp(td(55), dt(), dtu.unsupp_a("==/!=", 'td', "class 'dtm.dt'"),
+           id="td() =/= dt"),
 ])
 def test_td_eq(left, right, exp):
     """
@@ -235,6 +238,13 @@ def test_td_eq(left, right, exp):
     dtu.pp(td(1, 1), 61, False, id="td(61) == number 61"),
     dtu.pp(58, td(1, 1), True, id="number 60 != td(61)"),
     dtu.pp(31 + 30, td(1, 1), False, id="number 61 == td(61)"),
+
+    dtu.pp(td(55), "17", dtu.unsupp_a('==/!=', 'td', "class 'str'"),
+           id="td() =/= str"),
+    dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_a("==/!=", 'td', "class 'list'"),
+           id="td() =/= list"),
+    dtu.pp(td(55), dt(), dtu.unsupp_a("==/!=", 'td', "class 'dtm.dt'"),
+           id="td() =/= dt"),
 ])
 def test_td_ne(left, right, exp):
     """
