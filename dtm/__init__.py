@@ -55,9 +55,11 @@ def signum(x):
 # -----------------------------------------------------------------------------
 def badop_msg(op, left, right):
     """
+    Build a message that the desired operation is not supported for the
+    indicated operand types. Used in comparison operator methods.
     """
-    return ("unsupported operand type(s) for {}:  {} and {}"
-            .format(op, left, right))
+    return ("unsupported operand type(s) for comparison:  {} and {}"
+            .format(left, right))
 
 
 # -----------------------------------------------------------------------------
