@@ -216,12 +216,7 @@ def test_td_cmp_eq(left, right, exp):
     Test td.__eq__()
     """
     pytest.dbgfunc()
-    if isinstance(exp, Exception):
-        with pytest.raises(type(exp)) as err:
-            assert (left == right) is exp
-        assert str(exp) in str(err.value)
-    else:
-        assert (left == right) is exp
+    dtu.cmp_exception('==', left, right, exp)
 
 
 # -----------------------------------------------------------------------------
@@ -251,12 +246,7 @@ def test_td_cmp_ne(left, right, exp):
     Test td != something else
     """
     pytest.dbgfunc()
-    if isinstance(exp, Exception):
-        with pytest.raises(type(exp)) as err:
-            assert (left != right) is exp
-        assert str(exp) in str(err.value)
-    else:
-        assert (left != right) is exp
+    dtu.cmp_exception('!=', left, right, exp)
 
 
 # -----------------------------------------------------------------------------
@@ -286,12 +276,7 @@ def test_td_cmp_ge(left, right, exp):
     Test td.__eq__()
     """
     pytest.dbgfunc()
-    if isinstance(exp, Exception):
-        with pytest.raises(type(exp)) as err:
-            assert (left >= right) is exp
-        assert str(exp) in str(err.value)
-    else:
-        assert (left >= right) is exp
+    dtu.cmp_exception('>=', left, right, exp)
 
 
 # -----------------------------------------------------------------------------
@@ -320,12 +305,7 @@ def test_td_cmp_gt(left, right, exp):
     Test td.__eq__()
     """
     pytest.dbgfunc()
-    if isinstance(exp, Exception):
-        with pytest.raises(type(exp)) as err:
-            assert (left > right) is exp
-        assert str(exp) in str(err.value)
-    else:
-        assert (left > right) is exp
+    dtu.cmp_exception('>', left, right, exp)
 
 
 # -----------------------------------------------------------------------------
@@ -355,12 +335,7 @@ def test_td_cmp_lt(left, right, exp):
     Test td.__eq__()
     """
     pytest.dbgfunc()
-    if isinstance(exp, Exception):
-        with pytest.raises(type(exp)) as err:
-            assert (left < right) is exp
-        assert str(exp) in str(err.value)
-    else:
-        assert (left < right) is exp
+    dtu.cmp_exception('<', left, right, exp)
 
 
 # -----------------------------------------------------------------------------
@@ -390,12 +365,7 @@ def test_td_cmp_le(left, right, exp):
     Test td.__eq__()
     """
     pytest.dbgfunc()
-    if isinstance(exp, Exception):
-        with pytest.raises(type(exp)) as err:
-            assert (left <= right) is exp
-        assert str(exp) in str(err.value)
-    else:
-        assert (left <= right) is exp
+    dtu.cmp_exception('<=', left, right, exp)
 
 
 # -----------------------------------------------------------------------------
