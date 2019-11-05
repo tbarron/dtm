@@ -1,10 +1,12 @@
-## 1.4.1 ...
+## 1.4.1 ... 2019-11-05 18:10:55
 
  * Address and fix the diff-str bug.
  * Tests and payload for td object comparisons (==, !=, <, <=, >, >=)
  * Test and payload for td.days(), td.hours(), td.minutes(), td.seconds()
  * Test and payload for td.dhhmmss()
  * Test and payload for td.dhms()
+ * Make dt and td comparison tests DRY
+ * Reflect dt and td comparison tests
  * README.md improvements
 
 ## 1.4.0 ... 2019-11-01 20:25:32
