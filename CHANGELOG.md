@@ -1,4 +1,4 @@
-## 1.4.1 ... 2019-11-05 18:10:55
+## 1.4.1 ... 2019-11-05 18:32:27
 
  * Address and fix the diff-str bug.
  * Tests and payload for td object comparisons (==, !=, <, <=, >, >=)
@@ -8,6 +8,7 @@
  * Make dt and td comparison tests DRY
  * Reflect dt and td comparison tests
  * README.md improvements
+ * Update .travis.yml to define $FLAKE_IGNORE
 
 ## 1.4.0 ... 2019-11-01 20:25:32
 
