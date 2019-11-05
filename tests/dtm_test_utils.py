@@ -56,7 +56,7 @@ def cmp_exception(op, left, right, exp):
     if isinstance(exp, Exception):
         with pytest.raises(type(exp)) as err:
             operate(op, left, right)
-        assert str(exp) in str(err.value), ("'{}' not in '{}'"
+        assert str(exp) in str(err.value), ("\n'{}'\n    not in\n'{}'"
                                             .format(str(exp), str(err.value)))
     else:
         result = operate(op, left, right)
