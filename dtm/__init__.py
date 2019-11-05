@@ -876,9 +876,7 @@ class td(object):
         elif isinstance(other, (int, float)):
             return self._duration == other
         else:
-            msg = ("unsupported operand type(s) for ==: <td> and {}"
-                   .format(other.__class__))
-            raise TypeError(msg)
+            raise TypeError(badop_msg('==/!=', '<td>', type(other)))
 
     # -------------------------------------------------------------------------
     def __ge__(self, other):
@@ -895,9 +893,7 @@ class td(object):
         elif isinstance(other, (int, float)):
             return self._duration >= other
         else:
-            msg = ("unsupported operand type(s) for >=: <td> and {}"
-                   .format(other.__class__))
-            raise TypeError(msg)
+            raise TypeError(badop_msg('>=', '<td>', type(other)))
 
     # -------------------------------------------------------------------------
     def __gt__(self, other):
@@ -914,9 +910,7 @@ class td(object):
         elif isinstance(other, (int, float)):
             return self._duration > other
         else:
-            msg = ("unsupported operand type(s) for >: <td> and {}"
-                   .format(other.__class__))
-            raise TypeError(msg)
+            raise TypeError(badop_msg('>', '<td>', type(other)))
 
     # -------------------------------------------------------------------------
     def __le__(self, other):
@@ -933,9 +927,7 @@ class td(object):
         elif isinstance(other, (int, float)):
             return self._duration <= other
         else:
-            msg = ("unsupported operand type(s) for <=: <td> and {}"
-                   .format(other.__class__))
-            raise TypeError(msg)
+            raise TypeError(badop_msg('<=', '<td>', type(other)))
 
     # -------------------------------------------------------------------------
     def __lt__(self, other):
@@ -952,9 +944,7 @@ class td(object):
         elif isinstance(other, (int, float)):
             return self._duration < other
         else:
-            msg = ("unsupported operand type(s) for <: <td> and {}"
-                   .format(other.__class__))
-            raise TypeError(msg)
+            raise TypeError(badop_msg('<', '<td>', type(other)))
 
     # -------------------------------------------------------------------------
     def __repr__(self):
