@@ -670,6 +670,33 @@ def test_dt_cmp_eq(left, right, exp):
     dtu.cmp_exception('==', left, right, exp)
 
 
+# -----------------------------------------------------------------------------
+@pytest.mark.parametrize("left, right, exp", [
+    dtu.pp(dt(), datetime.now(), False, id="dt eq datetime false"),
+    dtu.pp(dt(epoch=1571315783), datetime.fromtimestamp(1571315784), True,
+           id="dt ne datetime true"),
+    dtu.pp(dt(2018, 1, 17), dt("2018.0117"), False,
+           id="dt(ints) eq dt(str) false"),
+    dtu.pp(dt(2018, 1, 17, 6, 30), dt("2018.0117"), True,
+           id="dt(ints) ne dt(str) true"),
+    dtu.pp(dt(2018, 1, 17), 17, dtu.unsupp_a("==/!=", 'dt', "class 'int'"),
+           id="dt ne number -> TypeErr"),
+    dtu.pp(dt(2018, 1, 17), 'this is a str',
+           dtu.unsupp_a("==/!=", 'dt', "class 'str'"),
+           id="dt ne str -> TypeErr"),
+    dtu.pp(dt(2018, 1, 17), [10, 9, 17],
+           dtu.unsupp_a("==/!=", 'dt', "class 'list'"),
+           id="dt ne list -> TypeErr"),
+    dtu.pp(dt(2018, 1, 17), td(19),
+           dtu.unsupp_a("==/!=", 'dt', "class 'dtm.td'"),
+           id="dt ne td -> TypeErr"),
+])
+def test_dt_cmp_ne(left, right, exp):
+    """
+    Test the equality operator for dt()
+    """
+    pytest.dbgfunc()
+    dtu.cmp_exception('!=', left, right, exp)
 
 
 # -----------------------------------------------------------------------------
