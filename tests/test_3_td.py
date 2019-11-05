@@ -211,7 +211,7 @@ def test_td_sub(left, right, exp):
     dtu.pp(td(55), dt(), dtu.unsupp_a("==/!=", 'td', "class 'dtm.dt'"),
            id="td() =/= dt"),
 ])
-def test_td_eq(left, right, exp):
+def test_td_cmp_eq(left, right, exp):
     """
     Test td.__eq__()
     """
@@ -246,7 +246,7 @@ def test_td_eq(left, right, exp):
     dtu.pp(td(55), dt(), dtu.unsupp_a("==/!=", 'td', "class 'dtm.dt'"),
            id="td() =/= dt"),
 ])
-def test_td_ne(left, right, exp):
+def test_td_cmp_ne(left, right, exp):
     """
     Test td != something else
     """
@@ -281,7 +281,7 @@ def test_td_ne(left, right, exp):
     dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_a(">=", 'td', "class 'list'"),
            id="td() =/= list"),
 ])
-def test_td_ge(left, right, exp):
+def test_td_cmp_ge(left, right, exp):
     """
     Test td.__eq__()
     """
@@ -315,7 +315,7 @@ def test_td_ge(left, right, exp):
     dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_a(">", 'td', "class 'list'"),
            id="td() =/= list"),
 ])
-def test_td_gt(left, right, exp):
+def test_td_cmp_gt(left, right, exp):
     """
     Test td.__eq__()
     """
@@ -350,7 +350,7 @@ def test_td_gt(left, right, exp):
     dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_a("<", 'td', "class 'list'"),
            id="td() =/= list"),
 ])
-def test_td_lt(left, right, exp):
+def test_td_cmp_lt(left, right, exp):
     """
     Test td.__eq__()
     """
@@ -385,7 +385,7 @@ def test_td_lt(left, right, exp):
     dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_a("<=", 'td', "class 'list'"),
            id="td() =/= list"),
 ])
-def test_td_le(left, right, exp):
+def test_td_cmp_le(left, right, exp):
     """
     Test td.__eq__()
     """
