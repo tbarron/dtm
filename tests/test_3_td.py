@@ -204,12 +204,16 @@ def test_td_sub(left, right, exp):
     dtu.pp(td(17), 17, True, id="number == td()"),
     dtu.pp(td(55), 17, False, id="number != td()"),
 
-    dtu.pp(td(55), "17", dtu.unsupp_a('==/!=', 'td', "class 'str'"),
-           id="td() =/= str"),
-    dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_a("==/!=", 'td', "class 'list'"),
-           id="td() =/= list"),
-    dtu.pp(td(55), dt(), dtu.unsupp_a("==/!=", 'td', "class 'dtm.dt'"),
-           id="td() =/= dt"),
+    dtu.pp(td(55), "17", dtu.unsupp_cmp('td', "class 'str'"),
+           id="td() == str -> TypeErr"),
+    dtu.pp("17", td(55), dtu.unsupp_cmp('td', "class 'str'"),
+           id="str == td -> TypeErr"),
+    dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_cmp('td', "class 'list'"),
+           id="td() == list -> TypeErr"),
+    dtu.pp(["17", 19, 35], td(32), dtu.unsupp_cmp('td', "class 'list'"),
+           id="list == td() -> TypeErr"),
+    dtu.pp(td(17), dt(), dtu.unsupp_cmp('td', "class 'dtm.dt'"),
+           id="td() == dt -> TypeErr"),
 ])
 def test_td_cmp_eq(left, right, exp):
     """
@@ -234,12 +238,16 @@ def test_td_cmp_eq(left, right, exp):
     dtu.pp(58, td(1, 1), True, id="number 60 != td(61)"),
     dtu.pp(31 + 30, td(1, 1), False, id="number 61 == td(61)"),
 
-    dtu.pp(td(55), "17", dtu.unsupp_a('==/!=', 'td', "class 'str'"),
-           id="td() =/= str"),
-    dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_a("==/!=", 'td', "class 'list'"),
-           id="td() =/= list"),
-    dtu.pp(td(55), dt(), dtu.unsupp_a("==/!=", 'td', "class 'dtm.dt'"),
-           id="td() =/= dt"),
+    dtu.pp(td(55), "17", dtu.unsupp_cmp('td', "class 'str'"),
+           id="td() != str -> TypeErr"),
+    dtu.pp("17", td(55), dtu.unsupp_cmp('td', "class 'str'"),
+           id="str != td() -> TypeErr"),
+    dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_cmp('td', "class 'list'"),
+           id="td() != list -> TypeErr"),
+    dtu.pp(["17", 19, 35], td(55), dtu.unsupp_cmp('td', "class 'list'"),
+           id="list != td() -> TypeErr"),
+    dtu.pp(td(55), dt(), dtu.unsupp_cmp('td', "class 'dtm.dt'"),
+           id="td() != dt -> TypeErr"),
 ])
 def test_td_cmp_ne(left, right, exp):
     """
@@ -266,10 +274,17 @@ def test_td_cmp_ne(left, right, exp):
     dtu.pp(td(12), 17, False,                 id="td(12)    !>=  number 17"),
     dtu.pp(td(17), 17, True,                  id="td(17)     >=  number 17"),
     dtu.pp(td(55), 17, True,                  id="td(55)     >=  number 55"),
-    dtu.pp(td(55), "17", dtu.unsupp_a(">=", 'td', "class 'str'"),
-           id="td() =/= str"),
-    dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_a(">=", 'td', "class 'list'"),
-           id="td() =/= list"),
+
+    dtu.pp(td(55), "17", dtu.unsupp_cmp('td', "class 'str'"),
+           id="td() >= str -> TypeErr"),
+    dtu.pp("17", td(55), dtu.unsupp_cmp('td', "class 'str'"),
+           id="str >= td() -> TypeErr"),
+    dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_cmp('td', "class 'list'"),
+           id="td() >= list -> TypeErr"),
+    dtu.pp(["17", 19, 35], td(55), dtu.unsupp_cmp('td', "class 'list'"),
+           id="list >= td() -> TypeErr"),
+    dtu.pp(td(19), dt("2002.0407"), dtu.unsupp_cmp('td', "class 'dtm.dt'"),
+           id="td() >= dt() -> TypeErr"),
 ])
 def test_td_cmp_ge(left, right, exp):
     """
@@ -295,10 +310,17 @@ def test_td_cmp_ge(left, right, exp):
     dtu.pp(timedelta(0, 14), td(25), False,   id="timedelta(0, 14) !> td(25)"),
     dtu.pp(td(17), 17, False,                 id="number           !> td()"),
     dtu.pp(td(55), 17, True,                  id="number            > td()"),
-    dtu.pp(td(55), "17", dtu.unsupp_a(">", 'td', "class 'str'"),
-           id="td() =/= str"),
-    dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_a(">", 'td', "class 'list'"),
-           id="td() =/= list"),
+
+    dtu.pp(td(55), "17", dtu.unsupp_cmp('td', "class 'str'"),
+           id="td() > str -> TypeErr"),
+    dtu.pp("17", td(55), dtu.unsupp_cmp('td', "class 'str'"),
+           id="str > td() -> TypeErr"),
+    dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_cmp('td', "class 'list'"),
+           id="td() > list -> TypeErr"),
+    dtu.pp(["17", 19, 35], td(55), dtu.unsupp_cmp('td', "class 'list'"),
+           id="list > td() -> TypeErr"),
+    dtu.pp(td(19), dt("2002.0407"), dtu.unsupp_cmp('td', "class 'dtm.dt'"),
+           id="td() > dt() -> TypeErr"),
 ])
 def test_td_cmp_gt(left, right, exp):
     """
@@ -325,10 +347,17 @@ def test_td_cmp_gt(left, right, exp):
     dtu.pp(td(12), 17, True,                  id="td(12)    <  number 17"),
     dtu.pp(td(17), 17, False,                 id="td(17)   !<  number 17"),
     dtu.pp(td(55), 17, False,                 id="td(55)   !<  number 55"),
-    dtu.pp(td(55), "17", dtu.unsupp_a("<", 'td', "class 'str'"),
-           id="td() =/= str"),
-    dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_a("<", 'td', "class 'list'"),
-           id="td() =/= list"),
+
+    dtu.pp(td(55), "17", dtu.unsupp_cmp('td', "class 'str'"),
+           id="td() < str -> TypeErr"),
+    dtu.pp("17", td(55), dtu.unsupp_cmp('td', "class 'str'"),
+           id="str < td() -> TypeErr"),
+    dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_cmp('td', "class 'list'"),
+           id="td() < list -> TypeErr"),
+    dtu.pp(["17", 19, 35], td(55), dtu.unsupp_cmp('td', "class 'list'"),
+           id="list < td() -> TypeErr"),
+    dtu.pp(td(19), dt("2002.0407"), dtu.unsupp_cmp('td', "class 'dtm.dt'"),
+           id="td() < dt() -> TypeErr"),
 ])
 def test_td_cmp_lt(left, right, exp):
     """
@@ -355,10 +384,17 @@ def test_td_cmp_lt(left, right, exp):
     dtu.pp(td(12), 17, True,                 id="td(12)    <=  number 17"),
     dtu.pp(td(17), 17, True,                 id="td(17)    <=  number 17"),
     dtu.pp(td(55), 17, False,                id="td(55)   !<=  number 55"),
-    dtu.pp(td(55), "17", dtu.unsupp_a("<=", 'td', "class 'str'"),
-           id="td() =/= str"),
-    dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_a("<=", 'td', "class 'list'"),
-           id="td() =/= list"),
+
+    dtu.pp(td(55), "17", dtu.unsupp_cmp('td', "class 'str'"),
+           id="td() <= str -> TypeErr"),
+    dtu.pp("17", td(55), dtu.unsupp_cmp('td', "class 'str'"),
+           id="str <= td() -> TypeErr"),
+    dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_cmp('td', "class 'list'"),
+           id="td() <= list -> TypeErr"),
+    dtu.pp(["17", 19, 35], td(55), dtu.unsupp_cmp('td', "class 'list'"),
+           id="list <= td() -> TypeErr"),
+    dtu.pp(td(19), dt("2002.0407"), dtu.unsupp_cmp('td', "class 'dtm.dt'"),
+           id="td() <= dt() -> TypeErr"),
 ])
 def test_td_cmp_le(left, right, exp):
     """

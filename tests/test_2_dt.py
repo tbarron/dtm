@@ -649,17 +649,27 @@ def test_iso(obj, otz, exp):
     dtu.pp(dt(2018, 1, 17), dt("2018.0117"), True, id="dt(ints) eq dt(str)"),
     dtu.pp(dt(2018, 1, 17, 6, 30), dt("2018.0117"), False,
            id="dt(ints) ne dt(str)"),
+
     dtu.pp(dt(2018, 1, 17), 17,
-           dtu.unsupp_a("==/!=", 'dt', "class 'int'"),
+           dtu.unsupp_cmp('dt', "class 'int'"),
            id="dt == number -> TypeErr"),
+    dtu.pp(17, dt(2018, 1, 17),
+           dtu.unsupp_cmp('dt', "class 'int'"),
+           id="number == dt -> TypeErr"),
     dtu.pp(dt(2018, 1, 17), 'this is a str',
-           dtu.unsupp_a("==/!=", 'dt', "class 'str'"),
+           dtu.unsupp_cmp('dt', "class 'str'"),
            id="dt == str -> TypeErr"),
+    dtu.pp('this is a string', dt(2018, 1, 17),
+           dtu.unsupp_cmp('dt', "class 'str'"),
+           id="str == dt -> TypeErr"),
     dtu.pp(dt(2018, 1, 17), [15, 17, 25],
-           dtu.unsupp_a("==/!=", 'dt', "class 'list'"),
+           dtu.unsupp_cmp('dt', "class 'list'"),
            id="dt == list -> TypeErr"),
+    dtu.pp([15, 17, 25], dt(2018, 1, 17),
+           dtu.unsupp_cmp('dt', "class 'list'"),
+           id="list == dt -> TypeErr"),
     dtu.pp(dt(2018, 1, 17), td(93),
-           dtu.unsupp_a("==/!=", 'dt', "class 'dtm.td'"),
+           dtu.unsupp_cmp('dt', "class 'dtm.td'"),
            id="dt == td -> TypeErr"),
 ])
 def test_dt_cmp_eq(left, right, exp):
@@ -679,16 +689,20 @@ def test_dt_cmp_eq(left, right, exp):
            id="dt(ints) eq dt(str) false"),
     dtu.pp(dt(2018, 1, 17, 6, 30), dt("2018.0117"), True,
            id="dt(ints) ne dt(str) true"),
-    dtu.pp(dt(2018, 1, 17), 17, dtu.unsupp_a("==/!=", 'dt', "class 'int'"),
+
+    dtu.pp(dt(2018, 1, 17), 17, dtu.unsupp_cmp('dt', "class 'int'"),
            id="dt ne number -> TypeErr"),
+    dtu.pp(17, dt(2018, 1, 17), dtu.unsupp_cmp('dt', "class 'int'"),
+           id="number ne dt -> TypeErr"),
     dtu.pp(dt(2018, 1, 17), 'this is a str',
-           dtu.unsupp_a("==/!=", 'dt', "class 'str'"),
-           id="dt ne str -> TypeErr"),
-    dtu.pp(dt(2018, 1, 17), [10, 9, 17],
-           dtu.unsupp_a("==/!=", 'dt', "class 'list'"),
+           dtu.unsupp_cmp('dt', "class 'str'"), id="dt ne str -> TypeErr"),
+    dtu.pp('this is a str', dt(2018, 1, 17),
+           dtu.unsupp_cmp('dt', "class 'str'"), id="str ne dt -> TypeErr"),
+    dtu.pp(dt(2018, 1, 17), [10, 9, 17], dtu.unsupp_cmp('dt', "class 'list'"),
            id="dt ne list -> TypeErr"),
-    dtu.pp(dt(2018, 1, 17), td(19),
-           dtu.unsupp_a("==/!=", 'dt', "class 'dtm.td'"),
+    dtu.pp([10, 9, 17], dt(2018, 1, 17), dtu.unsupp_cmp('dt', "class 'list'"),
+           id="list ne dt -> TypeErr"),
+    dtu.pp(dt(2018, 1, 17), td(19), dtu.unsupp_cmp('dt', "class 'dtm.td'"),
            id="dt ne td -> TypeErr"),
 ])
 def test_dt_cmp_ne(left, right, exp):
@@ -701,26 +715,31 @@ def test_dt_cmp_ne(left, right, exp):
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("inp, bench, exp", [
-    dtu.pp("2012.0101", dt("2012.0102"), False, id="ge-n-s-i-f"),
-    dtu.pp("2011.1231", dt("2012.0101"), False, id="ge-n-s-y-f"),
-    dtu.pp("2012.0102", dt("2012.0101"), True, id="ge-n-s-i-t"),
-    dtu.pp("2012.0102", dt("2011.1231"), True, id="ge-n-s-y-t"),
-    dtu.pp("2012.0102", dt("2012.0102"), True, id="ge-n-e-i-t"),
+    dtu.pp(dt("2012.0101"), dt("2012.0102"), False, id="ge-n-s-i-f"),
+    dtu.pp(dt("2011.1231"), dt("2012.0101"), False, id="ge-n-s-y-f"),
+    dtu.pp(dt("2012.0102"), dt("2012.0101"), True, id="ge-n-s-i-t"),
+    dtu.pp(dt("2012.0102"), dt("2011.1231"), True, id="ge-n-s-y-t"),
+    dtu.pp(dt("2012.0102"), dt("2012.0102"), True, id="ge-n-e-i-t"),
 
-    dtu.pp("2012.0101", datetime(2012, 1, 2), False, id="ge-d-s-i-f"),
-    dtu.pp("2011.1231", datetime(2012, 1, 1), False, id="ge-d-s-y-f"),
-    dtu.pp("2012.0102", datetime(2012, 1, 1), True, id="ge-d-s-i-t"),
-    dtu.pp("2012.0102", datetime(2011, 12, 31), True, id="ge-d-s-y-t"),
-    dtu.pp("2012.0102", datetime(2012, 1, 2), True, id="ge-d-e-i-t"),
+    dtu.pp(dt("2012.0101"), datetime(2012, 1, 2), False, id="ge-d-s-i-f"),
+    dtu.pp(dt("2011.1231"), datetime(2012, 1, 1), False, id="ge-d-s-y-f"),
+    dtu.pp(dt("2012.0102"), datetime(2012, 1, 1), True, id="ge-d-s-i-t"),
+    dtu.pp(dt("2012.0102"), datetime(2011, 12, 31), True, id="ge-d-s-y-t"),
+    dtu.pp(dt("2012.0102"), datetime(2012, 1, 2), True, id="ge-d-e-i-t"),
 
-    dtu.pp("2012.0101", 17, dtu.unsupp_a(">=", 'dt', "class 'int'"),
+    dtu.pp(dt("2012.0101"), 17, dtu.unsupp_cmp('dt', "class 'int'"),
            id="dt >= int -> TypeErr"),
-    dtu.pp("2012.0101", "this is a string",
-           dtu.unsupp_a(">=", 'dt', "class 'str'"),
-           id="dt >= str -> TypeErr"),
-    dtu.pp("2012.0101", [1, 2, 3], dtu.unsupp_a(">=", 'dt', "class 'list'"),
+    dtu.pp(17, dt("2012.0101"), dtu.unsupp_cmp('dt', "class 'int'"),
+           id="int >= dt -> TypeErr"),
+    dtu.pp(dt("2012.0101"), "this is a string",
+           dtu.unsupp_cmp('dt', "class 'str'"), id="dt >= str -> TypeErr"),
+    dtu.pp("this is a string", dt("2012.0101"),
+           dtu.unsupp_cmp('dt', "class 'str'"), id="str >= dt -> TypeErr"),
+    dtu.pp(dt("2012.0101"), [1, 2, 3], dtu.unsupp_cmp('dt', "class 'list'"),
            id="dt >= list -> TypeErr"),
-    dtu.pp("2012.0101", td(17), dtu.unsupp_a(">=", 'dt', "class 'dtm.td'"),
+    dtu.pp([1, 3, 5], dt("2012.0101"), dtu.unsupp_cmp('dt', "class 'list'"),
+           id="list >= dt -> TypeErr"),
+    dtu.pp(dt("2012.0101"), td(17), dtu.unsupp_cmp('dt', "class 'dtm.td'"),
            id="dt >= td -> TypeErr"),
 ])
 def test_dt_cmp_ge(inp, bench, exp):
@@ -729,31 +748,36 @@ def test_dt_cmp_ge(inp, bench, exp):
     dt(*foo) is le dt(*bar) if dt(*foo)._dtobj >= dt(*bar)._dtobj
     """
     pytest.dbgfunc()
-    dtu.cmp_exception('>=', dt(inp), bench, exp)
+    dtu.cmp_exception('>=', inp, bench, exp)
 
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("inp, bench, exp", [
-    dtu.pp("2012.0101", dt("2012.0102"), False, id="gt-n-s-i-f"),
-    dtu.pp("2011.1231", dt("2012.0101"), False, id="gt-n-s-y-f"),
-    dtu.pp("2012.0102", dt("2012.0101"), True, id="gt-n-s-i-t"),
-    dtu.pp("2012.0102", dt("2011.1231"), True, id="gt-n-s-y-t"),
-    dtu.pp("2012.0102", dt("2012.0102"), False, id="gt-n-e-i-f"),
+    dtu.pp(dt("2012.0101"), dt("2012.0102"), False, id="gt-n-s-i-f"),
+    dtu.pp(dt("2011.1231"), dt("2012.0101"), False, id="gt-n-s-y-f"),
+    dtu.pp(dt("2012.0102"), dt("2012.0101"), True, id="gt-n-s-i-t"),
+    dtu.pp(dt("2012.0102"), dt("2011.1231"), True, id="gt-n-s-y-t"),
+    dtu.pp(dt("2012.0102"), dt("2012.0102"), False, id="gt-n-e-i-f"),
 
-    dtu.pp("2012.0101", datetime(2012, 1, 2), False, id="gt-d-s-i-f"),
-    dtu.pp("2011.1231", datetime(2012, 1, 1), False, id="gt-d-s-y-f"),
-    dtu.pp("2012.0102", datetime(2012, 1, 1), True, id="gt-d-s-i-t"),
-    dtu.pp("2012.0102", datetime(2011, 12, 31), True, id="gt-d-s-y-t"),
-    dtu.pp("2012.0102", datetime(2012, 1, 2), False, id="gt-d-e-i-f"),
+    dtu.pp(dt("2012.0101"), datetime(2012, 1, 2), False, id="gt-d-s-i-f"),
+    dtu.pp(dt("2011.1231"), datetime(2012, 1, 1), False, id="gt-d-s-y-f"),
+    dtu.pp(dt("2012.0102"), datetime(2012, 1, 1), True, id="gt-d-s-i-t"),
+    dtu.pp(dt("2012.0102"), datetime(2011, 12, 31), True, id="gt-d-s-y-t"),
+    dtu.pp(dt("2012.0102"), datetime(2012, 1, 2), False, id="gt-d-e-i-f"),
 
-    dtu.pp("2012.0101", 17, dtu.unsupp_a(">", 'dt', "class 'int'"),
+    dtu.pp(dt("2012.0101"), 17, dtu.unsupp_cmp('dt', "class 'int'"),
            id="dt > int -> TypeErr"),
-    dtu.pp("2012.0101", "this is a string",
-           dtu.unsupp_a(">", 'dt', "class 'str'"),
-           id="dt > str -> TypeErr"),
-    dtu.pp("2012.0101", [1, 2, 3], dtu.unsupp_a(">", 'dt', "class 'list'"),
+    dtu.pp(17, dt("2012.0101"), dtu.unsupp_cmp('dt', "class 'int'"),
+           id="int > dt -> TypeErr"),
+    dtu.pp(dt("2012.0101"), "this is a string",
+           dtu.unsupp_cmp('dt', "class 'str'"), id="dt > str -> TypeErr"),
+    dtu.pp("this is a string", dt("2012.0101"),
+           dtu.unsupp_cmp('dt', "class 'str'"), id="str > dt -> TypeErr"),
+    dtu.pp(dt("2012.0101"), [1, 2, 3], dtu.unsupp_cmp('dt', "class 'list'"),
            id="dt > list -> TypeErr"),
-    dtu.pp("2012.0101", td(17), dtu.unsupp_a(">", 'dt', "class 'dtm.td'"),
+    dtu.pp([1, 2, 3], dt("2012.0101"), dtu.unsupp_cmp('dt', "class 'list'"),
+           id="list > dt -> TypeErr"),
+    dtu.pp(dt("2012.0101"), td(17), dtu.unsupp_cmp('dt', "class 'dtm.td'"),
            id="dt > td -> TypeErr"),
 ])
 def test_dt_cmp_gt(inp, bench, exp):
@@ -762,31 +786,36 @@ def test_dt_cmp_gt(inp, bench, exp):
     dt(*foo) is le dt(*bar) if dt(*foo)._dtobj <= dt(*bar)._dtobj
     """
     pytest.dbgfunc()
-    dtu.cmp_exception('>', dt(inp), bench, exp)
+    dtu.cmp_exception('>', inp, bench, exp)
 
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("inp, bench, exp", [
-    dtu.pp("2012.0101", dt("2012.0102"), True, id="le-n-s-i-t"),
-    dtu.pp("2011.1231", dt("2012.0101"), True, id="le-n-s-y-t"),
-    dtu.pp("2012.0102", dt("2012.0101"), False, id="le-n-s-i-f"),
-    dtu.pp("2012.0102", dt("2011.1231"), False, id="le-n-s-y-f"),
-    dtu.pp("2012.0102", dt("2012.0102"), True, id="le-n-e-i-t"),
+    dtu.pp(dt("2012.0101"), dt("2012.0102"), True, id="le-n-s-i-t"),
+    dtu.pp(dt("2011.1231"), dt("2012.0101"), True, id="le-n-s-y-t"),
+    dtu.pp(dt("2012.0102"), dt("2012.0101"), False, id="le-n-s-i-f"),
+    dtu.pp(dt("2012.0102"), dt("2011.1231"), False, id="le-n-s-y-f"),
+    dtu.pp(dt("2012.0102"), dt("2012.0102"), True, id="le-n-e-i-t"),
 
-    dtu.pp("2012.0101", datetime(2012, 1, 2), True, id="le-d-s-i-t"),
-    dtu.pp("2011.1231", datetime(2012, 1, 1), True, id="le-d-s-y-t"),
-    dtu.pp("2012.0102", datetime(2012, 1, 1), False, id="le-d-s-i-f"),
-    dtu.pp("2012.0102", datetime(2011, 12, 31), False, id="le-d-s-y-f"),
-    dtu.pp("2012.0102", datetime(2012, 1, 2), True, id="le-d-e-i-t"),
+    dtu.pp(dt("2012.0101"), datetime(2012, 1, 2), True, id="le-d-s-i-t"),
+    dtu.pp(dt("2011.1231"), datetime(2012, 1, 1), True, id="le-d-s-y-t"),
+    dtu.pp(dt("2012.0102"), datetime(2012, 1, 1), False, id="le-d-s-i-f"),
+    dtu.pp(dt("2012.0102"), datetime(2011, 12, 31), False, id="le-d-s-y-f"),
+    dtu.pp(dt("2012.0102"), datetime(2012, 1, 2), True, id="le-d-e-i-t"),
 
-    dtu.pp("2012.0101", 17, dtu.unsupp_a("<=", 'dt', "class 'int'"),
+    dtu.pp(dt("2012.0101"), 17, dtu.unsupp_cmp('dt', "class 'int'"),
            id="dt <= int -> TypeErr"),
-    dtu.pp("2012.0101", "this is a string",
-           dtu.unsupp_a("<=", 'dt', "class 'str'"),
-           id="dt <= str -> TypeErr"),
-    dtu.pp("2012.0101", [1, 2, 3], dtu.unsupp_a("<=", 'dt', "class 'list'"),
+    dtu.pp(17, dt("2012.0101"), dtu.unsupp_cmp('dt', "class 'int'"),
+           id="int <= dt -> TypeErr"),
+    dtu.pp(dt("2012.0101"), "this is a string",
+           dtu.unsupp_cmp('dt', "class 'str'"), id="dt <= str -> TypeErr"),
+    dtu.pp("this is a string", dt("2012.0101"),
+           dtu.unsupp_cmp('dt', "class 'str'"), id="str <= dt -> TypeErr"),
+    dtu.pp(dt("2012.0101"), [1, 2, 3], dtu.unsupp_cmp('dt', "class 'list'"),
            id="dt <= list -> TypeErr"),
-    dtu.pp("2012.0101", td(17), dtu.unsupp_a("<=", 'dt', "class 'dtm.td'"),
+    dtu.pp([1, 2, 3], dt("2012.0101"), dtu.unsupp_cmp('dt', "class 'list'"),
+           id="list <= dt -> TypeErr"),
+    dtu.pp(dt("2012.0101"), td(17), dtu.unsupp_cmp('dt', "class 'dtm.td'"),
            id="dt <= td -> TypeErr"),
 ])
 def test_dt_cmp_le(inp, bench, exp):
@@ -795,32 +824,37 @@ def test_dt_cmp_le(inp, bench, exp):
     dt(*foo) is le dt(*bar) if dt(*foo)._dtobj <= dt(*bar)._dtobj
     """
     pytest.dbgfunc()
-    dtu.cmp_exception('<=', dt(inp), bench, exp)
+    dtu.cmp_exception('<=', inp, bench, exp)
 
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("inp, bench, exp", [
-    dtu.pp("2012.0101", dt("2012.0102"), True, id="lt-n-s-i-t"),
-    dtu.pp("2011.1231", dt("2012.0101"), True, id="lt-n-s-y-t"),
-    dtu.pp("2012.0102", dt("2012.0101"), False, id="lt-n-s-i-f"),
-    dtu.pp("2012.0102", dt("2011.1231"), False, id="lt-n-s-y-f"),
-    dtu.pp("2012.0102", dt("2012.0102"), False, id="lt-n-e-i-f"),
+    dtu.pp(dt("2012.0101"), dt("2012.0102"), True, id="lt-n-s-i-t"),
+    dtu.pp(dt("2011.1231"), dt("2012.0101"), True, id="lt-n-s-y-t"),
+    dtu.pp(dt("2012.0102"), dt("2012.0101"), False, id="lt-n-s-i-f"),
+    dtu.pp(dt("2012.0102"), dt("2011.1231"), False, id="lt-n-s-y-f"),
+    dtu.pp(dt("2012.0102"), dt("2012.0102"), False, id="lt-n-e-i-f"),
 
-    dtu.pp("2012.0101", datetime(2012, 1, 2), True, id="lt-d-s-i-t"),
-    dtu.pp("2011.1231", datetime(2012, 1, 1), True, id="lt-d-s-y-t"),
-    dtu.pp("2012.0102", datetime(2012, 1, 1), False, id="lt-d-s-i-f"),
-    dtu.pp("2012.0102", datetime(2011, 12, 31), False, id="lt-d-s-y-f"),
-    dtu.pp("2012.0102", datetime(2012, 1, 2), False, id="lt-d-e-i-f"),
+    dtu.pp(dt("2012.0101"), datetime(2012, 1, 2), True, id="lt-d-s-i-t"),
+    dtu.pp(dt("2011.1231"), datetime(2012, 1, 1), True, id="lt-d-s-y-t"),
+    dtu.pp(dt("2012.0102"), datetime(2012, 1, 1), False, id="lt-d-s-i-f"),
+    dtu.pp(dt("2012.0102"), datetime(2011, 12, 31), False, id="lt-d-s-y-f"),
+    dtu.pp(dt("2012.0102"), datetime(2012, 1, 2), False, id="lt-d-e-i-f"),
 
-    dtu.pp("2012.0101", 17, dtu.unsupp_a("<", 'dt', "class 'int'"),
-           id="dt < int -> TypeErr"),
-    dtu.pp("2012.0101", "this is a string",
-           dtu.unsupp_a("<", 'dt', "class 'str'"),
-           id="dt < str -> TypeErr"),
-    dtu.pp("2012.0101", [1, 2, 3], dtu.unsupp_a("<", 'dt', "class 'list'"),
-           id="dt < list -> TypeErr"),
-    dtu.pp("2012.0101", td(17), dtu.unsupp_a("<", 'dt', "class 'dtm.td'"),
-           id="dt < td -> TypeErr"),
+    dtu.pp(dt("2012.0101"), 17,
+           dtu.unsupp_cmp('dt', "class 'int'"), id="dt < int -> TypeErr"),
+    dtu.pp(17, dt("2012.0101"),
+           dtu.unsupp_cmp('dt', "class 'int'"), id="int < dt -> TypeErr"),
+    dtu.pp(dt("2012.0101"), "this is a string",
+           dtu.unsupp_cmp('dt', "class 'str'"), id="dt < str -> TypeErr"),
+    dtu.pp("this is a string", dt("2012.0101"),
+           dtu.unsupp_cmp('dt', "class 'str'"), id="str < dt -> TypeErr"),
+    dtu.pp(dt("2012.0101"), [1, 2, 3],
+           dtu.unsupp_cmp('dt', "class 'list'"), id="dt < list -> TypeErr"),
+    dtu.pp([1, 2, 3], dt("2012.0101"),
+           dtu.unsupp_cmp('dt', "class 'list'"), id="list < dt -> TypeErr"),
+    dtu.pp(dt("2012.0101"), td(17),
+           dtu.unsupp_cmp('dt', "class 'dtm.td'"), id="dt < td -> TypeErr"),
 ])
 def test_dt_cmp_lt(inp, bench, exp):
     """
@@ -828,7 +862,7 @@ def test_dt_cmp_lt(inp, bench, exp):
     dt(*foo) is less than dt(*bar) if dt(*foo)._dtobj < dt(*bar)._dtobj
     """
     pytest.dbgfunc()
-    dtu.cmp_exception('<', dt(inp), bench, exp)
+    dtu.cmp_exception('<', inp, bench, exp)
 
 
 # -----------------------------------------------------------------------------
