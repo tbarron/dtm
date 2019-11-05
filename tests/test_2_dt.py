@@ -667,12 +667,9 @@ def test_dt_cmp_eq(left, right, exp):
     Test the equality operator for dt()
     """
     pytest.dbgfunc()
-    if isinstance(exp, Exception):
-        with pytest.raises(type(exp)) as err:
-            assert (left == right) is exp
-        assert str(exp) in str(err.value)
-    else:
-        assert (left == right) is exp
+    dtu.cmp_exception('==', left, right, exp)
+
+
 
 
 # -----------------------------------------------------------------------------
@@ -695,7 +692,7 @@ def test_dt_cmp_ge(inp, bench, exp):
     dt(*foo) is le dt(*bar) if dt(*foo)._dtobj >= dt(*bar)._dtobj
     """
     pytest.dbgfunc()
-    assert (dt(inp) >= bench) is exp
+    dtu.cmp_exception('>=', dt(inp), bench, exp)
 
 
 # -----------------------------------------------------------------------------
@@ -718,7 +715,7 @@ def test_dt_cmp_gt(inp, bench, exp):
     dt(*foo) is le dt(*bar) if dt(*foo)._dtobj <= dt(*bar)._dtobj
     """
     pytest.dbgfunc()
-    assert (dt(inp) > bench) is exp
+    dtu.cmp_exception('>', dt(inp), bench, exp)
 
 
 # -----------------------------------------------------------------------------
@@ -741,7 +738,7 @@ def test_dt_cmp_le(inp, bench, exp):
     dt(*foo) is le dt(*bar) if dt(*foo)._dtobj <= dt(*bar)._dtobj
     """
     pytest.dbgfunc()
-    assert (dt(inp) <= bench) is exp
+    dtu.cmp_exception('<=', dt(inp), bench, exp)
 
 
 # -----------------------------------------------------------------------------
@@ -764,7 +761,7 @@ def test_dt_cmp_lt(inp, bench, exp):
     dt(*foo) is less than dt(*bar) if dt(*foo)._dtobj < dt(*bar)._dtobj
     """
     pytest.dbgfunc()
-    assert (dt(inp) < bench) is exp
+    dtu.cmp_exception('<', dt(inp), bench, exp)
 
 
 # -----------------------------------------------------------------------------
