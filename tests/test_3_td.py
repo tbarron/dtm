@@ -273,7 +273,7 @@ def test_td_cmp_ne(left, right, exp):
 ])
 def test_td_cmp_ge(left, right, exp):
     """
-    Test td.__eq__()
+    Test td.__ge__()
     """
     pytest.dbgfunc()
     dtu.cmp_exception('>=', left, right, exp)
@@ -302,7 +302,7 @@ def test_td_cmp_ge(left, right, exp):
 ])
 def test_td_cmp_gt(left, right, exp):
     """
-    Test td.__eq__()
+    Test td.__gt__()
     """
     pytest.dbgfunc()
     dtu.cmp_exception('>', left, right, exp)
@@ -332,7 +332,7 @@ def test_td_cmp_gt(left, right, exp):
 ])
 def test_td_cmp_lt(left, right, exp):
     """
-    Test td.__eq__()
+    Test td.__lt__()
     """
     pytest.dbgfunc()
     dtu.cmp_exception('<', left, right, exp)
@@ -362,7 +362,7 @@ def test_td_cmp_lt(left, right, exp):
 ])
 def test_td_cmp_le(left, right, exp):
     """
-    Test td.__eq__()
+    Test td.__le__()
     """
     pytest.dbgfunc()
     dtu.cmp_exception('<=', left, right, exp)
