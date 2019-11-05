@@ -20,12 +20,13 @@ def unsupp(opd, left, right):
 
 
 # -----------------------------------------------------------------------------
-def unsupp_a(opd, left, right):
+def unsupp_cmp(left, right):
     """
     Format an unsupported operand type message wrapped in a TypeError exception
+    specifically for comparison routines
     """
-    msg = "unsupported operand type(s) for {}:  <{}> and <{}>"
-    return TypeError(msg.format(opd, left, right))
+    msg = "unsupported operand type(s) for comparison:  <{}> and <{}>"
+    return TypeError(msg.format(left, right))
 
 
 # -----------------------------------------------------------------------------
