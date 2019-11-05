@@ -662,7 +662,7 @@ def test_iso(obj, otz, exp):
            dtu.unsupp_a("==/!=", 'dt', "class 'dtm.td'"),
            id="dt == td -> TypeErr"),
 ])
-def test_dt_eq(left, right, exp):
+def test_dt_cmp_eq(left, right, exp):
     """
     Test the equality operator for dt()
     """
@@ -689,7 +689,7 @@ def test_dt_eq(left, right, exp):
     dtu.pp("2012.0102", datetime(2011, 12, 31), True, id="ge-d-s-y-t"),
     dtu.pp("2012.0102", datetime(2012, 1, 2), True, id="ge-d-e-i-t"),
 ])
-def test_ge(inp, bench, exp):
+def test_dt_cmp_ge(inp, bench, exp):
     """
     dt(*foo) is le datetime(*bar) if dt(*foo)._dtobj >= datetime(*bar)
     dt(*foo) is le dt(*bar) if dt(*foo)._dtobj >= dt(*bar)._dtobj
@@ -712,7 +712,7 @@ def test_ge(inp, bench, exp):
     dtu.pp("2012.0102", datetime(2011, 12, 31), True, id="gt-d-s-y-t"),
     dtu.pp("2012.0102", datetime(2012, 1, 2), False, id="gt-d-e-i-f"),
 ])
-def test_gt(inp, bench, exp):
+def test_dt_cmp_gt(inp, bench, exp):
     """
     dt(*foo) is le datetime(*bar) if dt(*foo)._dtobj <= datetime(*bar)
     dt(*foo) is le dt(*bar) if dt(*foo)._dtobj <= dt(*bar)._dtobj
@@ -735,7 +735,7 @@ def test_gt(inp, bench, exp):
     dtu.pp("2012.0102", datetime(2011, 12, 31), False, id="le-d-s-y-f"),
     dtu.pp("2012.0102", datetime(2012, 1, 2), True, id="le-d-e-i-t"),
 ])
-def test_le(inp, bench, exp):
+def test_dt_cmp_le(inp, bench, exp):
     """
     dt(*foo) is le datetime(*bar) if dt(*foo)._dtobj <= datetime(*bar)
     dt(*foo) is le dt(*bar) if dt(*foo)._dtobj <= dt(*bar)._dtobj
@@ -758,7 +758,7 @@ def test_le(inp, bench, exp):
     dtu.pp("2012.0102", datetime(2011, 12, 31), False, id="lt-d-s-y-f"),
     dtu.pp("2012.0102", datetime(2012, 1, 2), False, id="lt-d-e-i-f"),
 ])
-def test_lt(inp, bench, exp):
+def test_dt_cmp_lt(inp, bench, exp):
     """
     dt(*foo) is less than datetime(*bar) if dt(*foo)._dtobj < datetime(*bar)
     dt(*foo) is less than dt(*bar) if dt(*foo)._dtobj < dt(*bar)._dtobj
