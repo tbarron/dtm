@@ -778,6 +778,12 @@ def test_dt_cmp_ge(inp, bench, exp):
     dtu.pp(dt("2012.0102"), datetime(2011, 12, 31), True, id="gt-d-s-y-t"),
     dtu.pp(dt("2012.0102"), datetime(2012, 1, 2), False, id="gt-d-e-i-f"),
 
+    dtu.pp(datetime(2012, 1, 1), dt("2012.0102"), False, id="gt-d-s-i-f-r"),
+    dtu.pp(datetime(2011, 12, 31), dt("2012.0101"), False, id="gt-d-s-y-f-r"),
+    dtu.pp(datetime(2012, 1, 2), dt("2012.0101"), True, id="gt-d-s-i-t-r"),
+    dtu.pp(datetime(2012, 1, 2), dt("2011.1231"), True, id="gt-d-s-y-t-r"),
+    dtu.pp(datetime(2012, 1, 2), dt("2012.0102"), False, id="gt-d-e-i-f-r"),
+
     dtu.pp(dt("2012.0101"), 17, dtu.unsupp_cmp('dt', "class 'int'"),
            id="dt > int -> TypeErr"),
     dtu.pp(17, dt("2012.0101"), dtu.unsupp_cmp('dt', "class 'int'"),
