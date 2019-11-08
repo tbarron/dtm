@@ -642,14 +642,18 @@ def test_iso(obj, otz, exp):
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("left, right, exp", [
     dtu.pp(dt(), datetime.now(), True, id="dt eq datetime"),
+    dtu.pp(datetime.now(), dt(), True, id="datetime eq dt"),
     dtu.pp(dt(epoch=1571315783), datetime.fromtimestamp(1571315783), True,
-           id="dt-timestamp eq datetime-timestamp"),
+           id="dt-epoch eq datetime-epoch"),
+    dtu.pp(datetime.fromtimestamp(1571315783), dt(epoch=1571315783), True,
+           id="datetime-epoch eq dt-epoch"),
     dtu.pp(dt(epoch=1571315783), datetime.fromtimestamp(1571315784), False,
-           id="dt ne datetime"),
+           id="dt-epoch ne datetime-epoch"),
+    dtu.pp(datetime.fromtimestamp(1571315784), dt(epoch=1571315783), False,
+           id="datetime-epoch ne dt-epoch"),
     dtu.pp(dt(2018, 1, 17), dt("2018.0117"), True, id="dt(ints) eq dt(str)"),
     dtu.pp(dt(2018, 1, 17, 6, 30), dt("2018.0117"), False,
            id="dt(ints) ne dt(str)"),
-
     dtu.pp(dt(2018, 1, 17), 17,
            dtu.unsupp_cmp('dt', "class 'int'"),
            id="dt == number -> TypeErr"),
