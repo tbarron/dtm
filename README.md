@@ -210,12 +210,12 @@ dt objects, which can be compared to other dt objects and datetime objects.
 A dt object, A, is less than another dt object, B, if A's UTC timeref falls
 earlier in time than B's UTC timeref.
 
-### Arithmetic: \_\_add\_\_(), \_\_sub\_\_()
+### Arithmetic: \_\_add\_\_(), \_\_sub\_\_(), \_\_radd\_\_(), \_\_rsub\_\_()
 
 The dt object supports arithmetic with other dt objects, datetime objects,
 td and timedelta objects, and simple numbers (ints or floats). The
-following list summarizes which operations are supported and which are not.
-That is, the operations producing TypeError are not supported.
+following list summarizes what is produced by each interaction. For
+operations that are not supported, a TypeError exception is raised.
 
   * [dt] + [dt] -> TypeError
   * [dt] - [dt] -> [td]
@@ -239,6 +239,15 @@ That is, the operations producing TypeError are not supported.
   * [dt] - [int,float] -> [dt]
   * [int,float] + [dt] -> [dt]
   * [int,float] - [dt] -> TypeError
+
+The methods \_\_radd\_\_() and \_\_rsub\_\_() are called when the left hand
+operand is one of int, float, timedelta, or datetime. These "reflected"
+variants of \_\_add\_\_() and \_\_sub\_\_() do what is necessary to carry
+out the operation requested, so that even though int, float, datetime, and
+timedelta don't know anything about the dt class, they can participate in
+these operations on the left side of the operator, as one would want a
+commutative operation to behave.
+
 
 ### \_\_call\_\_(fmt='%F-%T', tz=None) (Format default output time)
 
@@ -393,11 +402,14 @@ The standard comparison operators (==, !=, <, >, <=, >=) are supported for
 td objects. td objects can be compared to other td objects and timedelta
 objects.
 
-### Arithmetic: \_\_add\_\_(), \_\_sub\_\_()
+### Arithmetic
 
-The td object supports arithmetic with td objects, dt and datetime objects,
-timedelta objects, and ints or floats. Here's a summary of supported and
-unsupported operations.
+#### \_\_add\_\_(), \_\_sub\_\_(), \_\_radd\_\_(), \_\_rsub\_\_()
+
+The td object supports addition and subtraction with td objects, dt and
+datetime objects, timedelta objects, and ints or floats. Here's a summary
+of what each interaction produces. For unsupported operations, a TypeError
+exception is raised.
 
   * [td] + [td] -> [td]
   * [td] - [td] -> [td]
@@ -416,6 +428,22 @@ unsupported operations.
   * [td] - [int,float] -> [td]
   * [int,float] + [td] -> [td]
   * [int,float] - [td] -> [td]
+
+Note that the reflected variant methods, \_\_radd\_\_() and \_\_rsub\_\_()
+are defined to support the commutativtity of these operations.
+
+#### \_\_mul\_\_(), \_\_truediv\_\_(), \_\_floordiv\_\_(), \_\_mod\_\_(), divmod()
+
+The td object can be multiplied or divided by ints or floats. Any multiply
+or divide operation involving two td objects or a td with a dt, datetime,
+or timedelta is unsupported and raises a TypeError exception.
+
+  * [td] * [int,float] -> [td]
+  * [int,float] * [td] -> [td]
+
+Note that \_\_rmul\_\_() and the analogous reflection methods for the other
+operations are implemented to handle reflected operations correctly (mostly
+by reporting that they are not supported).
 
 ### days()
 
