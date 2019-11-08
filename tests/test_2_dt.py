@@ -734,6 +734,12 @@ def test_dt_cmp_ne(left, right, exp):
     dtu.pp(dt("2012.0102"), datetime(2011, 12, 31), True, id="ge-d-s-y-t"),
     dtu.pp(dt("2012.0102"), datetime(2012, 1, 2), True, id="ge-d-e-i-t"),
 
+    dtu.pp(datetime(2012, 1, 2), dt("2012.0103"), False, id="ge-d-s-i-f-r"),
+    dtu.pp(datetime(2011, 12, 31), dt("2012.0101"), False, id="ge-d-s-y-f-r"),
+    dtu.pp(datetime(2012, 1, 3), dt("2012.0102"), True, id="ge-d-s-i-t-r"),
+    dtu.pp(datetime(2011, 12, 31), dt("2011.0102"), True, id="ge-d-s-y-t-r"),
+    dtu.pp(datetime(2012, 1, 2), dt("2012.0102"), True, id="ge-d-e-i-t-r"),
+
     dtu.pp(dt("2012.0101"), 17, dtu.unsupp_cmp('dt', "class 'int'"),
            id="dt >= int -> TypeErr"),
     dtu.pp(17, dt("2012.0101"), dtu.unsupp_cmp('dt', "class 'int'"),
