@@ -19,13 +19,13 @@ def F(*args):
         (dsc, tfx) = args
         tfx = tfx.strip()
         if tfx == "T":
-            fmt = "{:>30s} {:<3s}"
+            fmt = "{:>35s} |{:<3s}"
         elif tfx == "F":
-            fmt = "{:>30s}  {:<2s}"
+            fmt = "{:>35s} | {:<2s}"
         elif tfx == "X":
-            fmt = "{:>30s} {:>3s}"
+            fmt = "{:>35s} |{:>3s}"
         else:
-            fmt = "{:>30s} *****{}"
+            fmt = "{:>35s} |*****{}"
         return fmt.format(dsc, tfx)
     else:
         rval = " ".join(args)
