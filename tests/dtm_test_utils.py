@@ -11,6 +11,28 @@ tz_local = tzlocal.get_localzone()
 
 
 # -----------------------------------------------------------------------------
+def F(*args):
+    """
+    Format test ids for comparison operators
+    """
+    if len(args) == 2:
+        (dsc, tfx) = args
+        tfx = tfx.strip()
+        if tfx == "T":
+            fmt = "{:>30s} {:<3s}"
+        elif tfx == "F":
+            fmt = "{:>30s}  {:<2s}"
+        elif tfx == "X":
+            fmt = "{:>30s} {:>3s}"
+        else:
+            fmt = "{:>30s} *****{}"
+        return fmt.format(dsc, tfx)
+    else:
+        rval = " ".join(args)
+        return rval
+
+
+# -----------------------------------------------------------------------------
 def unsupp(opd, left, right):
     """
     Format an unsupported operand type message wrapped in a TypeError exception
