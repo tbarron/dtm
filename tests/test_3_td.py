@@ -233,29 +233,33 @@ def test_td_cmp_eq(left, right, exp):
 
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("left, right, exp", [
-    dtu.pp(td(1, 1), td(60), True, id="td(61) != td(60)"),
-    dtu.pp(td(1, 1), td(61), False, id="td(61) == td(61)"),
+    dtu.pp(td(1, 1), td(60), True, id=dtu.F("td(61) != td(60)", "T")),
+    dtu.pp(td(1, 1), td(61), False, id=dtu.F("td(61) != td(61)", "F")),
 
-    dtu.pp(td(1, 1), timedelta(0, 60), True, id="td(61) != timedelta(60)"),
-    dtu.pp(td(1, 1), timedelta(0, 61), False, id="td(61) == timedelta(61)"),
-    dtu.pp(timedelta(0, 60), td(1, 1), True, id="timedelta(60) != td(61)"),
-    dtu.pp(timedelta(0, 61), td(1, 1), False, id="timedelta(61) == td(61)"),
+    dtu.pp(td(1, 1), timedelta(0, 60), True,
+           id=dtu.F("td(61) != timedelta(60)", "T")),
+    dtu.pp(td(1, 1), timedelta(0, 61), False,
+           id=dtu.F("td(61) != timedelta(61)", "F")),
+    dtu.pp(timedelta(0, 60), td(1, 1), True,
+           id=dtu.F("timedelta(60) != td(61)", "T")),
+    dtu.pp(timedelta(0, 61), td(1, 1), False,
+           id=dtu.F("timedelta(61) != td(61)", "F")),
 
-    dtu.pp(td(1, 1), 60, True, id="td(61) != number 60"),
-    dtu.pp(td(1, 1), 61, False, id="td(61) == number 61"),
-    dtu.pp(58, td(1, 1), True, id="number 60 != td(61)"),
-    dtu.pp(31 + 30, td(1, 1), False, id="number 61 == td(61)"),
+    dtu.pp(td(1, 1), 60, True, id=dtu.F("td(61) != 60", "T")),
+    dtu.pp(td(1, 1), 61, False, id=dtu.F("td(61) != 61", "F")),
+    dtu.pp(58, td(1, 1), True, id=dtu.F("60 != td(61)", "T")),
+    dtu.pp(31 + 30, td(1, 1), False, id=dtu.F("61 != td(61)", "F")),
 
     dtu.pp(td(55), "17", dtu.unsupp_cmp('td', "class 'str'"),
-           id="td() != str -> TypeErr"),
+           id=dtu.F("td() != str", "X")),
     dtu.pp("17", td(55), dtu.unsupp_cmp('td', "class 'str'"),
-           id="str != td() -> TypeErr"),
+           id=dtu.F("str != td()", "X")),
     dtu.pp(td(55), ["17", 19, 35], dtu.unsupp_cmp('td', "class 'list'"),
-           id="td() != list -> TypeErr"),
+           id=dtu.F("td() != list", "X")),
     dtu.pp(["17", 19, 35], td(55), dtu.unsupp_cmp('td', "class 'list'"),
-           id="list != td() -> TypeErr"),
+           id=dtu.F("list != td()", "X")),
     dtu.pp(td(55), dt(), dtu.unsupp_cmp('td', "class 'dtm.dt'"),
-           id="td() != dt -> TypeErr"),
+           id=dtu.F("td() != dt", "X")),
 ])
 def test_td_cmp_ne(left, right, exp):
     """
