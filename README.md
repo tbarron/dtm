@@ -210,6 +210,13 @@ dt objects, which can be compared to other dt objects and datetime objects.
 A dt object, A, is less than another dt object, B, if A's UTC timeref falls
 earlier in time than B's UTC timeref.
 
+Note that if a comparison puts a datetime or other value on the left side
+of the operation, the "reflection" variant of the operator method will be
+called. For \_\_gt\_\_(), the reflection is \_\_lt\_\_() and vice versa
+since x < y has the same truth table as y > x. Similarly, \_\_ge\_\_()
+reflects to \_\_le\_\_() and vice versa. The equality operator,
+\_\_eq\_\_(), is its own reflection since it is a commutative operation.
+
 ### Arithmetic: \_\_add\_\_(), \_\_sub\_\_(), \_\_radd\_\_(), \_\_rsub\_\_()
 
 The dt object supports arithmetic with other dt objects, datetime objects,
@@ -400,7 +407,9 @@ Examples:
 
 The standard comparison operators (==, !=, <, >, <=, >=) are supported for
 td objects. td objects can be compared to other td objects and timedelta
-objects.
+objects. Reflected operations also work because of how Python reflects
+\_\_ge\_\_() to \_\_le\_\_() (and vice versa) and \_\_gt\_\_() to
+\_\_lt\_\_() (and verse visa).
 
 ### Arithmetic
 
