@@ -191,23 +191,24 @@ def test_td_sub(left, right, exp):
 # -----------------------------------------------------------------------------
 # td.__mul__
 @pytest.mark.parametrize("left, right, exp", [
-    # dtu.pp(None, None, None),
     dtu.pp(td(25), 3, td(75), id="td(25) * 3 == td(75)"),
     dtu.pp(3, td(25), td(75), id="3 * td(25) == td(75)"),
     dtu.pp(td(30), 5.25, td(round(30*5.25)), id="td(30) * 5.25 == td(158)"),
     dtu.pp(5.75, td(30), td(round(5.75*30)), id="5.75 * td(30) == td(172)"),
     dtu.pp(td(7), td(5), dtu.unsupp('*', 'td', 'td'),
-           id="td * td => TypeErr")),
-    dtu.pp(td(7), dt(), dtu.unsupp('*', 'td', 'dtm.dt'),
-           id="td * dt => TypeErr")),
+           id="td * td => TypeErr"),
+    dtu.pp(td(7), dt(), dtu.unsupp('*', 'td', 'dt'),
+           id="td * dt => TypeErr"),
+    dtu.pp(dt(), td(7), dtu.unsupp('*', 'dt', 'td'),
+           id="dt * td => TypeErr"),
     dtu.pp(td(7), timedelta(), dtu.unsupp('*', 'td', 'datetime.timedelta'),
-           id="td * timedelta => TypeErr")),
+           id="td * timedelta => TypeErr"),
     dtu.pp(timedelta(), td(7), dtu.unsupp('*', 'datetime.timedelta', 'td'),
-           id="timedelta * td => TypeErr")),
-    dtu.pp(td(7), datetime(), dtu.unsupp('*', 'td', 'datetime.datetime'),
-           id="td * datetime => TypeErr")),
-    dtu.pp(datetime(), td(7), dtu.unsupp('*', 'datetime.datetime', 'td'),
-           id="datetime * td => TypeErr")),
+           id="timedelta * td => TypeErr"),
+    dtu.pp(td(7), datetime.now(), dtu.unsupp('*', 'td', 'datetime.datetime'),
+           id="td * datetime => TypeErr"),
+    dtu.pp(datetime.now(), td(7), dtu.unsupp('*', 'datetime.datetime', 'td'),
+           id="datetime * td => TypeErr"),
 ])
 def test_td_mul(left, right, exp):
     """
