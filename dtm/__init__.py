@@ -886,6 +886,19 @@ class td(object):
         return self.__mul__(other)
 
     # -------------------------------------------------------------------------
+    def __floordiv__(self, other):
+        """
+        [class td]
+
+        Handle td // (int or float)
+        """
+        if isinstance(other, (int, float)):
+            return td(int(self._duration // other))
+        else:
+            return NotImplemented
+
+
+    # -------------------------------------------------------------------------
     def __eq__(self, other):
         """
         [class td]
