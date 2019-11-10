@@ -222,6 +222,42 @@ def test_td_mul(left, right, exp):
     else:
         actual = left * right
         assert actual == exp, "{} != {}".format(actual, exp)
+
+
+# -----------------------------------------------------------------------------
+# td.__floordiv__
+@pytest.mark.parametrize("left, right, exp", [
+    dtu.pp(td(45), 3, td(15), id="td(45) // 3 == td(15)"),
+    dtu.pp(35, td(7), dtu.unsupp('//', 'int', 'td'),
+           id="35 // td(7) => TypeErr"),
+    dtu.pp(td(17), 3.5, td(4), id="td(17) // 3.5 == td(4)"),
+    dtu.pp(47.85, td(17), dtu.unsupp('//', 'float', 'td'),
+           id="47.85 // td(17) => TypeErr"),
+    dtu.pp(td(17), dt(), dtu.unsupp('//', 'td', 'dt'),
+           id="td() // dt() => TypeErr"),
+    dtu.pp(td(17), timedelta(), dtu.unsupp('//', 'td', 'datetime.timedelta'),
+           id="td() // timedelta() => TypeErr"),
+    dtu.pp(timedelta(), td(17), dtu.unsupp('//', 'datetime.timedelta', 'td'),
+           id="timedelta() // td() => TypeErr"),
+    dtu.pp(td(17), datetime.now(), dtu.unsupp('//', 'td', 'datetime.datetime'),
+           id="td() // datetime() => TypeErr"),
+    dtu.pp(datetime.now(), td(17), dtu.unsupp('//', 'datetime.datetime', 'td'),
+           id="datetime() // td() => TypeErr"),
+])
+def test_td_floordiv(left, right, exp):
+    """
+    Test td.__floordiv__()
+    """
+    pytest.dbgfunc()
+    if isinstance(exp, Exception):
+        with pytest.raises(type(exp)) as err:
+            left // right
+        assert str(exp) in str(err.value)
+    else:
+        actual = left // right
+        assert actual == exp, "{} != {}".format(actual, exp)
+
+
     pytest.fail('construction')
 
 
