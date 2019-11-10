@@ -865,6 +865,28 @@ class td(object):
             return NotImplemented                            # pragma: no cover
 
     # -------------------------------------------------------------------------
+    def __mul__(self, other):
+        """
+        [class td]
+
+        If *other* is a float or int, return td(self._duration * other)
+        """
+        if isinstance(other, (int, float)):
+            return td(round(other * self._duration))
+        else:
+            return NotImplemented
+
+    # -------------------------------------------------------------------------
+    def __rmul__(self, other):
+        """
+        [class td]
+
+        Handle reflected multiplications, a la, *other* * *self*
+        """
+        return self.__mul__(other)
+
+
+    # -------------------------------------------------------------------------
     def __eq__(self, other):
         """
         [class td]
