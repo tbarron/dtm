@@ -258,6 +258,41 @@ def test_td_floordiv(left, right, exp):
         assert actual == exp, "{} != {}".format(actual, exp)
 
 
+# -----------------------------------------------------------------------------
+# td.__truediv__
+@pytest.mark.parametrize("left, right, exp", [
+    dtu.pp(td(45), 3, td(15), id=ppf("td(45) / 3 == td(15)", "T", w=44)),
+    dtu.pp(td(9), 10, td(1), id=ppf("td(9) / 10 == td(1)", "T", w=44)),
+    dtu.pp(35, td(7), dtu.unsupp('/', 'int', 'td'),
+           id=ppf("35 / td(7) => TypeErr", "X", w=44)),
+    dtu.pp(td(17), 3.5, td(5), id=ppf("td(17) / 3.5 == td(5)", "T", w=44)),
+    dtu.pp(47.85, td(17), dtu.unsupp('/', 'float', 'td'),
+           id=ppf("47.85 / td(17) => TypeErr", "X", w=44)),
+    dtu.pp(td(17), dt(), dtu.unsupp('/', 'td', 'dt'),
+           id=ppf("td() / dt() => TypeErr", "X", w=44)),
+    dtu.pp(td(17), timedelta(), dtu.unsupp('/', 'td', 'datetime.timedelta'),
+           id=ppf("td() / timedelta() => TypeErr", "X", w=44)),
+    dtu.pp(timedelta(), td(17), dtu.unsupp('/', 'datetime.timedelta', 'td'),
+           id=ppf("timedelta() / td() => TypeErr", "X", w=44)),
+    dtu.pp(td(17), datetime.now(), dtu.unsupp('/', 'td', 'datetime.datetime'),
+           id=ppf("td() / datetime() => TypeErr", "X", w=44)),
+    dtu.pp(datetime.now(), td(17), dtu.unsupp('/', 'datetime.datetime', 'td'),
+           id=ppf("datetime() / td() => TypeErr", "X", w=44)),
+])
+def test_td_truediv(left, right, exp):
+    """
+    Test td.__truediv__()
+    """
+    pytest.dbgfunc()
+    if isinstance(exp, Exception):
+        with pytest.raises(type(exp)) as err:
+            left / right
+        assert str(exp) in str(err.value)
+    else:
+        actual = left / right
+        assert actual == exp, "{} != {}".format(actual, exp)
+
+
     pytest.fail('construction')
 
 
