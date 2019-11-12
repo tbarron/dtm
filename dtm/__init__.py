@@ -910,6 +910,18 @@ class td(object):
             return NotImplemented
 
     # -------------------------------------------------------------------------
+    def __mod__(self, other):
+        """
+        [class td]
+
+        Handle td % (int or float)
+        """
+        if isinstance(other, (int, float)):
+            return td(round(self._duration % other))
+        else:
+            return NotImplemented
+
+    # -------------------------------------------------------------------------
     def __eq__(self, other):
         """
         [class td]
