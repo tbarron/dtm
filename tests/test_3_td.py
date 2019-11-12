@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from dtm import dt, dt_error, td
-from dtm_test_utils import ppf
+from dtm_test_utils import pp, ppf
 import dtm_test_utils as dtu
 import pytest
 
