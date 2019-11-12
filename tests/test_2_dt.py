@@ -1227,7 +1227,12 @@ def test_weekday(obj, otz, exp):
     Test dt.weekday()
     """
     pytest.dbgfunc()
-    assert obj.weekday(tz=otz) == exp
+    if isinstance(exp, Exception):
+        with pytest.raises(type(exp)) as err:
+            obj.weekday(tz=otz)
+        assert str(exp) in str(err.value)
+    else:
+        assert obj.weekday(tz=otz) == exp
 
 
 # -----------------------------------------------------------------------------
