@@ -12,6 +12,22 @@ tz_local = tzlocal.get_localzone()
 
 
 # -----------------------------------------------------------------------------
+def lrx_exc_test(op, left, right, exp):
+    """
+    General test structure for carrying out an operation, catching and checking
+    an exception if it should be raised, and validating the result of the
+    operation otherwise.
+    """
+    if isinstance(exp, Exception):
+        with pytest.raises(type(exp)) as err:
+            eval(op)
+        assert str(exp) in str(err.value)
+    else:
+        actual = eval(op)
+        assert actual == exp, "{} != {}".format(actual, exp)
+
+
+# -----------------------------------------------------------------------------
 def unsupp(opd, left, right):
     """
     Format an unsupported operand type message wrapped in a TypeError exception
