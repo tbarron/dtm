@@ -321,11 +321,46 @@ def test_td_truediv(left, right, exp):
         assert actual == exp, "{} != {}".format(actual, exp)
 
 
-    pytest.fail('construction')
+# -----------------------------------------------------------------------------
+# td.__mod__
+@pytest.mark.parametrize("left, right, exp", [
+    pp(td(97), 5, td(2), id=ppf("td(97) % 5 == td(2)", "T", w=48)),
+    pp(5, td(97), dtu.unsupp('%', 'int', 'td'),
+       id=ppf("5 % td(97) => TypeErr", "X", w=48)),
+    pp(td(97), 9.3, td(4), id=ppf("td(97) % 9.3 == td(4)", "T", w=48)),
+    pp(9.3, td(97), dtu.unsupp('%', 'float', 'td'),
+       id=ppf("9.3 % td(97) => TypeErr", "X", w=48)),
+    pp(td(19), dt(), dtu.unsupp('%', 'td', 'dt'),
+       id=ppf("td % dt -> TypeErr", "X", w=48)),
+    pp(td(19), datetime.now(), dtu.unsupp('%', 'td', 'datetime.datetime'),
+       id=ppf("td % datetime -> TypeErr", "X", w=48)),
+    pp(datetime.now(), td(19), dtu.unsupp('%', 'datetime.datetime', 'td'),
+       id=ppf("datetime % td -> TypeErr", "X", w=48)),
+    pp(td(19), timedelta(32), dtu.unsupp('%', 'td', 'datetime.timedelta'),
+       id=ppf("td % timedelta -> TypeErr", "X", w=48)),
+    pp(timedelta(32), td(19), dtu.unsupp('%', 'datetime.timedelta', 'td'),
+       id=ppf("timedelta % td -> TypeErr", "X", w=48)),
+])
+def test_td_mod(left, right, exp):
+    """
+    Test td.__mod__()
+    """
+    pytest.dbgfunc()
+    dtu.lrx_exc_test("left % right", left, right, exp)
 
 
 # -----------------------------------------------------------------------------
+# td.divmod
 @pytest.mark.parametrize("left, right, exp", [
+    dtu.pp(None, None, None),
+])
+def test_td_divmod(left, right, exp):
+    """
+    Test td.divmod()
+    """
+    pytest.fail('construction')
+
+
 # -----------------------------------------------------------------------------
 @pytest.mark.parametrize("left, right, exp", [
     dtu.pp(td(0), td(0), True, id=ppf("0 == 00:00:00", "T")),
