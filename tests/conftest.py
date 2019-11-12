@@ -6,6 +6,33 @@ import pytest
 
 
 # -----------------------------------------------------------------------------
+def test_id_formatter(*args, **kw):
+    """
+    Format test ids for comparison operators
+    """
+    width = kw.get('w') or 35
+
+    if len(args) == 2:
+        (dsc, tfx) = args
+        tfx = tfx.strip()
+        if tfx == "T":
+            fmt = "{:>{width}s} |{:<3s}"
+        elif tfx == "F":
+            fmt = "{:>{width}s} | {:<2s}"
+        elif tfx == "X":
+            fmt = "{:>{width}s} |{:>3s}"
+        else:
+            fmt = "{:>{width}s} |*****{}"
+        return fmt.format(dsc, tfx, width=width)
+    else:
+        fmt = "{:>{width}s} |   "
+        return fmt.format(" ".join(args), width=width)
+
+
+pytest.test_id_formatter = test_id_formatter
+
+
+# -----------------------------------------------------------------------------
 def pytest_addoption(parser):
     """
     Adding pytest command line options
@@ -33,6 +60,7 @@ def pytest_runtest_setup(item):
     If we put '--dbg ..all', we'll break in this function as it's setting
     up for each test.
     """
+    pytest.item = item
     dbg_n = '..' + item.name
     dbg_l = item.config.getvalue('dbg')
     skip_l = item.config.getvalue('skip')
@@ -45,6 +73,6 @@ def pytest_runtest_setup(item):
         pdb.set_trace()
 
     pytest.dbgfunc = lambda: None
-    if any([item.name in dbg_l, 'all' in dbg_l] +
-           [x in item.name for x in dbg_l]):
+    if any([item.name in dbg_l,
+            'all' in dbg_l] + [x in item.name for x in dbg_l]):
         pytest.dbgfunc = pdb.set_trace

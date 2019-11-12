@@ -4,32 +4,11 @@ import tzlocal
 
 
 pp = pytest.param
+ppf = pytest.test_id_formatter
 tz_utc = pytz.timezone('utc')
 tz_csdt = pytz.timezone('cst6cdt')
 tz_esdt = pytz.timezone('est5edt')
 tz_local = tzlocal.get_localzone()
-
-
-# -----------------------------------------------------------------------------
-def F(*args):
-    """
-    Format test ids for comparison operators
-    """
-    if len(args) == 2:
-        (dsc, tfx) = args
-        tfx = tfx.strip()
-        if tfx == "T":
-            fmt = "{:>35s} |{:<3s}"
-        elif tfx == "F":
-            fmt = "{:>35s} | {:<2s}"
-        elif tfx == "X":
-            fmt = "{:>35s} |{:>3s}"
-        else:
-            fmt = "{:>35s} |*****{}"
-        return fmt.format(dsc, tfx)
-    else:
-        rval = " ".join(args)
-        return rval
 
 
 # -----------------------------------------------------------------------------
