@@ -66,8 +66,8 @@ def test_dt_add(left, right, exp):
         assert str(exp) in str(err.value)
     else:
         actual = left + right
-        assert actual == exp, "exp - act = {}".format(exp._secs() -
-                                                      actual._secs())
+        assert actual == exp, ("exp - act = {}"
+                               .format(exp._secs() - actual._secs()))
 
 
 # -----------------------------------------------------------------------------
@@ -122,8 +122,8 @@ def test_dt_sub(left, right, exp):
         assert str(exp) in str(err.value)
     else:
         actual = left - right
-        assert actual == exp, "exp - act = {}".format(exp._secs() -
-                                                      actual._secs())
+        assert actual == exp, ("exp - act = {}"
+                               .format(exp._secs() - actual._secs()))
 
 
 # -----------------------------------------------------------------------------
