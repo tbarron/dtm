@@ -352,13 +352,16 @@ def test_td_mod(left, right, exp):
 # -----------------------------------------------------------------------------
 # td.divmod
 @pytest.mark.parametrize("left, right, exp", [
-    dtu.pp(None, None, None),
+    pp(td(41), 7, (5, 6), id=ppf("td(41).divmod(7) == (5, 6)", w=45)),
+    pp(td(57), 20, (2, 17), id=ppf("td(57).divmod(20) == (2, 17)", w=45)),
+    pp(td(57), 19, (3, 0), id=ppf("td(57).divmod(19) == (3, 0)", w=45)),
 ])
 def test_td_divmod(left, right, exp):
     """
     Test td.divmod()
     """
-    pytest.fail('construction')
+    pytest.dbgfunc()
+    dtu.lrx_exc_test("left.divmod(right)", left, right, exp)
 
 
 # -----------------------------------------------------------------------------
