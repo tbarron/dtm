@@ -352,16 +352,30 @@ def test_td_mod(left, right, exp):
 # -----------------------------------------------------------------------------
 # td.divmod
 @pytest.mark.parametrize("left, right, exp", [
-    pp(td(41), 7, (5, 6), id=ppf("td(41).divmod(7) == (5, 6)", w=45)),
-    pp(td(57), 20, (2, 17), id=ppf("td(57).divmod(20) == (2, 17)", w=45)),
-    pp(td(57), 19, (3, 0), id=ppf("td(57).divmod(19) == (3, 0)", w=45)),
+    pp(td(41), 7, (5, 6), id=ppf("divmod(td(41), 7) == (5, 6)", w=45)),
+    pp(td(57), 20, (2, 17), id=ppf("divmod(td(57), 20) == (2, 17)", w=45)),
+
+    pp(td(0), 19, (0, 0), id=ppf("divmod(td(0), 19) == (0, 0)", w=45)),
+    pp(td(1), 7.2, (0, 1), id=ppf("divmod(td(1), anything) == (0, 1)", w=45)),
+
+    pp(td(99), 99, (1, 0), id=ppf("divmod(td(99), 99) == (1, 0)", w=45)),
+    pp(td(3), 2.9, (1, 1), id=ppf("divmod(td(3), 2.9) == (1, 1)", w=45)),
+    pp(td(4), 3, (1, 1), id=ppf("divmod(td(4), 3) == (1, 1)", w=45)),
+    pp(td(7), 3.9, (1, 3), id=ppf("divmod(td(7), 3.9) == (1, 3)", w=45)),
+    pp(td(7), 5.2, (1, 2), id=ppf("divmod(td(7), 5.2) == (1, 2)", w=45)),
+
+    pp(td(57), 19, (3, 0), id=ppf("divmod(td(57), 19) == (3, 0)", w=45)),
+    pp(td(32), 5.3, (6, 1), id=ppf("divmod(td(32), 5.3) == (6, 1)", w=45)),
+    pp(td(7), 3, (2, 1), id=ppf("divmod(td(7), 3) == (2, 1)", w=45)),
+    pp(td(17), 3.7, (4, 2), id=ppf("divmod(td(17), 3.7) == (4, 2)", w=45)),
+    pp(td(17), 2.9, (5, 3), id=ppf("divmod(td(17), 2.9) == (5, 3)", w=45)),
 ])
 def test_td_divmod(left, right, exp):
     """
     Test td.divmod()
     """
     pytest.dbgfunc()
-    dtu.lrx_exc_test("left.divmod(right)", left, right, exp)
+    dtu.lrx_exc_test("divmod(left, right)", left, right, exp)
 
 
 # -----------------------------------------------------------------------------
