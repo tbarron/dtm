@@ -1,3 +1,13 @@
+## 1.4.2 ... 2019-11-12 22:25:52
+
+ * Test reflection of operations +, -, ==, !=, <, >, <=, >=, *, //, /, %,
+   and divmod() for dt and td objects.
+ * Add payload code to satisfy the tests.
+ * Add --skip option for py.test in this project.
+ * Internal: add some test goodies like pp() as short name for pytest.param
+   and ppf() for the test id formatter.
+ * Internal: use lrx_exc_test() where it makes sense to do so.
+
 ## 1.4.1 ... 2019-11-05 18:32:27
 
  * Address and fix the diff-str bug.
