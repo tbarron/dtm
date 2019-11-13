@@ -922,6 +922,19 @@ class td(object):
             return NotImplemented
 
     # -------------------------------------------------------------------------
+    def __divmod__(self, other):
+        """
+        [class td]
+
+        Handle td.divmod(int or float)
+        """
+        if isinstance(other, (int, float)):
+            (q, r) = divmod(self._duration, other)
+            return (round(q), 1 if 0 < r < 1 else round(r))
+        else:
+            return NotImplemented
+
+    # -------------------------------------------------------------------------
     def __eq__(self, other):
         """
         [class td]
