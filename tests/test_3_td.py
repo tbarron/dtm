@@ -153,14 +153,7 @@ def test_td_add(left, right, exp):
     Test td.__add__()
     """
     pytest.dbgfunc()
-    if isinstance(exp, Exception):
-        with pytest.raises(type(exp)) as err:
-            actual = left + right
-        assert str(exp) in str(err.value)
-    else:
-        actual = left + right
-        assert actual == exp, ("exp - act = {}"
-                               .format(exp._secs() - actual._secs()))
+    dtu.lrx_exc_test("left + right", left, right, exp)
 
 
 # -----------------------------------------------------------------------------
@@ -203,14 +196,7 @@ def test_td_sub(left, right, exp):
     Tests for td.__sub__()
     """
     pytest.dbgfunc()
-    if isinstance(exp, Exception):
-        with pytest.raises(type(exp)) as err:
-            actual = left - right
-        assert str(exp) in str(err.value)
-    else:
-        actual = left - right
-        assert actual == exp, ("exp - act = {}"
-                               .format(exp._secs() - actual._secs()))
+    dtu.lrx_exc_test("left - right", left, right, exp)
 
 
 # -----------------------------------------------------------------------------
@@ -242,13 +228,7 @@ def test_td_mul(left, right, exp):
     Test td.__mul__()
     """
     pytest.dbgfunc()
-    if isinstance(exp, Exception):
-        with pytest.raises(type(exp)) as err:
-            left * right
-        assert str(exp) in str(err.value)
-    else:
-        actual = left * right
-        assert actual == exp, "{} != {}".format(actual, exp)
+    dtu.lrx_exc_test("left * right", left, right, exp)
 
 
 # -----------------------------------------------------------------------------
@@ -277,13 +257,7 @@ def test_td_floordiv(left, right, exp):
     Test td.__floordiv__()
     """
     pytest.dbgfunc()
-    if isinstance(exp, Exception):
-        with pytest.raises(type(exp)) as err:
-            left // right
-        assert str(exp) in str(err.value)
-    else:
-        actual = left // right
-        assert actual == exp, "{} != {}".format(actual, exp)
+    dtu.lrx_exc_test("left // right", left, right, exp)
 
 
 # -----------------------------------------------------------------------------
@@ -312,13 +286,7 @@ def test_td_truediv(left, right, exp):
     Test td.__truediv__()
     """
     pytest.dbgfunc()
-    if isinstance(exp, Exception):
-        with pytest.raises(type(exp)) as err:
-            left / right
-        assert str(exp) in str(err.value)
-    else:
-        actual = left / right
-        assert actual == exp, "{} != {}".format(actual, exp)
+    dtu.lrx_exc_test("left / right", left, right, exp)
 
 
 # -----------------------------------------------------------------------------
