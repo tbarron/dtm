@@ -3,6 +3,6 @@ docopt-dispatch
 flake8
 pytest
 pytest-cov
-pytz
-tzlocal
-git+git://github.com/tbarron/tbx.git#egg=tbx
+pytz>=2019.3
+tzlocal>=2.0.0
+git+git://github.com/tbarron/tbx.git#egg=tbx>=1.1.6
