@@ -1,11 +1,13 @@
 from dtm import version
 from datetime import datetime, timedelta
 import os
-try:
-    import pytz
-    import tzlocal
-except ModuleNotFoundError:
-    pass
+import pytz
+import tzlocal
+# try:
+#     import pytz
+#     import tzlocal
+# except ModuleNotFoundError:
+#     pass
 """
 Epoch values always represent UTC.
 
