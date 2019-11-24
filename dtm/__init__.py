@@ -354,7 +354,7 @@ class dt(object):
         formatted for human readability.
         """
         udt = datetime.fromtimestamp(self._utc).astimezone(self._tz)
-        fmt = os.getenv("DTM_STR") or "%F %T %Z"
+        fmt = os.getenv("DTM_DT_STR") or "%F %T %Z"
         return udt.strftime(fmt)
 
     # -------------------------------------------------------------------------
@@ -366,7 +366,12 @@ class dt(object):
         numbers reflect the internal epoch value and we also show the object's
         internal timezone.
         """
-        return "dt({}, tz='{}')".format(int(self._utc), self._tz.zone)
+        fmt = os.getenv("DTM_DT_REPR")
+        if fmt:
+            rval = self.strftime(fmt)
+        else:
+            rval = "dt({}, tz='{}')".format(int(self._utc), self._tz.zone)
+        return rval
 
     # -------------------------------------------------------------------------
     def _user_defined_formats(self):
