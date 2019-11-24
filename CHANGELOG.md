@@ -1,3 +1,15 @@
+## 1.4.3 ... 2019-11-24 06:53:45
+
+ * Update tests and payload to use $DTM_DT_STR to specify dt.__str__()
+   format (rather than $DTM_STR)
+ * Add tests and payload using $DTM_DT_REPR to specify format for
+   dt.__repr__()
+ * Import pytz and tzlocal inside a try/except block so an import failure
+   doesn't derail installation
+ * Specify minimum versions for pytz, tzlocal, and tbx in requirements.txt
+ * Update .gitignore to exclude .project from status reports
+
+
 ## 1.4.2 ... 2019-11-12 22:25:52
 
  * Test reflection of operations +, -, ==, !=, <, >, <=, >=, *, //, /, %,
@@ -7,6 +19,7 @@
  * Internal: add some test goodies like pp() as short name for pytest.param
    and ppf() for the test id formatter.
  * Internal: use lrx_exc_test() where it makes sense to do so.
+
 
 ## 1.4.1 ... 2019-11-05 18:32:27
 
