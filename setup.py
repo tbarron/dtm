@@ -12,6 +12,9 @@ setup(
     author_email='tom.barron@comcast.net',
     version=version._v,
     packages=['dtm'],
+    install_requires=['pytz',
+                      'tzlocal',
+                      'git://github.com/tbarron/tbx.git#egg=tbx'],
     scripts=[],
     name='dtm'
 )

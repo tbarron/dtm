@@ -1,3 +1,8 @@
+## 1.4.4 ... 2019-11-24 08:39:15
+
+ * Add pytz, tzlocal, and tbx as runtime pendors of dtm in setup.py to get
+   them installed when dtm is
+
 ## 1.4.3 ... 2019-11-24 07:54:44
 
  * Update tests and payload to use $DTM_DT_STR to specify dt.__str__()
