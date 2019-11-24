@@ -1,11 +1,12 @@
-## 1.4.3 ... 2019-11-24 06:53:45
+## 1.4.3 ... 2019-11-24 07:54:44
 
  * Update tests and payload to use $DTM_DT_STR to specify dt.__str__()
    format (rather than $DTM_STR)
  * Add tests and payload using $DTM_DT_REPR to specify format for
    dt.__repr__()
  * Import pytz and tzlocal inside a try/except block so an import failure
-   doesn't derail installation
+   doesn't derail installation. Tested on travis to verify that the fix for
+   this works at install time.
  * Specify minimum versions for pytz, tzlocal, and tbx in requirements.txt
  * Update .gitignore to exclude .project from status reports
 
