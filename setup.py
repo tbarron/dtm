@@ -14,7 +14,7 @@ setup(
     packages=['dtm'],
     install_requires=['pytz',
                       'tzlocal',
-                      'git://github.com/tbarron/tbx.git#egg=tbx'],
+                      ],
     scripts=[],
     name='dtm'
 )
