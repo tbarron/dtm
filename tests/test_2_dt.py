@@ -298,7 +298,7 @@ def test_env_dtm_str(inp, itz, fmt, exp):
     dt.__str__().
     """
     pytest.dbgfunc()
-    with tbx.envset(DTM_STR=fmt):
+    with tbx.envset(DTM_DT_STR=fmt):
         nib = dt(inp, tz=itz)
         assert str(nib) == exp
 
@@ -1088,34 +1088,44 @@ def test_previous_day_pp(nub, pvargs, exp):
 
 
 # -----------------------------------------------------------------------------
-@pytest.mark.parametrize("when, exp", [
-    dtu.pp(dt(2012, 12, 31, 1, 2, 3, tz="EST5EDT"),
-           "dt(1356933723, tz='EST5EDT')", id="EST5EDT"),
-    dtu.pp(dt(2012, 12, 31, 1, 2, 3, tz="UTC"),
-           "dt(1356915723, tz='UTC')", id="UTC"),
+@pytest.mark.parametrize("when, env_fmt, exp", [
+    dtu.pp(dt(2012, 12, 31, 1, 2, 3, tz="EST5EDT"), None,
+           "dt(1356933723, tz='EST5EDT')", id="EST5EDT without env fmt"),
+    dtu.pp(dt(2012, 12, 31, 1, 2, 3, tz="UTC"), None,
+           "dt(1356915723, tz='UTC')", id="UTC without env fmt"),
+    dtu.pp(dt(2012, 12, 31, 1, 2, 3), "dt(%Y.%m%d.%H.%M.%S)",
+           "dt(2012.1231.01.02.03)", id="with $DTM_DT_REPR"),
+    dtu.pp(dt(2012, 12, 31, 1, 2, 3), "%m/%d/%Y %H-%M-%S",
+           "12/31/2012 01-02-03", id="mdyhms with $DTM_DT_REPR"),
 ])
-def test_repr(when, exp):
+def test_repr(when, env_fmt, exp):
     """
     repr(dt()) should produce a predictable string
     """
     pytest.dbgfunc()
-    assert repr(when) == exp
+    with tbx.envset(DTM_DT_REPR=env_fmt):
+        assert repr(when) == exp
 
 
 # -----------------------------------------------------------------------------
-@pytest.mark.parametrize("inp, exp", [
-    dtu.pp(dt(2012, 12, 31, 1, 2, 3, tz="est5edt"),
-           "2012-12-31 01:02:03 EST", id="est"),
-    dtu.pp(dt(2012, 12, 31, 1, 2, 3, tz='America/Boise'),
-           "2012-12-31 01:02:03 MST", id="mst"),
+@pytest.mark.parametrize("inp, env_fmt, exp", [
+    dtu.pp(dt(2012, 12, 31, 1, 2, 3, tz="est5edt"), "%Y.%m%d %H:%M:%S %Z",
+           "2012.1231 01:02:03 EST", id="est with $DTM_DT_STR"),
+    dtu.pp(dt(2012, 12, 31, 1, 2, 3, tz="est5edt"), None,
+           "2012-12-31 01:02:03 EST", id="est no env fmt"),
+    dtu.pp(dt(2012, 12, 31, 1, 2, 3, tz='America/Boise'), "%m/%d/%y %H:%M:%S",
+           "12/31/12 01:02:03", id="mst with $DTM_DT_STR"),
+    dtu.pp(dt(2012, 12, 31, 1, 2, 3, tz='America/Boise'), None,
+           "2012-12-31 01:02:03 MST", id="mst no env fmt"),
 ])
-def test_str(inp, exp):
+def test_str(inp, env_fmt, exp):
     """
     str(dt()) should produce a predictable string. It should generate the time
     ref in utc to show the actual contents of the object.
     """
     pytest.dbgfunc()
-    assert str(inp) == exp
+    with tbx.envset(DTM_DT_STR=env_fmt):
+        assert str(inp) == exp
 
 
 # -----------------------------------------------------------------------------
