@@ -11,7 +11,6 @@ setup(
     download_url='Where to download it.',
     author_email='tom.barron@comcast.net',
     version=version._v,
-    # 'install_requires': ['git://github.com/tbarron/tbx.git#egg=tbx'],
     packages=['dtm'],
     scripts=[],
     name='dtm'
