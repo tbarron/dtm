@@ -1,3 +1,7 @@
+## 1.4.5 ... 2019-11-25 07:15:05
+
+ * Add tbx to dependency_links in setup.py
+
 ## 1.4.4 ... 2019-11-24 08:39:15
 
  * Add pytz, tzlocal as runtime pendors of dtm in setup.py to get them
