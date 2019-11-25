@@ -15,6 +15,8 @@ setup(
     install_requires=['pytz',
                       'tzlocal',
                       ],
+    # dependency_links=['http://github.com/tbarron/tbx/tarball/master#egg=tbx-1.1.6'],
+    dependency_links=['git+git://github.com/tbarron/tbx.git#egg=tbx>=1.1.6'],
     scripts=[],
     name='dtm'
 )
